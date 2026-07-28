@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -15,6 +16,8 @@ import Services from '@/pages/Services';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
 import Contact from '@/pages/Contact';
+
+import { createLenis } from '@/lib/lenis';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +38,13 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    // Respect the user's motion preference
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+    return createLenis();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

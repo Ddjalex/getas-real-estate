@@ -136,3 +136,36 @@
     @apply font-serif;
   }
 }
+
+/* ── Ken Burns effect ────────────────────────────────────────────────── */
+/* Continuous slow zoom + pan on the hero background image.              */
+/* Looping via `alternate` so it never jumps.                            */
+.ken-burns {
+  animation: kenBurns 22s ease-in-out infinite alternate;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translate(0, 0); }
+  50%  { transform: scale(1.05) translate(-1%, 0.5%); }
+  100% { transform: scale(1.08) translate(-2%, 1%); }
+}
+
+/* Disable all motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ── Property card hover ─────────────────────────────────────────────── */
+.property-card > * {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.property-card > *:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 20px 40px -8px rgba(15, 46, 36, 0.18);
+}

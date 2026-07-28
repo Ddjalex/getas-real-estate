@@ -10,9 +10,11 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 40);
     };
-    window.addEventListener("scroll", handleScroll);
+    // Check immediately in case the page is already scrolled on mount
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -27,14 +29,21 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0F2E24] ${
-        isScrolled ? "shadow-lg py-2" : "py-4"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-in-out ${
+        isScrolled
+          ? "bg-[#0F2E24] shadow-lg py-2"
+          : "bg-[#0F2E24]/0 backdrop-blur-none py-5"
       }`}
+      style={{
+        // Cinematic 700ms ease for the background fade-in
+        transitionProperty: "background-color, box-shadow, padding",
+        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+      }}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-4 group">
-          <GiftBadge size={isScrolled ? 50 : 60} className="transition-all duration-300" />
+          <GiftBadge size={isScrolled ? 50 : 58} className="transition-all duration-700" />
           <div className="hidden sm:block">
             <h1 className="text-[#D9B93C] font-serif text-xl md:text-2xl font-bold tracking-wide">
               GIFT
@@ -51,7 +60,7 @@ export function Header() {
             <Link
               key={link.path}
               href={link.path}
-              className={`text-sm font-medium transition-colors hover:text-[#D9B93C] ${
+              className={`text-sm font-medium transition-colors duration-300 hover:text-[#D9B93C] ${
                 location === link.path ? "text-[#D9B93C]" : "text-white"
               }`}
             >
@@ -87,7 +96,11 @@ export function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-[#0F2E24] border-t border-white/10 shadow-xl flex flex-col pb-6 px-4">
+        <div
+          className={`lg:hidden absolute top-full left-0 right-0 border-t border-white/10 shadow-xl flex flex-col pb-6 px-4 transition-all duration-700 ${
+            isScrolled ? "bg-[#0F2E24]" : "bg-[#0F2E24]/90 backdrop-blur-sm"
+          }`}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.path}
