@@ -31,8 +31,15 @@ import { createLenis } from "@/lib/lenis";
 const queryClient = new QueryClient();
 
 function AppRoutes() {
-  const [location] = useLocation();
-  const isAdmin = location.startsWith("/staff-portal");
+  const [location, navigate] = useLocation();
+  const isAdmin = location.startsWith("/staff-portal") || location.startsWith("/admin");
+
+  // Redirect /admin* → /staff-portal*
+  useEffect(() => {
+    if (location.startsWith("/admin")) {
+      navigate(location.replace("/admin", "/staff-portal"), { replace: true });
+    }
+  }, [location, navigate]);
 
   if (isAdmin) {
     return (
