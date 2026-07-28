@@ -1,0 +1,118 @@
+This is Phase 3 (final phase) of the GIFT Real Estate site. Phases 1 and 2 already
+built the front-end structure, branding, and animations — do not redesign or restyle
+existing pages. This phase is about making the site DYNAMIC and adding SEO + an admin
+panel.
+
+TECH STACK TO ADD
+- Backend: Node.js + Express
+- Database: PostgreSQL (use Replit's built-in Postgres/Neon integration) with
+  Drizzle ORM or Prisma
+- Auth: secure session or JWT-based login for admin only (bcrypt-hashed passwords)
+
+1. REPLACE STATIC DUMMY DATA WITH REAL DATABASE DATA
+- Create a `listings` table (id, title, slug, type, status, price, location,
+  neighborhood, bedrooms, bathrooms, sizeSqm, description, images[], featured,
+  latitude, longitude, createdAt, updatedAt) and a `blogPosts` table (id, title, slug,
+  excerpt, content, coverImage, author, publishedAt).
+- Add a `latitude`/`longitude` field to each listing so every property has its OWN
+  map location, not a single shared static map. The Property Detail page's map embed
+  must read these coordinates dynamically per listing (e.g. Google Maps embed URL
+  built from `listing.latitude`/`listing.longitude`), so each property shows its real
+  location once the admin sets it.
+- Also create an `inquiries` table (id, name, email, phone, message, listingId
+  nullable, createdAt) to store contact-form and property-inquiry submissions.
+- Update the Home, Properties, Property Detail, and Blog pages to fetch from the
+  new backend API instead of the old dummy JS array (remove the dummy data file).
+- Property Detail and filtering must work against real database records, using the
+  slug-based URLs already set up in Phase 1.
+- The Contact form and each property's inquiry form must POST to the backend and
+  save into the `inquiries` table, plus send a notification (email or at minimum
+  show a success confirmation in the UI).
+
+2. SITE CONTENT / SETTINGS — MAKE THE REST OF THE FRONTEND EDITABLE TOO
+Right now only listings and blog posts would be dynamic. Everything else (contact
+info, About Us text, team/agents, services, footer, office location, social links) is
+still hardcoded from Phase 1 and NOT editable by the admin. Fix this:
+- Create a `siteSettings` table (or a simple key-value `settings` table) storing:
+  - Company contact info: phone number(s), email, WhatsApp number, office address,
+    office latitude/longitude (for a general "visit our office" map, separate from
+    individual property maps).
+  - Social media links (Facebook, Instagram, LinkedIn, TikTok, etc.).
+  - Homepage hero headline/tagline text.
+  - Stats band numbers (years in business, properties sold, clients, satisfaction %) —
+    these were hardcoded in Phase 1; make them admin-editable instead of fixed numbers.
+  - About Us page content (company history text, mission statement).
+  - Footer text/copyright line.
+- Create an `agents` table (id, name, photo, title/role, phone, email, bio) so the
+  About Us team grid and each listing's "contact agent" card can be admin-managed
+  instead of hardcoded dummy people.
+- Create a `services` table (id, title, description, icon) so the Services page
+  content is editable instead of static copy, in case offerings change over time.
+- Build an admin screen ("Site Settings" or "General Info") where staff can edit all
+  of the above through a form — not by editing code — and have those changes reflect
+  immediately on the live public pages (Home, About, Services, Contact, footer, and
+  every property's agent card).
+
+3. ADMIN DASHBOARD — MUST BE FULLY HIDDEN FROM PUBLIC USERS
+- Build an admin panel at a route like /staff-portal (not a guessable "/admin" if
+  possible) with:
+  - Secure login (bcrypt password hashing, session/JWT auth)
+  - CRUD screens for listings (add/edit/delete, upload multiple images, set map
+    coordinates via a simple lat/lng input or an interactive map picker, mark
+    "featured", set status)
+  - CRUD screens for blog posts
+  - CRUD screens for agents/team members
+  - CRUD screens for services
+  - The Site Settings form described above (contact info, hero text, stats, About Us
+    text, footer, social links, office map location)
+  - A view of all inquiry/contact submissions
+- SECURITY REQUIREMENTS (do not skip):
+  - No link to the admin route anywhere on the public site (no nav/footer/sitemap).
+  - Unauthenticated visitors hitting the admin route or its sub-routes must be
+    redirected straight to the login page — never show any dashboard data.
+  - Every admin API endpoint must check for a valid authenticated session on the
+    SERVER SIDE, not just hide buttons in the UI — someone could otherwise call the
+    API directly and bypass a hidden button.
+  - Add `<meta name="robots" content="noindex, nofollow">` on all admin pages.
+  - Exclude the admin route from sitemap.xml and disallow it in robots.txt.
+  - Rate-limit login attempts. No public sign-up form — only manually created staff
+    accounts.
+  - Auto-log-out admin sessions after a period of inactivity.
+
+4. SEO — MAKE IT FULLY DYNAMIC AND COMPLETE (top priority)
+- Dynamic <title> and <meta name="description"> per page, generated from real data:
+  e.g. property detail title = "[Bedrooms]BR [Type] for Sale in [Neighborhood],
+  Addis Ababa | GIFT Real Estate", description pulled from the listing's price/specs.
+- Add <link rel="canonical"> on every page.
+- Add Open Graph and Twitter Card meta tags on every page, using the listing's/post's
+  main image where relevant.
+- Add JSON-LD structured data:
+  - `RealEstateAgent`/`LocalBusiness` schema on Home/About (name, logo, address,
+    phone, founding date 1990) — pulled from the new Site Settings data, not hardcoded.
+  - `Product`/`Residence`-style schema with price/address/image on each property
+    detail page.
+  - `BlogPosting` schema on each blog post.
+  - `BreadcrumbList` schema on listing and blog detail pages.
+- Auto-generate sitemap.xml dynamically from the database (every published listing
+  and blog post), updating automatically as the admin adds/removes content.
+- Generate robots.txt allowing crawlers, linking to the sitemap, and disallowing the
+  admin route.
+- Descriptive alt text on every property image, generated from listing data (e.g.
+  "Living room of 3 bedroom apartment for sale in Bole, Addis Ababa").
+- Make sure all images are lazy-loaded and compressed; set explicit width/height to
+  avoid layout shift.
+- Add Google Analytics 4 (gtag.js) — leave a placeholder for the GA4 Measurement ID.
+- Add a Google Search Console verification meta tag placeholder.
+- Track key CTA clicks (Call Now, WhatsApp, Submit Inquiry, View Listing) as GA4
+  events.
+
+5. FINAL CHECKS
+- Confirm listings/blog posts/agents/services added or edited via the admin panel
+  immediately appear on the public site and in sitemap.xml without a redeploy.
+- Confirm editing Site Settings (contact info, hero text, stats, About Us, footer)
+  actually updates the corresponding public pages — test each field.
+- Confirm each property's map shows its own correct location based on its saved
+  coordinates, not one shared static map.
+- Confirm the admin route is unreachable/invisible without logging in.
+- Confirm every page has a unique title/description and valid JSON-LD (test with
+  Google's Rich Results Test).

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { GiftBadge } from "./Badge";
 import { Menu, X, Phone } from "lucide-react";
 
 export function Header() {
@@ -43,7 +42,12 @@ export function Header() {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-4 group">
-          <GiftBadge size={isScrolled ? 50 : 58} className="transition-all duration-700" />
+          <img
+            src="/logo.png"
+            alt="GIFT Real Estate logo"
+            className="transition-all duration-700 object-contain drop-shadow-md"
+            style={{ width: isScrolled ? 50 : 58, height: isScrolled ? 50 : 58 }}
+          />
           <div className="hidden sm:block">
             <h1 className="text-[#D9B93C] font-serif text-xl md:text-2xl font-bold tracking-wide">
               GIFT
