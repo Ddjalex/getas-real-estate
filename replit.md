@@ -1,6 +1,6 @@
-# [Project name]
+# GIFT Real Estate
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A real estate website for an Addis Ababa–based agency (est. 1990), with pages for browsing properties, services, blog posts, and contact.
 
 ## Run & Operate
 

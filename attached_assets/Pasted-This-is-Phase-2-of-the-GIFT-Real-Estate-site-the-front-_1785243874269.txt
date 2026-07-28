@@ -1,0 +1,72 @@
+This is Phase 2 of the GIFT Real Estate site — the front-end structure from Phase 1
+already exists in this project. Do NOT rebuild the pages, change the branding/colors,
+or change the page structure/content. Add animation and interaction on top of the
+existing components only.
+
+Install and use GSAP with the ScrollTrigger plugin (npm install gsap) for scroll-tied
+animation, since this project needs cinematic, scroll-scrubbed motion rather than
+simple one-time fade-ins.
+
+TARGET STYLE: a slow, deliberate, high-end "cinematic portfolio" feel — like a luxury
+real estate/architecture showcase reel. Every transition should feel intentional and
+smooth, not snappy or bouncy. Prioritize elegance over speed.
+
+BUILD THESE SPECIFIC EFFECTS:
+
+1. Hero — continuous slow zoom/pan (Ken Burns effect) on the hero background image for
+   as long as it's in view, using a slow CSS transform scale (e.g. 1 → 1.08 over 15-20s,
+   looping or easing to a stop), so the background never feels static.
+
+2. Headline reveal — the main hero headline should animate in with a masked wipe or
+   staggered letter/word reveal (each word or line clips/slides into view in sequence)
+   rather than a simple fade — use GSAP's SplitText-style approach (split the heading
+   into spans per word, animate each with a slight stagger and easing).
+
+3. Section-to-section scroll transitions — as the user scrolls from one major section
+   to the next (hero → stats → featured listings → why-gift → testimonial → CTA), the
+   outgoing section should scale down/fade slightly while the incoming section scales
+   up/fades in, using ScrollTrigger with `scrub: true` so the motion is tied precisely
+   to scroll position (not a one-shot trigger). This creates the smooth "cinematic
+   crossfade" feel from the reference video.
+
+4. Full-bleed image reveals — large property/section images should scale in from
+   slightly zoomed-out (e.g. scale 1.15 → 1) and fade in as they enter the viewport,
+   scrubbed to scroll position rather than instant.
+
+5. Pinned moments — consider pinning one key section (e.g. the "Why GIFT / Est. 1990"
+   section or a featured property showcase) briefly during scroll using
+   ScrollTrigger's `pin: true`, so content changes (e.g. stat numbers, or a sequence of
+   property images) while the section stays fixed for a short scroll distance, then
+   releases. Use sparingly — only where it adds impact, not on every section.
+
+6. Property card gallery — on the Properties/Featured Listings section, add a subtle
+   horizontal-drift or staggered scale-in as cards enter view, with a smooth hover
+   state (slight scale + shadow lift, ~0.4s ease).
+
+7. Minimal, unobtrusive nav — keep the header calm and elegant against the hero
+   imagery: fade its background in only after scrolling past the hero (already
+   partially covered in Phase 1/earlier work — refine the transition to be smoother
+   and slower, matching the overall cinematic pacing, e.g. 0.6-0.8s ease).
+
+8. Animated stat counters — keep these from the previous approach, but slow the
+   count-up slightly (1.5-2s) and pair it with a subtle scale-in of the number itself
+   for more weight.
+
+9. Smooth scrolling — use a smooth-scroll approach (e.g. Lenis or GSAP's
+   ScrollSmoother if available) so the scroll itself feels slower and more fluid,
+   matching the cinematic reference, not the default abrupt browser scroll.
+
+PACING & EASING
+- Use slow, elegant easing curves throughout (e.g. "power2.out", "power3.inOut") —
+  avoid bouncy/elastic easing, which would clash with the luxury brand feel.
+- Typical durations: 0.8-1.5s for entrance animations, scrub-tied for anything
+  connected directly to scroll position.
+- Respect `prefers-reduced-motion`: provide a reduced-motion fallback where animations
+  are replaced with simple instant/fast fades, and pinning/scrubbing is disabled.
+
+IMPORTANT
+- Don't change any layout, copy, colors, or page structure — only add motion.
+- Keep performance in mind: use `will-change` sparingly, clean up ScrollTrigger
+  instances on route change (if using React Router) to avoid memory leaks/jank.
+- Test scroll performance on mobile — cinematic pinning effects can feel heavy on
+  lower-end phones, so simplify or disable pinned sections on small viewports if needed.
