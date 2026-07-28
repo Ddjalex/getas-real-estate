@@ -32,32 +32,25 @@ const queryClient = new QueryClient();
 
 function AppRoutes() {
   const [location, navigate] = useLocation();
-  const isAdmin = location.startsWith("/staff-portal") || location.startsWith("/admin");
-
-  // Redirect /admin* → /staff-portal*
-  useEffect(() => {
-    if (location.startsWith("/admin")) {
-      navigate(location.replace("/admin", "/staff-portal"), { replace: true });
-    }
-  }, [location, navigate]);
+  const isAdmin = location.startsWith("/admin");
 
   if (isAdmin) {
     return (
       <Switch>
-        <Route path="/staff-portal" component={AdminLogin} />
-        <Route path="/staff-portal/dashboard">
+        <Route path="/admin" component={AdminLogin} />
+        <Route path="/admin/dashboard">
           <ProtectedRoute><AdminDashboard /></ProtectedRoute>
         </Route>
-        <Route path="/staff-portal/listings/new">
+        <Route path="/admin/listings/new">
           <ProtectedRoute><ListingForm /></ProtectedRoute>
         </Route>
-        <Route path="/staff-portal/listings/:id/edit">
+        <Route path="/admin/listings/:id/edit">
           <ProtectedRoute><ListingForm /></ProtectedRoute>
         </Route>
-        <Route path="/staff-portal/blog/new">
+        <Route path="/admin/blog/new">
           <ProtectedRoute><BlogForm /></ProtectedRoute>
         </Route>
-        <Route path="/staff-portal/blog/:id/edit">
+        <Route path="/admin/blog/:id/edit">
           <ProtectedRoute><BlogForm /></ProtectedRoute>
         </Route>
       </Switch>

@@ -52,7 +52,7 @@ export default function ListingForm() {
       } else {
         await admin.listings.update(id!, payload);
       }
-      navigate("/staff-portal/dashboard");
+      navigate("/admin/dashboard");
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -78,7 +78,7 @@ export default function ListingForm() {
       <Helmet><title>{isNew ? "New Listing" : "Edit Listing"} — Staff Portal</title><meta name="robots" content="noindex, nofollow" /></Helmet>
       <div className="min-h-screen bg-gray-100">
         <div className="bg-[#0F2E24] text-white px-6 py-4 flex items-center gap-3">
-          <button onClick={() => navigate("/staff-portal/dashboard")} className="text-white/70 hover:text-white"><ArrowLeft size={20} /></button>
+          <button onClick={() => navigate("/admin/dashboard")} className="text-white/70 hover:text-white"><ArrowLeft size={20} /></button>
           <span className="font-bold">{isNew ? "New Listing" : "Edit Listing"}</span>
         </div>
         <div className="max-w-3xl mx-auto px-6 py-8">

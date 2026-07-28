@@ -12,7 +12,8 @@ export const sessionMiddleware = session({
   store: new PgSession({
     pool,
     tableName: "admin_sessions",
-    createTableIfMissing: true,
+    // Table is pre-created via schema push; do NOT set createTableIfMissing
+    // because connect-pg-simple can't find its bundled table.sql after esbuild
   }),
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -21,7 +22,7 @@ export const sessionMiddleware = session({
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 1000, // 1 hour inactivity timeout
-    sameSite: "strict",
+    sameSite: "lax", // "strict" blocks cookies through Replit's proxy redirect
   },
   rolling: true, // reset expiry on each request (inactivity timeout)
 });

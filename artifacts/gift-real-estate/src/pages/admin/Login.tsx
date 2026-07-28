@@ -16,7 +16,7 @@ export default function AdminLogin() {
     setLoading(true);
     try {
       await adminLogin(username, password);
-      navigate("/staff-portal/dashboard");
+      navigate("/admin/dashboard");
     } catch (err) {
       setError((err as Error).message || "Invalid credentials");
     } finally {

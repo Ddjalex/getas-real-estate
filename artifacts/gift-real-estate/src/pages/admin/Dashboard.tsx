@@ -19,7 +19,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     adminMe().then((user) => {
       if (!user) {
-        navigate("/staff-portal");
+        navigate("/admin");
         return;
       }
       setUsername(user.username);
@@ -40,7 +40,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     await adminLogout();
-    navigate("/staff-portal");
+    navigate("/admin");
   };
 
   const deleteItem = async (id: string) => {
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between p-6 border-b">
                   <h2 className="font-bold text-xl text-gray-800">Property Listings</h2>
-                  <Link href="/staff-portal/listings/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/listings/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
                     <Plus size={16} /> Add Listing
                   </Link>
                 </div>
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="flex items-center gap-3">
                           <span className={`px-2 py-0.5 text-xs font-bold rounded ${l.status === "Featured" || l.status === "New" ? "bg-[#1C4C3B] text-white" : "bg-gray-200 text-gray-700"}`}>{l.status}</span>
-                          <Link href={`/staff-portal/listings/${l.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/admin/listings/${l.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(l.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -132,7 +132,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between p-6 border-b">
                   <h2 className="font-bold text-xl text-gray-800">Blog Posts</h2>
-                  <Link href="/staff-portal/blog/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/blog/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
                     <Plus size={16} /> New Post
                   </Link>
                 </div>
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
                           <div className="text-sm text-gray-500">{p.author} · {p.category} · {new Date(p.date).toLocaleDateString()}</div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <Link href={`/staff-portal/blog/${p.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/admin/blog/${p.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(p.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>

@@ -16,7 +16,7 @@ export function ProtectedRoute({ children }: Props) {
         setStatus("authenticated");
       } else {
         setStatus("unauthenticated");
-        navigate("/staff-portal");
+        navigate("/admin");
       }
     });
   }, [navigate]);
