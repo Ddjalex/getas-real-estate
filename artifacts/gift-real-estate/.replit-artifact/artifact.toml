@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "GIFT Real Estate"
+version = "1.0.0"
+id = "artifacts/gift-real-estate"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19638
+
+[services.development]
+run = "pnpm --filter @workspace/gift-real-estate run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/gift-real-estate", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/gift-real-estate/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19638"
+BASE_PATH = "/"

@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&family=Playfair+Display:ital,wght@0,400..800;1,400..800&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 60 50% 98%;      /* #FDFDF8 Cream */
+  --foreground: 157 31% 11%;     /* #14261F Body text */
+  --border: 159 20% 85%;
+  --input: 159 20% 85%;
+  --ring: 48 68% 54%;            /* Gold */
+
+  --card: 0 0% 100%;
+  --card-foreground: 157 31% 11%;
+  --card-border: 159 20% 85%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 157 31% 11%;
+  --popover-border: 159 20% 85%;
+
+  --primary: 48 68% 54%;         /* #D9B93C Gold */
+  --primary-foreground: 161 51% 12%; /* #0F2E24 Deep Green */
+
+  --secondary: 159 46% 20%;      /* #1C4C3B Primary Dark Green */
+  --secondary-foreground: 60 50% 98%;
+
+  --muted: 159 15% 90%;
+  --muted-foreground: 159 10% 40%;
+
+  --accent: 48 68% 54%;
+  --accent-foreground: 161 51% 12%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 60 50% 98%;
+
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-serif: 'Playfair Display', serif;
+  
+  --radius: 0.5rem;
+  
+  --shadow-2xs: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
+  --shadow-xs: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
+  --shadow-sm: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 1px 2px -1px rgba(15, 46, 36, 0.05);
+  --shadow: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 1px 2px -1px rgba(15, 46, 36, 0.05);
+  --shadow-md: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 2px 4px -1px rgba(15, 46, 36, 0.05);
+  --shadow-lg: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 4px 6px -1px rgba(15, 46, 36, 0.05);
+  --shadow-xl: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 8px 10px -1px rgba(15, 46, 36, 0.05);
+  --shadow-2xl: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
+}
+
+.dark {
+  --background: 161 51% 12%;      /* #0F2E24 */
+  --foreground: 60 50% 98%;
+  --border: 159 46% 20%;
+  --input: 159 46% 20%;
+  --ring: 48 68% 54%;
+
+  --card: 159 46% 16%;
+  --card-foreground: 60 50% 98%;
+  --card-border: 159 46% 20%;
+
+  --popover: 159 46% 16%;
+  --popover-foreground: 60 50% 98%;
+  --popover-border: 159 46% 20%;
+
+  --primary: 48 68% 54%;
+  --primary-foreground: 161 51% 12%;
+
+  --secondary: 159 46% 20%;
+  --secondary-foreground: 60 50% 98%;
+
+  --muted: 159 46% 20%;
+  --muted-foreground: 159 20% 70%;
+
+  --accent: 48 68% 54%;
+  --accent-foreground: 161 51% 12%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 60 50% 98%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}

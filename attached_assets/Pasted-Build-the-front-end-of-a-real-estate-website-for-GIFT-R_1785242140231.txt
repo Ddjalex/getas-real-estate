@@ -1,0 +1,56 @@
+Build the front-end of a real estate website for GIFT Real Estate (est. 1990, Addis Ababa).
+For now, keep it STATIC — use hardcoded placeholder/dummy data for property listings
+(no database, no backend, no animations yet — those come in later phases).
+
+You have full creative freedom on UI/UX, layout, and typography — use your best design
+judgment to make it look professional, modern, and trustworthy for a real estate brand.
+I only care that the brand colors below are applied correctly; everything else
+(fonts, spacing, exact layout) is your call.
+
+TECH STACK
+- React (Vite) + Tailwind CSS
+- React Router for page navigation
+- Store dummy listings as a local JS/JSON array (e.g. src/data/listings.js) with fields:
+  id, title, type (sale/rent), price, location, neighborhood, bedrooms, bathrooms,
+  sizeSqm, description, images[], status, dateAdded
+
+BRANDING (from the GIFT Real Estate logo — apply these exactly, everything else is
+your design choice)
+- Primary Dark Green: #1C4C3B
+- Deep Green (headers/footer bg): #0F2E24
+- Accent Gold: #D9B93C
+- Cream/background: #FDFDF8
+- Body text: #14261F
+- All primary CTA buttons = gold background (#D9B93C) + dark green text (#0F2E24),
+  hover state inverts to dark green background + gold text.
+- Secondary/outline buttons = dark green border + text, transparent background.
+- Include the GIFT circular badge/logo in the header (left) and footer.
+
+PAGES TO BUILD (real structure, working navigation, dummy content is fine)
+1. Home — hero section, a search bar UI (location, type, price — doesn't need to
+   actually filter yet), featured listings grid (pull 3 from dummy data), a stats band
+   (years in business, properties sold, clients, satisfaction %), a "Why GIFT"
+   section, a testimonial section, a CTA banner, footer.
+2. Properties/Listings page — grid of ALL dummy listings, with filter UI controls for
+   location/type/price/bedrooms (client-side filtering of the dummy array is fine).
+3. Property Detail page (/properties/:id) — pulls one listing from dummy data, shows
+   image gallery, price, specs, description, a static Google Maps embed placeholder,
+   an inquiry form (UI only, doesn't need to submit anywhere yet), related listings.
+4. About Us — company history since 1990, mission, team/agents grid (dummy agent data).
+5. Services — buying, selling, renting, property management, consultancy (static content).
+6. Blog/Market Insights — a static grid of 3-4 dummy blog post cards + one example post page.
+7. Contact — contact form UI (no backend yet), office address, phone, WhatsApp link.
+
+FUNCTIONAL NOTES
+- Sticky header with logo, nav, phone number, and a "Book a Visit" CTA button.
+- Fully responsive: mobile, tablet, desktop.
+- Property cards: image, status tag (For Sale/For Rent/New), price, title, location,
+  bed/bath/size specs.
+- Use clean, descriptive route paths for listings (e.g. /properties/3-bedroom-bole
+  instead of /properties/1) — this matters for SEO later.
+- Add a basic <title> and <meta name="description"> to each page (can be static text
+  for now — we'll make these fully dynamic and add full SEO/structured data in Phase 3).
+
+DO NOT build yet: scroll animations/motion effects, a database, an admin panel, or
+working form submissions. Keep this phase focused on structure, working navigation,
+and branding so it's stable before we add anything else.
