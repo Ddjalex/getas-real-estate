@@ -1,0 +1,79 @@
+This is Phase 3 (final phase) of the GIFT Real Estate site. Phases 1 and 2 already
+built the front-end structure, branding, and animations — do not redesign or restyle
+existing pages. This phase is about making the site DYNAMIC and adding SEO + an admin
+panel.
+
+TECH STACK TO ADD
+- Backend: Node.js + Express
+- Database: PostgreSQL (use Replit's built-in Postgres/Neon integration) with
+  Drizzle ORM or Prisma
+- Auth: secure session or JWT-based login for admin only (bcrypt-hashed passwords)
+
+1. REPLACE STATIC DUMMY DATA WITH REAL DATABASE DATA
+- Create a `listings` table (id, title, slug, type, status, price, location,
+  neighborhood, bedrooms, bathrooms, sizeSqm, description, images[], featured,
+  createdAt, updatedAt) and a `blogPosts` table (id, title, slug, excerpt, content,
+  coverImage, author, publishedAt).
+- Also create an `inquiries` table (id, name, email, phone, message, listingId
+  nullable, createdAt) to store contact-form and property-inquiry submissions.
+- Update the Home, Properties, Property Detail, and Blog pages to fetch from the
+  new backend API instead of the old dummy JS array (remove the dummy data file).
+- Property Detail and filtering must work against real database records, using the
+  slug-based URLs already set up in Phase 1.
+- The Contact form and each property's inquiry form must POST to the backend and
+  save into the `inquiries` table, plus send a notification (email or at minimum
+  show a success confirmation in the UI).
+
+2. ADMIN DASHBOARD — MUST BE FULLY HIDDEN FROM PUBLIC USERS
+- Build an admin panel at a route like /staff-portal (not a guessable "/admin" if
+  possible) with:
+  - Secure login (bcrypt password hashing, session/JWT auth)
+  - CRUD screens for listings (add/edit/delete, upload multiple images, mark
+    "featured", set status)
+  - CRUD screens for blog posts
+  - A view of all inquiry/contact submissions
+- SECURITY REQUIREMENTS (do not skip):
+  - No link to the admin route anywhere on the public site (no nav/footer/sitemap).
+  - Unauthenticated visitors hitting the admin route or its sub-routes must be
+    redirected straight to the login page — never show any dashboard data.
+  - Every admin API endpoint must check for a valid authenticated session on the
+    SERVER SIDE, not just hide buttons in the UI — someone could otherwise call the
+    API directly and bypass a hidden button.
+  - Add <meta name="robots" content="noindex, nofollow"> on all admin pages.
+  - Exclude the admin route from sitemap.xml and disallow it in robots.txt.
+  - Rate-limit login attempts. No public sign-up form — only manually created staff
+    accounts.
+  - Auto-log-out admin sessions after a period of inactivity.
+
+3. SEO — MAKE IT FULLY DYNAMIC AND COMPLETE (top priority)
+- Dynamic <title> and <meta name="description"> per page, generated from real data:
+  e.g. property detail title = "[Bedrooms]BR [Type] for Sale in [Neighborhood],
+  Addis Ababa | GIFT Real Estate", description pulled from the listing's price/specs.
+- Add <link rel="canonical"> on every page.
+- Add Open Graph and Twitter Card meta tags on every page, using the listing's/post's
+  main image where relevant.
+- Add JSON-LD structured data:
+  - RealEstateAgent/LocalBusiness schema on Home/About (name, logo, address,
+    phone, founding date 1990).
+  - Product/Residence-style schema with price/address/image on each property
+    detail page.
+  - BlogPosting schema on each blog post.
+  - BreadcrumbList schema on listing and blog detail pages.
+- Auto-generate sitemap.xml dynamically from the database (every published listing
+  and blog post), updating automatically as the admin adds/removes content.
+- Generate robots.txt allowing crawlers, linking to the sitemap, and disallowing the
+  admin route.
+- Descriptive alt text on every property image, generated from listing data.
+- Make sure all images are lazy-loaded and compressed; set explicit width/height to
+  avoid layout shift.
+- Add Google Analytics 4 (gtag.js) — leave a placeholder for the GA4 Measurement ID.
+- Add a Google Search Console verification meta tag placeholder.
+- Track key CTA clicks (Call Now, WhatsApp, Submit Inquiry, View Listing) as GA4
+  events.
+
+4. FINAL CHECKS
+- Confirm listings/blog posts added via the admin panel immediately appear on the
+  public site and in sitemap.xml without a redeploy.
+- Confirm the admin route is unreachable/invisible without logging in.
+- Confirm every page has a unique title/description and valid JSON-LD (test with
+  Google's Rich Results Test).
