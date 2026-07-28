@@ -24,6 +24,7 @@ import AdminLogin from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import ListingForm from "@/pages/admin/ListingForm";
 import BlogForm from "@/pages/admin/BlogForm";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { createLenis } from "@/lib/lenis";
 
@@ -37,11 +38,21 @@ function AppRoutes() {
     return (
       <Switch>
         <Route path="/staff-portal" component={AdminLogin} />
-        <Route path="/staff-portal/dashboard" component={AdminDashboard} />
-        <Route path="/staff-portal/listings/new" component={ListingForm} />
-        <Route path="/staff-portal/listings/:id/edit" component={ListingForm} />
-        <Route path="/staff-portal/blog/new" component={BlogForm} />
-        <Route path="/staff-portal/blog/:id/edit" component={BlogForm} />
+        <Route path="/staff-portal/dashboard">
+          <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+        </Route>
+        <Route path="/staff-portal/listings/new">
+          <ProtectedRoute><ListingForm /></ProtectedRoute>
+        </Route>
+        <Route path="/staff-portal/listings/:id/edit">
+          <ProtectedRoute><ListingForm /></ProtectedRoute>
+        </Route>
+        <Route path="/staff-portal/blog/new">
+          <ProtectedRoute><BlogForm /></ProtectedRoute>
+        </Route>
+        <Route path="/staff-portal/blog/:id/edit">
+          <ProtectedRoute><BlogForm /></ProtectedRoute>
+        </Route>
       </Switch>
     );
   }
