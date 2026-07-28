@@ -1,0 +1,71 @@
+The GSAP/ScrollTrigger animations from Phase 2 are not visibly working on the live
+site. Do not rebuild the pages or redo the whole animation phase — debug and fix the
+existing implementation. Go through this checklist in order and fix whatever you find:
+
+1. CHECK GSAP + SCROLLTRIGGER ARE ACTUALLY INSTALLED AND IMPORTED
+   - Confirm "gsap" is in package.json dependencies (not devDependencies by mistake).
+   - Confirm every file using ScrollTrigger has:
+     import { gsap } from "gsap";
+     import { ScrollTrigger } from "gsap/ScrollTrigger";
+     gsap.registerPlugin(ScrollTrigger);
+   - This registration must run before any ScrollTrigger-based animation is created —
+     a missing registerPlugin call is the #1 reason ScrollTrigger silently does nothing.
+
+2. CHECK REACT LIFECYCLE TIMING (very common bug in React + GSAP)
+   - All GSAP animations and ScrollTrigger.create() calls must run inside a
+     useEffect/useLayoutEffect hook, AFTER the DOM elements they target actually exist
+     — not at the top level of the component or before render.
+   - Use gsap.context() inside each component's useEffect to scope animations, and
+     return a cleanup function that calls ctx.revert() on unmount. Missing cleanup
+     causes duplicate/broken ScrollTriggers when navigating between pages via React
+     Router (this is a very common cause of "animations stop working" after the first
+     page load).
+   - Example pattern to apply everywhere GSAP is used:
+     useEffect(() => {
+       const ctx = gsap.context(() => {
+         // animations here, using refs, not document.querySelector where possible
+       }, containerRef);
+       return () => ctx.revert();
+     }, []);
+
+3. CHECK REFS VS SELECTORS
+   - If animations target elements via document.querySelector or class names, confirm
+     those elements are actually mounted and the classnames match exactly (Tailwind
+     purging or dynamic classnames can silently break selector-based targeting).
+   - Prefer React refs (useRef) over string selectors for elements GSAP animates
+     directly.
+
+4. CHECK SCROLLTRIGGER REFRESH ON ROUTE CHANGE
+   - Since this is a React Router SPA, ScrollTrigger's measurements can go stale when
+     switching pages (heights/positions calculated before content fully renders).
+     After route changes or when images/fonts load, call ScrollTrigger.refresh().
+   - Also call ScrollTrigger.refresh() after any dummy data/images finish loading, since
+     image loading changes page height and can throw off scroll-trigger start/end points.
+
+5. CHECK FOR CONFLICTING CSS
+   - Confirm no Tailwind or global CSS rule is setting `opacity: 1 !important`,
+     `transform: none`, or similar on the animated elements, which would override
+     GSAP's inline styles.
+   - Confirm animated elements don't have `overflow: hidden` on a parent in a way that
+     clips the animation unintentionally (except where intentional for masked reveals).
+
+6. CHECK PINNING SPECIFICALLY
+   - If any section uses `pin: true`, confirm the pinned element's parent has enough
+     scroll height/content after it for the pin+scrub to actually play out — a common
+     mistake is pinning a section with no scroll distance for the animation to
+     progress against, making it look like "nothing happens."
+
+7. CHECK THE BROWSER CONSOLE
+   - Open the deployed site's browser console and report/fix any errors — a JS error
+     earlier in the page (even in an unrelated component) can stop all subsequent
+     GSAP code in that bundle from running.
+
+8. VERIFY WITH A VISIBLE TEST CASE
+   - As a sanity check, temporarily add one deliberately obvious animation (e.g. the
+     hero headline turning bright red and scaling to 2x on scroll) to confirm
+     GSAP/ScrollTrigger is firing at all. Once confirmed working, remove the test and
+     restore the real intended styling — this isolates whether the problem is
+     "GSAP isn't running" vs. "GSAP is running but the effect is too subtle to notice."
+
+After fixing, confirm in your response which of the above was the actual root cause,
+so we know what to watch for in later phases.

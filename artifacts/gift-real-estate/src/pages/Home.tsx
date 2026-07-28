@@ -1,29 +1,31 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "wouter";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+// Named imports are required — default imports silently use a different
+// GSAP instance in production bundles, breaking registerPlugin.
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { listings } from "@/data/listings";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Search, MapPin, Building2, ShieldCheck, Award, TrendingUp } from "lucide-react";
 
+// Register once at module level, before any component renders.
 gsap.registerPlugin(ScrollTrigger);
 
-// Headline split — words grouped into visual lines
+// Headline words — split for the masked per-word reveal
 const HEADLINE_WORDS = ["Addis", "Ababa's", "Most", "Trusted", "Real", "Estate", "Partner"];
 
-// Stat data with animation targets
 const STATS = [
-  { target: 34,   suffix: "+",  label: "Years in Business" },
-  { target: 500,  suffix: "+",  label: "Properties Sold" },
-  { target: 1200, suffix: "+",  label: "Happy Clients" },
-  { target: 98,   suffix: "%",  label: "Satisfaction Rate" },
+  { target: 34,   suffix: "+", label: "Years in Business" },
+  { target: 500,  suffix: "+", label: "Properties Sold" },
+  { target: 1200, suffix: "+", label: "Happy Clients" },
+  { target: 98,   suffix: "%", label: "Satisfaction Rate" },
 ];
 
 function formatStat(val: number, suffix: string) {
   const rounded = Math.round(val);
   if (rounded >= 1000) {
     const thousands = Math.floor(rounded / 1000);
-    const hundreds = String(rounded % 1000).padStart(3, "0");
+    const hundreds  = String(rounded % 1000).padStart(3, "0");
     return `${thousands},${hundreds}${suffix}`;
   }
   return `${rounded}${suffix}`;
@@ -32,234 +34,231 @@ function formatStat(val: number, suffix: string) {
 export default function Home() {
   const featuredListings = listings.filter((l) => l.featured).slice(0, 3);
 
+  // Container ref — scopes all GSAP selectors so they never leak to other pages
   const homeRef        = useRef<HTMLDivElement>(null);
+  // Direct ref for the pin trigger — avoids document.querySelector inside the context
+  const whySectionRef  = useRef<HTMLElement>(null);
+  // Array ref for stat counter elements
   const statRefs       = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    if (!homeRef.current) return;
+
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      // Instant reveals for reduced-motion users — no jank, no pinning
-      if (!homeRef.current) return;
+      // Show everything instantly — no motion, no invisible elements
       homeRef.current.querySelectorAll<HTMLElement>(
-        ".hero-word, .hero-badge, .hero-sub, .hero-search, .section-enter, .property-card, .why-item, .testimonial-card, .cta-content"
+        ".hero-word, .hero-badge, .hero-sub, .hero-search, " +
+        ".section-enter, .property-card, .why-item, .testimonial-card, .cta-content, .featured-header"
       ).forEach((el) => {
-        el.style.opacity = "1";
+        el.style.opacity   = "1";
         el.style.transform = "none";
       });
-      // Fill stat counters immediately
       statRefs.current.forEach((el, i) => {
         if (el) el.textContent = formatStat(STATS[i].target, STATS[i].suffix);
       });
       return;
     }
 
+    // gsap.context scopes all string selectors to homeRef — preventing stale
+    // ScrollTriggers from firing on other pages after navigation.
     const ctx = gsap.context(() => {
-      // ─────────────────────────────────────────────────────────────
-      // 1. HERO — Ken Burns is handled via CSS animation class
-      // ─────────────────────────────────────────────────────────────
+      const root = homeRef.current!;
 
-      // 2. HEADLINE WORD REVEAL — masked slide-up stagger
-      const words = gsap.utils.toArray<HTMLElement>(".hero-word");
-      gsap.from(words, {
-        yPercent: 110,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.07,
-        ease: "power3.out",
-        delay: 0.2,
+      // Shorthand: query elements scoped to the home container
+      const q = <T extends Element>(sel: string) =>
+        gsap.utils.toArray<T>(sel, root);
+
+      // ── 1. HERO HEADLINE — masked per-word slide-up ────────────────
+      // Each word sits inside an overflow:hidden span, so it clips as it rises.
+      gsap.from(q(".hero-word"), {
+        yPercent:  110,
+        opacity:   0,
+        duration:  1.2,
+        stagger:   0.07,
+        ease:      "power3.out",
+        delay:     0.15,
       });
 
-      // Hero badge + subtitle + search bar sequence
-      gsap.from(".hero-badge", {
-        opacity: 0,
-        y: 20,
+      // Badge, subtitle, search appear in a staggered sequence after the headline
+      gsap.from(q(".hero-badge"), {
+        opacity:  0,
+        y:        20,
         duration: 0.8,
-        ease: "power2.out",
-        delay: 0.1,
+        ease:     "power2.out",
+        delay:    0.05,
       });
-      gsap.from(".hero-sub", {
-        opacity: 0,
-        y: 24,
-        duration: 1,
-        ease: "power2.out",
-        delay: 0.85,
+      gsap.from(q(".hero-sub"), {
+        opacity:  0,
+        y:        24,
+        duration: 1.0,
+        ease:     "power2.out",
+        delay:    0.8,
       });
-      gsap.from(".hero-search", {
-        opacity: 0,
-        y: 28,
-        duration: 1,
-        ease: "power2.out",
-        delay: 1.05,
+      gsap.from(q(".hero-search"), {
+        opacity:  0,
+        y:        28,
+        duration: 1.0,
+        ease:     "power2.out",
+        delay:    1.0,
       });
 
-      // ─────────────────────────────────────────────────────────────
-      // 3. SECTION SCROLL TRANSITIONS — scrubbed scale + fade
-      // ─────────────────────────────────────────────────────────────
-      gsap.utils.toArray<HTMLElement>(".section-enter").forEach((section) => {
+      // ── 3. SECTION SCROLL TRANSITIONS — y + fade, scrubbed ────────
+      // Using y instead of scale keeps full-width sections from clipping.
+      q<HTMLElement>(".section-enter").forEach((section) => {
         gsap.fromTo(
           section,
-          { opacity: 0.6, scale: 1.03 },
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
-            scale: 1,
-            ease: "none",
+            y:       0,
+            ease:    "none",
             scrollTrigger: {
               trigger: section,
-              start: "top 90%",
-              end: "top 30%",
-              scrub: 1.5,
+              start:   "top 88%",
+              end:     "top 30%",
+              scrub:   1.2,
             },
           }
         );
       });
 
-      // ─────────────────────────────────────────────────────────────
-      // 4. FULL-BLEED IMAGE REVEALS — scrubbed zoom-in + fade
-      // ─────────────────────────────────────────────────────────────
-      gsap.utils.toArray<HTMLElement>(".img-reveal").forEach((img) => {
-        gsap.fromTo(
-          img,
-          { scale: 1.15, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: img,
-              start: "top 90%",
-              end: "top 30%",
-              scrub: 1.2,
-            },
-          }
-        );
+      // ── 6. PROPERTY CARDS — staggered scale + fade ────────────────
+      const cards = q<HTMLElement>(".property-card");
+      if (cards.length) {
+        gsap.from(cards, {
+          opacity:  0,
+          y:        44,
+          scale:    0.94,
+          duration: 0.9,
+          stagger:  0.12,
+          ease:     "power2.out",
+          scrollTrigger: {
+            trigger: cards[0],
+            start:   "top 85%",
+          },
+        });
+      }
+
+      // Featured section heading slides in from left
+      gsap.from(q(".featured-header"), {
+        opacity:  0,
+        x:        -40,
+        duration: 1,
+        ease:     "power2.out",
+        scrollTrigger: {
+          trigger: q(".featured-header")[0],
+          start:   "top 85%",
+        },
       });
 
-      // ─────────────────────────────────────────────────────────────
-      // 5. PINNED "WHY GIFT" SECTION (desktop only)
-      // ─────────────────────────────────────────────────────────────
-      const isMobile = window.innerWidth < 768;
-      const whySection = document.querySelector<HTMLElement>(".why-section");
-      const whyItems   = gsap.utils.toArray<HTMLElement>(".why-item");
+      // ── 5. PINNED "WHY GIFT" SECTION ──────────────────────────────
+      // Uses whySectionRef (a direct React ref) instead of document.querySelector
+      // to guarantee the correct element even after route changes.
+      const whySection = whySectionRef.current;
+      const whyItems   = q<HTMLElement>(".why-item");
+      const isMobile   = window.innerWidth < 768;
 
       if (!isMobile && whySection && whyItems.length) {
         gsap.set(whyItems, { opacity: 0, y: 48 });
 
         ScrollTrigger.create({
           trigger: whySection,
-          start: "top top",
-          end: "+=560",
-          pin: true,
+          start:   "top top",
+          end:     "+=560",
+          pin:     true,
           onEnter: () => {
             gsap.to(whyItems, {
-              opacity: 1,
-              y: 0,
+              opacity:  1,
+              y:        0,
               duration: 0.9,
-              stagger: 0.18,
-              ease: "power2.out",
+              stagger:  0.18,
+              ease:     "power2.out",
             });
           },
         });
       } else if (whyItems.length) {
-        // Mobile: simple scroll-triggered fade-in (no pin)
+        // Mobile fallback: simple scroll-triggered fade-in, no pin
         gsap.from(whyItems, {
-          opacity: 0,
-          y: 36,
+          opacity:  0,
+          y:        36,
           duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
+          stagger:  0.15,
+          ease:     "power2.out",
           scrollTrigger: {
-            trigger: whySection,
-            start: "top 80%",
+            trigger: whyItems[0],
+            start:   "top 82%",
           },
         });
       }
 
-      // ─────────────────────────────────────────────────────────────
-      // 6. PROPERTY CARD STAGGER — horizontal drift + scale
-      // ─────────────────────────────────────────────────────────────
-      const cards = gsap.utils.toArray<HTMLElement>(".property-card");
-      if (cards.length) {
-        gsap.from(cards, {
-          opacity: 0,
-          y: 40,
-          scale: 0.94,
-          duration: 0.9,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cards[0],
-            start: "top 85%",
-          },
-        });
-      }
-
-      // Section heading slides
-      gsap.from(".featured-header", {
-        opacity: 0,
-        x: -40,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".featured-header", start: "top 85%" },
-      });
-
-      // ─────────────────────────────────────────────────────────────
-      // 8. ANIMATED STAT COUNTERS — count-up + scale-in
-      // ─────────────────────────────────────────────────────────────
+      // ── 8. ANIMATED STAT COUNTERS — count-up + scale entrance ─────
       statRefs.current.forEach((el, i) => {
         if (!el) return;
-        const stat = STATS[i];
-
-        // Initial display
-        el.textContent = `0${stat.suffix}`;
-
+        const stat  = STATS[i];
         const proxy = { val: 0 };
-        gsap.to(proxy, {
-          val: stat.target,
-          duration: 1.8,
-          ease: "power2.out",
+
+        gsap.from(el, {
+          scale:    0.7,
+          opacity:  0,
+          duration: 0.8,
+          ease:     "power3.out",
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        });
+
+        gsap.to(proxy, {
+          val:      stat.target,
+          duration: 1.8,
+          ease:     "power2.out",
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+          onStart() {
+            el.textContent = `0${stat.suffix}`;
+          },
           onUpdate() {
             el.textContent = formatStat(proxy.val, stat.suffix);
           },
         });
-
-        gsap.from(el, {
-          scale: 0.7,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%", once: true },
-        });
       });
 
-      // ─────────────────────────────────────────────────────────────
-      // TESTIMONIAL CARDS — staggered fade from right
-      // ─────────────────────────────────────────────────────────────
-      const testimonials = gsap.utils.toArray<HTMLElement>(".testimonial-card");
+      // ── TESTIMONIAL CARDS — staggered slide from right ────────────
+      const testimonials = q<HTMLElement>(".testimonial-card");
       if (testimonials.length) {
         gsap.from(testimonials, {
-          opacity: 0,
-          x: 40,
+          opacity:  0,
+          x:        40,
           duration: 0.9,
-          stagger: 0.14,
-          ease: "power2.out",
-          scrollTrigger: { trigger: testimonials[0], start: "top 85%" },
+          stagger:  0.14,
+          ease:     "power2.out",
+          scrollTrigger: {
+            trigger: testimonials[0],
+            start:   "top 85%",
+          },
         });
       }
 
-      // ─────────────────────────────────────────────────────────────
-      // CTA BANNER — fade + scale
-      // ─────────────────────────────────────────────────────────────
-      gsap.from(".cta-content", {
-        opacity: 0,
-        y: 32,
-        scale: 0.97,
+      // ── CTA BANNER — fade + rise ───────────────────────────────────
+      gsap.from(q(".cta-content"), {
+        opacity:  0,
+        y:        32,
         duration: 1,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".cta-content", start: "top 85%" },
+        ease:     "power2.out",
+        scrollTrigger: {
+          trigger: q(".cta-content")[0],
+          start:   "top 85%",
+        },
       });
-    }, homeRef);
+
+      // Refresh ScrollTrigger after fonts and images finish loading —
+      // their dimensions affect page height and therefore trigger positions.
+      document.fonts.ready.then(() => ScrollTrigger.refresh());
+      window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+      // Belt-and-suspenders: a short timeout catches any remaining async assets.
+      const timer = setTimeout(() => ScrollTrigger.refresh(), 600);
+
+      return () => clearTimeout(timer);
+
+    }, homeRef); // ← scope all string selectors to the home container
 
     return () => ctx.revert();
   }, []);
@@ -267,11 +266,11 @@ export default function Home() {
   return (
     <div ref={homeRef} className="min-h-screen bg-[#FDFDF8]">
 
-      {/* ── Hero Section ── */}
+      {/* ── Hero Section ───────────────────────────────────────────── */}
       <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[#0F2E24]/60 mix-blend-multiply z-10" />
-          {/* Ken Burns via CSS animation class */}
+          {/* Ken Burns continuous zoom+pan via CSS animation */}
           <img
             src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920"
             alt="Addis Ababa Real Estate"
@@ -284,10 +283,14 @@ export default function Home() {
             Est. 1990
           </span>
 
-          {/* Headline — split into word spans for masked reveal */}
+          {/* Headline — each word wrapped in overflow:hidden + inner animated span */}
           <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg max-w-4xl mx-auto leading-tight">
             {HEADLINE_WORDS.map((word, i) => (
-              <span key={i} className="inline-block overflow-hidden align-bottom" style={{ marginRight: "0.28em" }}>
+              <span
+                key={i}
+                className="inline-block overflow-hidden align-bottom"
+                style={{ marginRight: "0.28em" }}
+              >
                 <span className="hero-word inline-block">{word}</span>
               </span>
             ))}
@@ -328,7 +331,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats Band ── */}
+      {/* ── Stats Band ─────────────────────────────────────────────── */}
       <section className="section-enter bg-[#0F2E24] py-16 relative z-30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10 text-center">
@@ -349,7 +352,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Featured Properties ── */}
+      {/* ── Featured Properties ────────────────────────────────────── */}
       <section className="section-enter py-24 bg-[#FDFDF8]">
         <div className="container mx-auto px-4">
           <div className="featured-header flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -375,8 +378,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Why GIFT Section (pinned on desktop) ── */}
-      <section className="why-section section-enter py-24 bg-white border-t border-gray-100">
+      {/* ── Why GIFT Section (pinned on desktop) ──────────────────── */}
+      {/* whySectionRef is used directly in the pin ScrollTrigger */}
+      <section
+        ref={whySectionRef}
+        className="why-section section-enter py-24 bg-white border-t border-gray-100"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-[#D9B93C] font-bold tracking-widest uppercase text-sm mb-3">Why Choose Us</h2>
@@ -412,7 +419,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
+      {/* ── Testimonials ───────────────────────────────────────────── */}
       <section className="section-enter py-24 bg-[#0F2E24] text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -453,10 +460,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA Banner ── */}
+      {/* ── CTA Banner ─────────────────────────────────────────────── */}
       <section className="section-enter py-24 bg-[#D9B93C] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
-          <svg viewBox="0 0 100 100" className="w-full h-full fill-current"><circle cx="50" cy="50" r="40"/></svg>
+          <svg viewBox="0 0 100 100" className="w-full h-full fill-current"><circle cx="50" cy="50" r="40" /></svg>
         </div>
         <div className="cta-content container mx-auto px-4 text-center relative z-10">
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#0F2E24] mb-6">
