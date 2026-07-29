@@ -10,6 +10,11 @@ const DEFAULTS: Record<string, string> = {
   portfolio: "",
   email: "info@giftrealestate.com",
   otherInfo: "",
+  about_hero_heading: "",
+  about_hero_subtext: "",
+  about_mission: "",
+  about_vision: "",
+  about_milestones: "",
 };
 
 // Public GET — no auth required

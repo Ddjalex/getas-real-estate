@@ -60,6 +60,11 @@ export type SiteSettings = {
   portfolio: string;
   email: string;
   otherInfo: string;
+  about_hero_heading: string;
+  about_hero_subtext: string;
+  about_mission: string;
+  about_vision: string;
+  about_milestones: string;
 };
 
 export async function fetchSiteSettings(): Promise<SiteSettings> {

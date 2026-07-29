@@ -30,7 +30,10 @@ router.get("/", requireAdmin, async (_req, res) => {
 
 router.put("/", requireAdmin, async (req, res) => {
   try {
-    const allowed = ["phone", "whatsapp", "location", "portfolio", "email", "otherInfo"];
+    const allowed = [
+      "phone", "whatsapp", "location", "portfolio", "email", "otherInfo",
+      "about_hero_heading", "about_hero_subtext", "about_mission", "about_vision", "about_milestones",
+    ];
     const updates = req.body as Record<string, string>;
 
     for (const key of allowed) {

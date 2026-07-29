@@ -41,7 +41,7 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-[#0F2E24]/60 mix-blend-multiply z-10" />
+      <div className="absolute inset-0 bg-black/65 z-10" />
 
       {/* Previous slide (fades out) */}
       {prev !== null && (

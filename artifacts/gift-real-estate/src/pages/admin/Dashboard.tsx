@@ -9,7 +9,7 @@ import {
   Image, ChevronUp, ChevronDown, ToggleLeft, ToggleRight,
 } from "lucide-react";
 
-type Tab = "listings" | "blog" | "agents" | "services" | "inquiries" | "contact" | "hero" | "settings";
+type Tab = "listings" | "blog" | "agents" | "services" | "inquiries" | "contact" | "hero" | "about" | "settings";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -427,6 +427,190 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
   );
 }
 
+// ── About Page Tab ────────────────────────────────────────────────────────────
+type Milestone = { year: string; title: string; desc: string };
+
+const DEFAULT_MILESTONES: Milestone[] = [
+  { year: "1990", title: "Foundation", desc: "GIFT Real Estate established in Addis Ababa with a small office in Piazza." },
+  { year: "2002", title: "First Mega Project", desc: "Successfully completed and delivered a 50-villa complex in CMC, setting a new standard for gated communities." },
+  { year: "2015", title: "Commercial Expansion", desc: "Launched the commercial real estate division, managing premium office spaces in Bole and Kazanchis." },
+  { year: "2024", title: "Modern Era", desc: "Celebrating over three decades of trust with a portfolio of over 1,200 managed and sold properties." },
+];
+
+function AboutTab() {
+  const [fields, setFields] = React.useState({
+    about_hero_heading: "",
+    about_hero_subtext: "",
+    about_mission: "",
+    about_vision: "",
+  });
+  const [milestones, setMilestones] = React.useState<Milestone[]>(DEFAULT_MILESTONES);
+  const [loaded, setLoaded] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  React.useEffect(() => {
+    admin.settings.get().then((s) => {
+      setFields({
+        about_hero_heading: s.about_hero_heading ?? "",
+        about_hero_subtext: s.about_hero_subtext ?? "",
+        about_mission: s.about_mission ?? "",
+        about_vision: s.about_vision ?? "",
+      });
+      if (s.about_milestones) {
+        try { setMilestones(JSON.parse(s.about_milestones)); } catch { /* keep defaults */ }
+      }
+      setLoaded(true);
+    });
+  }, []);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true); setError(""); setSaved(false);
+    try {
+      await admin.settings.update({ ...fields, about_milestones: JSON.stringify(milestones) });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to save");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updateMilestone = (i: number, field: keyof Milestone, val: string) =>
+    setMilestones((m) => m.map((ms, idx) => idx === i ? { ...ms, [field]: val } : ms));
+  const addMilestone = () => setMilestones((m) => [...m, { year: "", title: "", desc: "" }]);
+  const removeMilestone = (i: number) => setMilestones((m) => m.filter((_, idx) => idx !== i));
+
+  if (!loaded) return <div className="p-8 text-center text-gray-400">Loading…</div>;
+
+  return (
+    <div>
+      <div className="p-6 border-b">
+        <h2 className="font-bold text-xl text-gray-800">About Page Content</h2>
+        <p className="text-sm text-gray-500 mt-1">Edit the text shown on the public About page. Leave a field blank to use the built-in default.</p>
+      </div>
+      <form onSubmit={handleSave} className="p-6 space-y-8 max-w-2xl">
+        {/* Hero */}
+        <section>
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Hero Banner</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Heading</label>
+              <input
+                value={fields.about_hero_heading}
+                onChange={(e) => setFields({ ...fields, about_hero_heading: e.target.value })}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+                placeholder="About GIFT Real Estate"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Subtext</label>
+              <textarea
+                value={fields.about_hero_subtext}
+                onChange={(e) => setFields({ ...fields, about_hero_subtext: e.target.value })}
+                rows={2}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
+                placeholder="Building Ethiopia's future since 1990…"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Mission & Vision */}
+        <section>
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Mission & Vision</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Our Mission</label>
+              <textarea
+                value={fields.about_mission}
+                onChange={(e) => setFields({ ...fields, about_mission: e.target.value })}
+                rows={5}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-y"
+                placeholder="To provide unparalleled real estate services in Ethiopia…"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Our Vision</label>
+              <textarea
+                value={fields.about_vision}
+                onChange={(e) => setFields({ ...fields, about_vision: e.target.value })}
+                rows={5}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-y"
+                placeholder="To remain the most trusted, respected, and innovative…"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Milestones */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">History Milestones</h3>
+            <button type="button" onClick={addMilestone} className="text-xs bg-[#1C4C3B] text-white px-3 py-1.5 rounded font-bold flex items-center gap-1 hover:bg-[#0F2E24]">
+              <Plus size={12} /> Add Milestone
+            </button>
+          </div>
+          <div className="space-y-4">
+            {milestones.map((ms, i) => (
+              <div key={i} className="border border-gray-200 rounded p-4 space-y-3">
+                <div className="flex gap-3">
+                  <div className="w-24">
+                    <label className="block text-xs font-semibold text-gray-500 mb-1">Year</label>
+                    <input
+                      value={ms.year}
+                      onChange={(e) => updateMilestone(i, "year", e.target.value)}
+                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+                      placeholder="1990"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-xs font-semibold text-gray-500 mb-1">Title</label>
+                    <input
+                      value={ms.title}
+                      onChange={(e) => updateMilestone(i, "title", e.target.value)}
+                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+                      placeholder="Foundation"
+                    />
+                  </div>
+                  <button type="button" onClick={() => removeMilestone(i)} className="self-end mb-1 text-gray-300 hover:text-red-400" title="Remove milestone">
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Description</label>
+                  <textarea
+                    value={ms.desc}
+                    onChange={(e) => updateMilestone(i, "desc", e.target.value)}
+                    rows={2}
+                    className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
+                  />
+                </div>
+              </div>
+            ))}
+            {milestones.length === 0 && (
+              <p className="text-sm text-gray-400 italic">No milestones. Click "Add Milestone" to add one.</p>
+            )}
+          </div>
+        </section>
+
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {saved && <p className="text-green-600 text-sm font-medium">✓ About page saved successfully.</p>}
+        <button
+          type="submit"
+          disabled={saving}
+          className="bg-[#1C4C3B] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#0F2E24] disabled:opacity-50 transition-colors"
+        >
+          {saving ? "Saving…" : "Save About Page"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 // ── Main Dashboard ─────────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const [, navigate] = useLocation();
@@ -447,7 +631,7 @@ export default function AdminDashboard() {
   }, [navigate]);
 
   useEffect(() => {
-    if (tab === "contact" || tab === "settings") return;
+    if (tab === "contact" || tab === "settings" || tab === "about") return;
     setLoading(true);
     const load =
       tab === "listings" ? admin.listings.list().then(setListings) :
@@ -475,6 +659,7 @@ export default function AdminDashboard() {
     { id: "services", label: "Services", icon: <Layers size={14} /> },
     { id: "inquiries", label: "Inquiries", icon: <MessageSquare size={14} /> },
     { id: "hero", label: "Hero Slider", icon: <Image size={14} /> },
+    { id: "about", label: "About Page", icon: <Info size={14} /> },
     { id: "contact", label: "Contact Info", icon: <Phone size={14} /> },
     { id: "settings", label: "Settings", icon: <Settings size={14} /> },
   ];
@@ -688,6 +873,9 @@ export default function AdminDashboard() {
 
             {/* Hero Slider */}
             {tab === "hero" && <HeroSliderTab />}
+
+            {/* About Page */}
+            {tab === "about" && <AboutTab />}
 
             {/* Contact Info */}
             {tab === "contact" && <ContactTab />}
