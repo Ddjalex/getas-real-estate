@@ -10,35 +10,33 @@ export interface UploadResult {
   url: string;
 }
 
-/** Convert any image File to a WebP data URL using an off-screen canvas. */
-function convertToWebP(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    const objectUrl = URL.createObjectURL(file);
-
-    img.onload = () => {
-      URL.revokeObjectURL(objectUrl);
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        reject(new Error("Canvas not supported"));
-        return;
-      }
-      ctx.drawImage(img, 0, 0);
-      // Quality 0.85 gives a good size/quality balance
-      const dataUrl = canvas.toDataURL("image/webp", 0.85);
-      resolve(dataUrl);
-    };
-
-    img.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error("Failed to load image for conversion"));
-    };
-
-    img.src = objectUrl;
-  });
+/**
+ * Convert any image File to a WebP data URL using an off-screen canvas.
+ * Falls back to reading the file as-is if canvas conversion fails.
+ */
+async function convertToWebP(file: File): Promise<string> {
+  // Try canvas-based WebP conversion first
+  try {
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas 2D context unavailable");
+    ctx.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    const dataUrl = canvas.toDataURL("image/webp", 0.85);
+    // If browser doesn't support WebP export it returns image/png — still valid
+    return dataUrl;
+  } catch {
+    // Fallback: read the file as a data URL without conversion
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+  }
 }
 
 export function useImageUpload() {
@@ -68,7 +66,7 @@ export function useImageUpload() {
       const base64Part = dataUrl.split(",")[1] ?? "";
       const approxBytes = base64Part.length * 0.75;
       if (approxBytes > MAX_BYTES) {
-        throw new Error("Image must be under 10 MB");
+        throw new Error("Image must be under 10 MB after conversion");
       }
 
       // Send to server for final validation
@@ -76,7 +74,12 @@ export function useImageUpload() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ dataUrl, name: file.name, contentType: "image/webp", size: approxBytes }),
+        body: JSON.stringify({
+          dataUrl,
+          name: file.name,
+          contentType: "image/webp",
+          size: approxBytes,
+        }),
       });
 
       if (!res.ok) {
@@ -86,7 +89,6 @@ export function useImageUpload() {
 
       const { url } = (await res.json()) as { url: string };
       setProgress(100);
-
       return { objectPath: url, url };
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Upload failed";
