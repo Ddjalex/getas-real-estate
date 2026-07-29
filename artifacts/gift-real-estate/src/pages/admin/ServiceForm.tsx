@@ -11,7 +11,7 @@ const EMPTY: Partial<Service> = {
 
 export default function ServiceForm() {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === "new";
+  const isNew = !id;
   const [, navigate] = useLocation();
   const [form, setForm] = useState<Partial<Service>>(EMPTY);
   const [saving, setSaving] = useState(false);

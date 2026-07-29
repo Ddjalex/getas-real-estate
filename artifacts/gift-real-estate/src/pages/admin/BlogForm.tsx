@@ -13,7 +13,7 @@ const EMPTY: Partial<BlogPost> = {
 
 export default function BlogForm() {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === "new";
+  const isNew = !id; // route is /admin/blog/new (no param) for create, /:id/edit for update
   const [, navigate] = useLocation();
   const [form, setForm] = useState<Partial<BlogPost>>(EMPTY);
   const [saving, setSaving] = useState(false);

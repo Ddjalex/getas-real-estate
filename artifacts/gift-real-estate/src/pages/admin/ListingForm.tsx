@@ -16,7 +16,7 @@ const EMPTY: Partial<Listing> = {
 
 export default function ListingForm() {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === "new";
+  const isNew = !id; // route is /admin/listings/new (no param) for create, /:id/edit for update
   const [, navigate] = useLocation();
   const [form, setForm] = useState<Partial<Listing>>(EMPTY);
   const [saving, setSaving] = useState(false);

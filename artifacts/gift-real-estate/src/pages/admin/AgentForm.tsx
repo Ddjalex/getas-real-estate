@@ -11,7 +11,7 @@ const EMPTY: Partial<Agent> = {
 
 export default function AgentForm() {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === "new";
+  const isNew = !id;
   const [, navigate] = useLocation();
   const [form, setForm] = useState<Partial<Agent>>(EMPTY);
   const [saving, setSaving] = useState(false);
