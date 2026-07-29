@@ -1,0 +1,66 @@
+The admin panel's image upload (properties, blog posts, hero/site images) currently
+uses Replit's built-in Object Storage tool (src/lib/objectStorage.ts, backed by
+Google Cloud Storage via PUBLIC_OBJECT_SEARCH_PATHS / PRIVATE_OBJECT_DIR env vars).
+This only works inside Replit's own environment — it will NOT work when deployed to
+a plain cPanel/Node.js host, since those env vars and the underlying auth mechanism
+are Replit-specific infrastructure, not a portable GCS setup.
+
+Since this app will be deployed to cPanel (not staying on Replit), replace the image
+storage approach with LOCAL DISK STORAGE on the server itself:
+
+1. CREATE A PERSISTENT UPLOADS DIRECTORY (outside of dist/, so it survives rebuilds)
+   - Use a directory like `uploads/` at the application root (sibling to `dist/`,
+     NOT inside `dist/public/`), so that re-running the build script never deletes
+     previously uploaded images.
+   - On server startup, ensure this directory exists (create it if missing).
+
+2. REPLACE THE OBJECT STORAGE UPLOAD LOGIC
+   - Use a standard Node file upload approach (e.g. `multer` middleware) in the
+     Express server to handle image uploads from the admin panel.
+   - Save uploaded files into the `uploads/` directory with a unique filename
+     (e.g. a UUID or timestamp + original extension) to avoid collisions.
+   - Serve that directory statically, e.g.:
+       app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+     so uploaded images are accessible at URLs like `/uploads/abc123.jpg`.
+   - Store that relative URL path (e.g. `/uploads/abc123.jpg`) in the database
+     (listings.images, blogPosts.coverImage, siteSettings, agents.photo, etc.)
+     instead of a Google Cloud Storage URL.
+
+3. UPDATE EVERY PLACE THAT CURRENTLY CALLS THE OBJECT STORAGE SERVICE
+   - Find all usages of ObjectStorageService / objectStorageClient across the admin
+     upload endpoints and replace them with the new multer + local-disk approach.
+   - Remove the @google-cloud/storage dependency from package.json if nothing else
+     in the app still needs it, to simplify the deployment.
+   - Remove/update any code or error messages referencing PUBLIC_OBJECT_SEARCH_PATHS
+     or PRIVATE_OBJECT_DIR, since those won't apply anymore.
+
+4. UPDATE THE DEPLOY BUILD SCRIPT (scripts/deploy-build.sh)
+   - Make sure the deploy zip process does NOT wipe an existing uploads/ folder on
+     the server when redeploying — the zip should only replace dist/ and
+     package.json, and should never overwrite or delete uploads/ on the live server.
+   - Document this clearly: on first deploy, create an empty `uploads/` folder at
+     the application root in cPanel (sibling to `dist/`) with write permissions for
+     the Node app. On every future redeploy, only replace the dist/ folder contents
+     — never touch uploads/.
+
+5. FIX THE ALREADY-VERIFIED SEO INJECTION CODE TO MATCH
+   - The og:image / listing.images / blogPosts.coverImage logic already built in
+     seo.ts will keep working correctly once these fields contain local /uploads/...
+     paths instead of GCS URLs — just confirm the full absolute URL is built
+     correctly (baseUrl + the relative /uploads/... path) when injecting og:image,
+     since og:image needs to be a full absolute URL, not a relative path.
+
+6. TEST
+   - Upload a test image through the admin panel for a property listing.
+   - Confirm the file actually appears on disk in the uploads/ folder.
+   - Confirm the image displays correctly on the public property page.
+   - Confirm the SEO meta injection (og:image) resolves to the correct full URL for
+     that uploaded image.
+   - Rebuild the deploy zip after this is done and confirm the uploads/ folder isn't
+     accidentally bundled empty-and-overwriting inside dist/ (it should stay
+     completely separate from dist/, as a persistent folder on the live server).
+
+After this is done, give me the updated zip AND clear step-by-step instructions for
+what folder structure needs to exist on cPanel (specifically: where to manually
+create the uploads/ folder and what permissions it needs) so images aren't lost on
+the first deploy or any future redeploy.
