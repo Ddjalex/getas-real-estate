@@ -5,8 +5,9 @@ import { fetchListing, fetchListings, submitInquiry, fetchSiteSettings } from "@
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
-function resolveImageUrl(path: string): string {
-  if (!path) return "";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800";
+function resolveImageUrl(path: string | undefined): string {
+  if (!path) return FALLBACK_IMAGE;
   if (path.startsWith("http")) return path;
   if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
   return path;

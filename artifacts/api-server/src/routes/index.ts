@@ -35,6 +35,12 @@ router.use(seoRouter);
 // Storage routes (presigned uploads + object serving)
 router.use(storageRouter);
 
+// Prevent browser from caching admin API responses so edits are reflected immediately
+router.use("/admin", (_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
+
 // Admin routes
 router.use("/admin/auth", adminAuthRouter);
 router.use("/admin/listings", adminListingsRouter);

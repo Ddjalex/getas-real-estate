@@ -7,6 +7,16 @@ interface PropertyCardProps {
   listing: Listing;
 }
 
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800";
+
+function resolveImage(path: string | undefined): string {
+  if (!path) return FALLBACK_IMAGE;
+  if (path.startsWith("http")) return path;
+  const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+  if (path.startsWith("/objects/")) return `${BASE}/api/storage${path}`;
+  return path;
+}
+
 export function PropertyCard({ listing }: PropertyCardProps) {
   const priceNum = typeof listing.price === "string" ? parseFloat(listing.price) : listing.price;
   const formattedPrice = listing.type === "rent"
@@ -17,7 +27,7 @@ export function PropertyCard({ listing }: PropertyCardProps) {
     <div className="group bg-white rounded-md overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
       <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3]">
         <img
-          src={listing.images[0]}
+          src={resolveImage(listing.images?.[0])}
           alt={listing.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
