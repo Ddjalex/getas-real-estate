@@ -1,0 +1,16 @@
+{
+  "name": "gift-real-estate",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GIFT Real Estate — Express API + React frontend",
+  "main": "dist/index.mjs",
+  "scripts": {
+    "start": "node dist/index.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^7.21.0"
+  }
+}

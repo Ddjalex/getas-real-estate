@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "UK1ItlPdHP8fUq3vrdpDi"
+uri = "file://gift-real-estate-deploy.zip"
+type = "unspecified"
+title = "gift-real-estate-deploy.zip"
