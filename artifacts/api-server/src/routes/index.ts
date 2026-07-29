@@ -16,11 +16,13 @@ import adminServicesRouter from "./admin/services";
 import adminSettingsRouter from "./admin/settings";
 import heroSlidesRouter from "./heroSlides";
 import adminHeroSlidesRouter from "./admin/heroSlides";
+import publicSettingsRouter from "./settings";
 
 const router: IRouter = Router();
 
 // Public routes
 router.use(healthRouter);
+router.use(publicSettingsRouter);
 router.use("/listings", listingsRouter);
 router.use("/blog", blogRouter);
 router.use("/agents", agentsRouter);

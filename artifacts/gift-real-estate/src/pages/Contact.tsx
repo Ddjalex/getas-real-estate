@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { MapPin, Phone, Mail, MessageCircle, Clock, Send } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { submitInquiry } from "@/lib/api";
+import { MapPin, Phone, Mail, MessageCircle, Clock, Send, Globe, Info } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { submitInquiry, fetchSiteSettings } from "@/lib/api";
 import { SEO, trackEvent } from "@/components/SEO";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "Property Inquiry (Buy)", message: "" });
+
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSiteSettings,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const inquiry = useMutation({
     mutationFn: () =>
@@ -24,6 +30,28 @@ export default function Contact() {
     e.preventDefault();
     inquiry.mutate();
   };
+
+  const phone = settings?.phone || "+251 11 465 1234";
+  const whatsapp = settings?.whatsapp || "+251911234567";
+  const location = settings?.location || "Bole Sub-City, Woreda 03\nAddis Ababa, Ethiopia";
+  const email = settings?.email || "info@giftrealestate.com";
+  const portfolio = settings?.portfolio || "";
+  const otherInfo = settings?.otherInfo || "";
+
+  // Build phone href — strip spaces
+  const phoneHref = `tel:${phone.replace(/\s/g, "")}`;
+  const whatsappNum = whatsapp.replace(/[\s+]/g, "");
+  const whatsappHref = `https://wa.me/${whatsappNum}`;
+
+  const contactItems = [
+    { icon: <MapPin className="text-[#D9B93C]" size={24} />, title: "Our Office", text: location },
+    { icon: <Phone className="text-[#D9B93C]" size={24} />, title: "Phone", text: phone },
+    { icon: <Mail className="text-[#D9B93C]" size={24} />, title: "Email", text: email },
+    { icon: <MessageCircle className="text-[#D9B93C]" size={24} />, title: "WhatsApp", text: whatsapp },
+    ...(portfolio ? [{ icon: <Globe className="text-[#D9B93C]" size={24} />, title: "Portfolio / Website", text: portfolio }] : []),
+    ...(otherInfo ? [{ icon: <Info className="text-[#D9B93C]" size={24} />, title: "Additional Info", text: otherInfo }] : []),
+    { icon: <Clock className="text-[#D9B93C]" size={24} />, title: "Business Hours", text: "Mon–Fri: 8:30am – 6:00pm\nSat: 9:00am – 3:00pm" },
+  ];
 
   return (
     <div className="min-h-screen bg-[#FDFDF8] pt-24 pb-20">
@@ -99,13 +127,7 @@ export default function Contact() {
             <div>
               <h2 className="font-serif text-3xl font-bold text-[#0F2E24] mb-8">Contact Information</h2>
               <div className="space-y-6">
-                {[
-                  { icon: <MapPin className="text-[#D9B93C]" size={24} />, title: "Our Office", text: "Bole Sub-City, Woreda 03\nAddis Ababa, Ethiopia" },
-                  { icon: <Phone className="text-[#D9B93C]" size={24} />, title: "Phone", text: "+251 11 465 1234\n+251 91 123 4567" },
-                  { icon: <Mail className="text-[#D9B93C]" size={24} />, title: "Email", text: "info@giftrealestate.com\nsales@giftrealestate.com" },
-                  { icon: <MessageCircle className="text-[#D9B93C]" size={24} />, title: "WhatsApp", text: "+251 91 123 4567" },
-                  { icon: <Clock className="text-[#D9B93C]" size={24} />, title: "Business Hours", text: "Mon–Fri: 8:30am – 6:00pm\nSat: 9:00am – 3:00pm" },
-                ].map((item, i) => (
+                {contactItems.map((item, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 bg-[#1C4C3B]/10 rounded-sm flex items-center justify-center flex-shrink-0">{item.icon}</div>
                     <div>
@@ -118,14 +140,14 @@ export default function Contact() {
             </div>
             <div className="flex gap-4">
               <a
-                href="tel:+251114651234"
+                href={phoneHref}
                 onClick={() => trackEvent("cta_click", { button: "Call Now" })}
                 className="flex-1 bg-[#1C4C3B] text-white px-6 py-4 rounded-sm font-bold text-center hover:bg-[#0F2E24] transition-colors"
               >
                 Call Now
               </a>
               <a
-                href="https://wa.me/251911234567"
+                href={whatsappHref}
                 onClick={() => trackEvent("cta_click", { button: "WhatsApp" })}
                 target="_blank" rel="noreferrer"
                 className="flex-1 bg-[#25D366] text-white px-6 py-4 rounded-sm font-bold text-center hover:bg-[#1da551] transition-colors"

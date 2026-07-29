@@ -52,6 +52,21 @@ export type Agent = {
   image: string;
 };
 
+export type SiteSettings = {
+  phone: string;
+  whatsapp: string;
+  location: string;
+  portfolio: string;
+  email: string;
+  otherInfo: string;
+};
+
+export async function fetchSiteSettings(): Promise<SiteSettings> {
+  const res = await fetch(`${API}/settings`);
+  if (!res.ok) throw new Error("Failed to fetch settings");
+  return res.json();
+}
+
 export type HeroSlide = {
   id: number;
   imageUrl: string;
