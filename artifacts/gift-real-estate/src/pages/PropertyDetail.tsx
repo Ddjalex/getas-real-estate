@@ -3,6 +3,7 @@ import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { fetchListing, fetchListings, submitInquiry } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
+import { MapPicker } from "@/components/MapPicker";
 import { SEO, breadcrumbJsonLd, trackEvent } from "@/components/SEO";
 import { Bed, Bath, Square, MapPin, Calendar, Check, Send, Phone } from "lucide-react";
 
@@ -60,10 +61,9 @@ export default function PropertyDetail() {
   }
 
   const priceNum = parseFloat(listing.price);
-  const formattedPrice =
-    listing.priceUnit === "USD"
-      ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(priceNum)
-      : `${new Intl.NumberFormat("en-ET").format(priceNum)} ETB/month`;
+  const formattedPrice = listing.type === "rent"
+    ? `ETB ${new Intl.NumberFormat("en-ET").format(priceNum)}/mo`
+    : `ETB ${new Intl.NumberFormat("en-ET").format(priceNum)}`;
 
   const relatedListings = allListings
     .filter((l) => l.id !== listing.id && (l.type === listing.type || l.location === listing.location))
@@ -82,7 +82,7 @@ export default function PropertyDetail() {
     offers: {
       "@type": "Offer",
       price: listing.price,
-      priceCurrency: listing.priceUnit === "USD" ? "USD" : "ETB",
+      priceCurrency: "ETB",
       availability: "https://schema.org/InStock",
     },
     address: {
@@ -216,11 +216,20 @@ export default function PropertyDetail() {
 
             <div className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-[#0F2E24] mb-4">Location</h2>
-              <div className="w-full h-64 bg-gray-200 rounded-sm border border-gray-300 flex flex-col items-center justify-center text-gray-500">
-                <MapPin size={48} className="mb-4 text-[#1C4C3B]/50" />
-                <p className="font-medium">Map view of {listing.neighborhood}, {listing.location}</p>
-                <p className="text-sm">(Interactive map coming soon)</p>
-              </div>
+              {listing.latitude != null && listing.longitude != null ? (
+                <MapPicker
+                  lat={listing.latitude}
+                  lng={listing.longitude}
+                  onChange={() => {}}
+                  readonly={true}
+                />
+              ) : (
+                <div className="w-full h-64 bg-gray-100 rounded-sm border border-gray-200 flex flex-col items-center justify-center text-gray-400">
+                  <MapPin size={36} className="mb-3 text-[#1C4C3B]/30" />
+                  <p className="font-medium">{listing.neighborhood}, {listing.location}</p>
+                  <p className="text-sm mt-1">Exact map location not set</p>
+                </div>
+              )}
             </div>
           </div>
 

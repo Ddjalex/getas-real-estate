@@ -5,6 +5,15 @@ import { fetchBlogPosts } from "@/lib/api";
 import { SEO } from "@/components/SEO";
 import { ArrowRight, Calendar, User } from "lucide-react";
 
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+const STORAGE_BASE = `${BASE}/api/storage`;
+function resolveImg(path: string) {
+  if (!path) return path;
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
+
 export default function Blog() {
   const { data: blogPosts = [], isLoading } = useQuery({
     queryKey: ["blog"],
@@ -40,7 +49,7 @@ export default function Blog() {
                     {post.category}
                   </span>
                   <img
-                    src={post.image}
+                    src={resolveImg(post.image)}
                     alt={`${post.title} — GIFT Real Estate`}
                     width={800} height={450}
                     loading="lazy"

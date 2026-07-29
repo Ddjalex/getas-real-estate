@@ -42,6 +42,8 @@ export const GetListingsResponseItem = zod.object({
   "status": zod.string(),
   "featured": zod.boolean(),
   "dateAdded": zod.string(),
+  "latitude": zod.number().nullish(),
+  "longitude": zod.number().nullish(),
   "createdAt": zod.string().optional(),
   "updatedAt": zod.string().optional()
 })
@@ -72,6 +74,8 @@ export const GetListingByIdResponse = zod.object({
   "status": zod.string(),
   "featured": zod.boolean(),
   "dateAdded": zod.string(),
+  "latitude": zod.number().nullish(),
+  "longitude": zod.number().nullish(),
   "createdAt": zod.string().optional(),
   "updatedAt": zod.string().optional()
 })
@@ -135,6 +139,39 @@ export const GetAgentsResponseItem = zod.object({
   "image": zod.string()
 })
 export const GetAgentsResponse = zod.array(GetAgentsResponseItem)
+
+
+/**
+ * @summary List all services
+ */
+export const GetServicesResponseItem = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "image": zod.string(),
+  "order": zod.number()
+})
+export const GetServicesResponse = zod.array(GetServicesResponseItem)
+
+
+/**
+ * @summary Request a presigned URL for file upload
+ */
+export const RequestUploadUrlBody = zod.object({
+  "name": zod.string(),
+  "size": zod.number(),
+  "contentType": zod.string()
+})
+
+export const RequestUploadUrlResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string(),
+  "metadata": zod.object({
+  "name": zod.string(),
+  "size": zod.number(),
+  "contentType": zod.string()
+}).optional()
+})
 
 
 /**

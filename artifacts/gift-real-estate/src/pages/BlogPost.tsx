@@ -5,6 +5,15 @@ import { fetchBlogPost, fetchBlogPosts } from "@/lib/api";
 import { SEO, breadcrumbJsonLd } from "@/components/SEO";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+const STORAGE_BASE = `${BASE}/api/storage`;
+function resolveImg(path: string) {
+  if (!path) return path;
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
+
 export default function BlogPost() {
   const { id } = useParams();
 
@@ -92,7 +101,7 @@ export default function BlogPost() {
             </div>
 
             <div className="aspect-[21/9] mb-10 rounded-sm overflow-hidden bg-gray-100">
-              <img src={post.image} alt={post.title} width={1200} height={514} loading="lazy" className="w-full h-full object-cover" />
+              <img src={resolveImg(post.image)} alt={post.title} width={1200} height={514} loading="lazy" className="w-full h-full object-cover" />
             </div>
 
             <div className="prose prose-lg prose-headings:font-serif prose-headings:text-[#0F2E24] text-gray-700 max-w-none">
@@ -116,7 +125,7 @@ export default function BlogPost() {
                   {recentPosts.map((p) => (
                     <Link key={p.id} href={`/blog/${p.id}`} className="flex gap-4 group">
                       <div className="w-20 h-16 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
-                        <img src={p.image} alt={p.title} width={80} height={64} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <img src={resolveImg(p.image)} alt={p.title} width={80} height={64} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 mb-1">{new Date(p.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}</p>

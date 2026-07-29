@@ -18,6 +18,10 @@ tags:
     description: Real estate agents
   - name: inquiries
     description: Contact and property inquiries
+  - name: services
+    description: Agency services
+  - name: storage
+    description: Object storage upload and serving
 paths:
   /healthz:
     get:
@@ -146,6 +150,46 @@ paths:
                 items:
                   $ref: "#/components/schemas/Agent"
 
+  /services:
+    get:
+      operationId: getServices
+      tags: [services]
+      summary: List all services
+      responses:
+        "200":
+          description: Array of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+
+  /storage/uploads/request-url:
+    post:
+      tags: [storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadUrlRequest'
+      responses:
+        '200':
+          description: Presigned upload URL generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+        '400':
+          description: Missing or invalid required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /inquiries:
     post:
       operationId: submitInquiry
@@ -225,6 +269,12 @@ components:
           type: boolean
         dateAdded:
           type: string
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
         createdAt:
           type: string
         updatedAt:
@@ -338,3 +388,40 @@ components:
         createdAt:
           type: string
       required: [id, name, email, message, createdAt]
+
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        order:
+          type: number
+      required: [id, title, description, image, order]
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+        size:
+          type: number
+        contentType:
+          type: string
+
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+        objectPath:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/UploadUrlRequest'

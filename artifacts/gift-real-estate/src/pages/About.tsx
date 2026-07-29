@@ -4,6 +4,15 @@ import { fetchAgents } from "@/lib/api";
 import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Mail, Phone } from "lucide-react";
 
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+const STORAGE_BASE = `${BASE}/api/storage`;
+function resolveImg(path: string) {
+  if (!path) return path;
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
+
 export default function About() {
   const { data: agents = [] } = useQuery({
     queryKey: ["agents"],
@@ -86,7 +95,7 @@ export default function About() {
                 <div key={agent.id} className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden group">
                   <div className="aspect-square overflow-hidden">
                     <img
-                      src={agent.image}
+                      src={resolveImg(agent.image)}
                       alt={`${agent.name} — ${agent.role} at GIFT Real Estate`}
                       width={400} height={400}
                       loading="lazy"

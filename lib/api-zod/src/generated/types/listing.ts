@@ -24,6 +24,8 @@ export interface Listing {
   status: string;
   featured: boolean;
   dateAdded: string;
+  latitude?: number | null;
+  longitude?: number | null;
   createdAt?: string;
   updatedAt?: string;
 }

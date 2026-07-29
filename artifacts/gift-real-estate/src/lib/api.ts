@@ -22,6 +22,8 @@ export type Listing = {
   status: string;
   featured: boolean;
   dateAdded: string;
+  latitude?: number | null;
+  longitude?: number | null;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -49,6 +51,21 @@ export type Agent = {
   bio: string;
   image: string;
 };
+
+export type Service = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  order: number;
+};
+
+export async function fetchServices(): Promise<Service[]> {
+  const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+  const res = await fetch(`${BASE}/api/services`);
+  if (!res.ok) throw new Error("Failed to fetch services");
+  return res.json();
+}
 
 export type InquiryInput = {
   name: string;
@@ -179,5 +196,23 @@ export const admin = {
   },
   inquiries: {
     list: (): Promise<unknown[]> => adminFetch("/admin/inquiries"),
+  },
+  agents: {
+    list: (): Promise<Agent[]> => adminFetch("/admin/agents"),
+    create: (data: Agent): Promise<Agent> =>
+      adminFetch("/admin/agents", { method: "POST", body: JSON.stringify(data) }),
+    update: (id: string, data: Agent): Promise<Agent> =>
+      adminFetch(`/admin/agents/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+    delete: (id: string): Promise<void> =>
+      adminFetch(`/admin/agents/${id}`, { method: "DELETE" }),
+  },
+  services: {
+    list: (): Promise<Service[]> => adminFetch("/admin/services"),
+    create: (data: Service): Promise<Service> =>
+      adminFetch("/admin/services", { method: "POST", body: JSON.stringify(data) }),
+    update: (id: string, data: Service): Promise<Service> =>
+      adminFetch(`/admin/services/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+    delete: (id: string): Promise<void> =>
+      adminFetch(`/admin/services/${id}`, { method: "DELETE" }),
   },
 };

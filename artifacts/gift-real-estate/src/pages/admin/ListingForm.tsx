@@ -3,12 +3,15 @@ import { useParams, useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { admin, type Listing } from "@/lib/api";
 import { ArrowLeft, Save } from "lucide-react";
+import { ImageUploader } from "@/components/ImageUploader";
+import { MapPicker } from "@/components/MapPicker";
 
 const EMPTY: Partial<Listing> = {
-  id: "", slug: "", title: "", type: "sale", price: "", priceUnit: "USD",
+  id: "", slug: "", title: "", type: "sale", price: "",
   location: "", neighborhood: "", bedrooms: 0, bathrooms: 0, sizeSqm: 0,
   description: "", images: [], status: "For Sale", featured: false,
   dateAdded: new Date().toISOString().split("T")[0] + "T00:00:00Z",
+  latitude: null, longitude: null,
 };
 
 export default function ListingForm() {
@@ -16,7 +19,6 @@ export default function ListingForm() {
   const isNew = id === "new";
   const [, navigate] = useLocation();
   const [form, setForm] = useState<Partial<Listing>>(EMPTY);
-  const [imagesStr, setImagesStr] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,10 +26,7 @@ export default function ListingForm() {
     if (!isNew) {
       admin.listings.list().then((all) => {
         const found = all.find((l) => l.id === id);
-        if (found) {
-          setForm(found);
-          setImagesStr((found.images ?? []).join("\n"));
-        }
+        if (found) setForm(found);
       });
     }
   }, [id, isNew]);
@@ -39,9 +38,10 @@ export default function ListingForm() {
     setSaving(true);
     setError("");
     try {
+      const priceUnit = form.type === "rent" ? "ETB/month" : "ETB";
       const payload = {
         ...form,
-        images: imagesStr.split("\n").map((s) => s.trim()).filter(Boolean),
+        priceUnit,
         bedrooms: Number(form.bedrooms),
         bathrooms: Number(form.bathrooms),
         sizeSqm: Number(form.sizeSqm),
@@ -106,14 +106,20 @@ export default function ListingForm() {
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {field("Price (number only)", "price")}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Price Unit</label>
-                <select value={form.priceUnit} onChange={(e) => set("priceUnit", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]">
-                  <option value="USD">USD</option>
-                  <option value="ETB/month">ETB/month</option>
-                </select>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">
+                Price (ETB — {form.type === "rent" ? "per month" : "sale price"})
+              </label>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500 font-medium">ETB</span>
+                <input
+                  type="number"
+                  value={String(form.price ?? "")}
+                  onChange={(e) => set("price", e.target.value)}
+                  className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]"
+                  placeholder="e.g. 4500000"
+                />
+                {form.type === "rent" && <span className="text-gray-500 font-medium">/mo</span>}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -129,10 +135,23 @@ export default function ListingForm() {
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Description</label>
               <textarea rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B] resize-y" />
             </div>
+
+            <ImageUploader
+              values={form.images ?? []}
+              onChange={(paths) => set("images", paths)}
+              multiple={true}
+              label="Property Images"
+            />
+
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Image URLs (one per line)</label>
-              <textarea rows={4} value={imagesStr} onChange={(e) => setImagesStr(e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B] font-mono text-sm resize-y" placeholder="https://images.unsplash.com/...&#10;https://..." />
+              <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Property Location on Map</label>
+              <MapPicker
+                lat={form.latitude ?? null}
+                lng={form.longitude ?? null}
+                onChange={(lat, lng) => setForm((f) => ({ ...f, latitude: lat, longitude: lng }))}
+              />
             </div>
+
             <div className="flex items-center gap-3">
               <input type="checkbox" id="featured" checked={!!form.featured} onChange={(e) => set("featured", e.target.checked)} className="w-4 h-4 accent-[#1C4C3B]" />
               <label htmlFor="featured" className="text-sm font-bold text-gray-700 uppercase tracking-wider">Mark as Featured</label>

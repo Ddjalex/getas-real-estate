@@ -38,6 +38,8 @@ export interface Listing {
   status: string;
   featured: boolean;
   dateAdded: string;
+  latitude?: number | null;
+  longitude?: number | null;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -82,6 +84,26 @@ export interface Inquiry {
   message: string;
   listingId?: string | null;
   createdAt: string;
+}
+
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  order: number;
+}
+
+export interface UploadUrlRequest {
+  name: string;
+  size: number;
+  contentType: string;
+}
+
+export interface UploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+  metadata?: UploadUrlRequest;
 }
 
 export type GetListingsParams = {

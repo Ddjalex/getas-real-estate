@@ -1,38 +1,33 @@
 import React from "react";
 import { Link } from "wouter";
-import { Home, Key, Building, Settings, Briefcase, ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchServices } from "@/lib/api";
+import { ArrowRight, Layers } from "lucide-react";
+import { SEO } from "@/components/SEO";
+
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+const STORAGE_BASE = `${BASE}/api/storage`;
+
+function resolveImageUrl(path: string) {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
 
 export default function Services() {
-  const services = [
-    {
-      icon: <Home size={40} />,
-      title: "Property Sales",
-      desc: "Whether you are looking for a luxury villa in Old Airport or a modern apartment in Bole, our sales team guides you through the entire purchasing process. We handle viewings, negotiations, and ensure all legal documentation is flawless.",
-    },
-    {
-      icon: <Key size={40} />,
-      title: "Rental & Leasing",
-      desc: "We connect landlords with high-quality tenants, including expats and diplomats. Our rigorous vetting process ensures reliable tenancy, and we help you find the perfect rental property that meets your exact lifestyle needs.",
-    },
-    {
-      icon: <Settings size={40} />,
-      title: "Property Management",
-      desc: "Protect your investment with our comprehensive management services. We handle rent collection, routine maintenance, tenant disputes, and legal compliance so you can enjoy passive income without the operational headaches.",
-    },
-    {
-      icon: <Briefcase size={40} />,
-      title: "Investment Consultancy",
-      desc: "Addis Ababa's real estate market is dynamic. Leverage our 34 years of data and experience to make informed investment decisions. We advise on high-yield areas, off-plan purchases, and commercial land acquisitions.",
-    },
-    {
-      icon: <Building size={40} />,
-      title: "Commercial Real Estate",
-      desc: "From finding the perfect headquarters for your NGO to securing retail space in high-traffic zones, our commercial team understands the specific requirements of businesses operating in Ethiopia.",
-    },
-  ];
+  const { data: services = [], isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: fetchServices,
+  });
 
   return (
     <div className="min-h-screen bg-[#FDFDF8] pt-24 pb-20">
+      <SEO
+        title="Real Estate Services — GIFT Real Estate Addis Ababa"
+        description="Comprehensive property sales, rentals, management and investment consultancy services from GIFT Real Estate, Addis Ababa's most trusted agency since 1990."
+        path="/services"
+      />
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
           <span className="text-[#D9B93C] font-bold tracking-widest uppercase text-sm mb-3 block">What We Do</span>
@@ -42,20 +37,54 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-          {services.map((service, idx) => (
-            <div key={idx} className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#1C4C3B]/30 transition-all group">
-              <div className="text-[#1C4C3B] mb-6 group-hover:text-[#D9B93C] transition-colors bg-[#FDFDF8] w-20 h-20 rounded-full flex items-center justify-center border border-[#1C4C3B]/10">
-                {service.icon}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+            {[1,2,3,4,5,6].map((i) => (
+              <div key={i} className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 animate-pulse">
+                <div className="w-20 h-20 rounded-full bg-gray-100 mb-6" />
+                <div className="h-6 bg-gray-100 rounded mb-4 w-3/4" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-100 rounded" />
+                  <div className="h-4 bg-gray-100 rounded w-5/6" />
+                  <div className="h-4 bg-gray-100 rounded w-4/6" />
+                </div>
               </div>
-              <h3 className="font-serif text-2xl font-bold text-[#0F2E24] mb-4">{service.title}</h3>
-              <p className="text-gray-600 leading-relaxed mb-6">{service.desc}</p>
-              <Link href="/contact" className="inline-flex items-center gap-2 text-[#1C4C3B] font-bold hover:text-[#D9B93C] transition-colors">
-                Enquire Now <ArrowRight size={16} />
-              </Link>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : services.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">
+            <Layers size={48} className="mx-auto mb-4 opacity-30" />
+            <p className="text-lg">No services listed yet.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+            {services.map((service) => (
+              <div key={service.id} className="bg-white rounded-sm shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#1C4C3B]/30 transition-all group overflow-hidden flex flex-col">
+                {service.image ? (
+                  <div className="aspect-[16/9] overflow-hidden">
+                    <img
+                      src={resolveImageUrl(service.image)}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-[16/9] bg-[#0F2E24]/5 flex items-center justify-center">
+                    <Layers size={40} className="text-[#1C4C3B]/30" />
+                  </div>
+                )}
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="font-serif text-2xl font-bold text-[#0F2E24] mb-4">{service.title}</h3>
+                  <p className="text-gray-600 leading-relaxed mb-6 flex-grow">{service.description}</p>
+                  <Link href="/contact" className="inline-flex items-center gap-2 text-[#1C4C3B] font-bold hover:text-[#D9B93C] transition-colors">
+                    Enquire Now <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Process Section */}
         <div className="bg-[#0F2E24] rounded-sm p-12 text-white relative overflow-hidden">

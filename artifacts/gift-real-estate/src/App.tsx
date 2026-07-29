@@ -24,6 +24,8 @@ import AdminLogin from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import ListingForm from "@/pages/admin/ListingForm";
 import BlogForm from "@/pages/admin/BlogForm";
+import AgentForm from "@/pages/admin/AgentForm";
+import ServiceForm from "@/pages/admin/ServiceForm";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import { createLenis } from "@/lib/lenis";
@@ -52,6 +54,18 @@ function AppRoutes() {
         </Route>
         <Route path="/admin/blog/:id/edit">
           <ProtectedRoute><BlogForm /></ProtectedRoute>
+        </Route>
+        <Route path="/admin/agents/new">
+          <ProtectedRoute><AgentForm /></ProtectedRoute>
+        </Route>
+        <Route path="/admin/agents/:id/edit">
+          <ProtectedRoute><AgentForm /></ProtectedRoute>
+        </Route>
+        <Route path="/admin/services/new">
+          <ProtectedRoute><ServiceForm /></ProtectedRoute>
+        </Route>
+        <Route path="/admin/services/:id/edit">
+          <ProtectedRoute><ServiceForm /></ProtectedRoute>
         </Route>
       </Switch>
     );

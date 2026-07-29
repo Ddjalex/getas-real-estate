@@ -1,4 +1,4 @@
-import { pgTable, text, integer, boolean, timestamp, numeric } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, boolean, timestamp, numeric, doublePrecision } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -19,6 +19,8 @@ export const listingsTable = pgTable("listings", {
   status: text("status").notNull(), // "For Sale" | "For Rent" | "New" | "Featured"
   featured: boolean("featured").notNull().default(false),
   dateAdded: timestamp("date_added", { mode: "string" }).notNull(),
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
 });

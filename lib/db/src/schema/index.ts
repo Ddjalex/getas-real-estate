@@ -4,3 +4,4 @@ export * from "./agents";
 export * from "./inquiries";
 export * from "./adminUsers";
 export * from "./adminSessions";
+export * from "./services";

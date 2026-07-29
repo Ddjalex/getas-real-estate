@@ -9,10 +9,9 @@ interface PropertyCardProps {
 
 export function PropertyCard({ listing }: PropertyCardProps) {
   const priceNum = typeof listing.price === "string" ? parseFloat(listing.price) : listing.price;
-  const formattedPrice =
-    listing.priceUnit === "USD"
-      ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(priceNum)
-      : `${new Intl.NumberFormat("en-ET").format(priceNum)} ETB/mo`;
+  const formattedPrice = listing.type === "rent"
+    ? `ETB ${new Intl.NumberFormat("en-ET").format(priceNum)}/mo`
+    : `ETB ${new Intl.NumberFormat("en-ET").format(priceNum)}`;
 
   return (
     <div className="group bg-white rounded-md overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
