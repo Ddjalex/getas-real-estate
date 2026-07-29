@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { fetchListing, fetchListings, submitInquiry } from "@/lib/api";
+import { fetchListing, fetchListings, submitInquiry, fetchSiteSettings } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { MapPicker } from "@/components/MapPicker";
 import { SEO, breadcrumbJsonLd, trackEvent } from "@/components/SEO";
@@ -23,6 +23,15 @@ export default function PropertyDetail() {
     queryKey: ["listings"],
     queryFn: () => fetchListings(),
   });
+
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSiteSettings,
+    staleTime: 5 * 60 * 1000,
+  });
+  const phone = settings?.phone || "+251 11 465 1234";
+  const whatsapp = settings?.whatsapp || "+251911234567";
+  const whatsappNum = whatsapp.replace(/[\s+]/g, "");
 
   const inquiry = useMutation({
     mutationFn: submitInquiry,
@@ -271,9 +280,9 @@ export default function PropertyDetail() {
               )}
 
               <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-center gap-4">
-                <a href="tel:+251114651234" onClick={() => trackEvent("cta_click", { button: "Call Now" })} className="text-[#1C4C3B] font-bold text-sm hover:underline flex items-center gap-1"><Phone size={14} /> Call Us</a>
+                <a href={`tel:${phone.replace(/\s/g, "")}`} onClick={() => trackEvent("cta_click", { button: "Call Now" })} className="text-[#1C4C3B] font-bold text-sm hover:underline flex items-center gap-1"><Phone size={14} /> Call Us</a>
                 <span className="text-gray-300">|</span>
-                <a href="https://wa.me/251911234567" onClick={() => trackEvent("cta_click", { button: "WhatsApp" })} target="_blank" rel="noreferrer" className="text-[#1C4C3B] font-bold text-sm hover:underline">WhatsApp</a>
+                <a href={`https://wa.me/${whatsappNum}`} onClick={() => trackEvent("cta_click", { button: "WhatsApp" })} target="_blank" rel="noreferrer" className="text-[#1C4C3B] font-bold text-sm hover:underline">WhatsApp</a>
               </div>
             </div>
           </div>

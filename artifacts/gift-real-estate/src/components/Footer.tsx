@@ -1,8 +1,22 @@
 import React from "react";
 import { Link } from "wouter";
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSiteSettings } from "@/lib/api";
 
 export function Footer() {
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSiteSettings,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const phone = settings?.phone || "+251 11 465 1234";
+  const whatsapp = settings?.whatsapp || "+251911234567";
+  const location = settings?.location || "GIFT Tower, 8th Floor, Bole Road, Near Olympia, Addis Ababa, Ethiopia";
+  const email = settings?.email || "info@giftrealestate.com";
+  const whatsappNum = whatsapp.replace(/[\s+]/g, "");
+
   return (
     <footer className="bg-[#0F2E24] text-white pt-16 pb-8 border-t-[6px] border-[#D9B93C]">
       <div className="container mx-auto px-4 md:px-6">
@@ -50,21 +64,15 @@ export function Footer() {
             <ul className="flex flex-col gap-4">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#D9B93C] shrink-0 mt-1" />
-                <span className="text-white/70 text-sm">
-                  GIFT Tower, 8th Floor
-                  <br />
-                  Bole Road, Near Olympia
-                  <br />
-                  Addis Ababa, Ethiopia
-                </span>
+                <span className="text-white/70 text-sm whitespace-pre-line">{location}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-[#D9B93C] shrink-0" />
-                <span className="text-white/70 text-sm">+251 11 465 1234</span>
+                <span className="text-white/70 text-sm">{phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-[#D9B93C] shrink-0" />
-                <span className="text-white/70 text-sm">info@giftrealestate.com</span>
+                <span className="text-white/70 text-sm">{email}</span>
               </li>
             </ul>
           </div>
@@ -78,7 +86,7 @@ export function Footer() {
               Our agents are available to chat with you directly.
             </p>
             <a
-              href="https://wa.me/251911234567"
+              href={`https://wa.me/${whatsappNum}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#D9B93C] text-[#0F2E24] px-5 py-3 rounded-sm font-bold text-sm transition-all hover:bg-white hover:text-[#0F2E24]"

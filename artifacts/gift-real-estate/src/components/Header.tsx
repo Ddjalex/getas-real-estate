@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Phone } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSiteSettings } from "@/lib/api";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSiteSettings,
+    staleTime: 5 * 60 * 1000,
+  });
+  const phone = settings?.phone || "+251 11 465 1234";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +88,7 @@ export function Header() {
         <div className="hidden lg:flex items-center gap-6">
           <div className="flex items-center gap-2 text-[#D9B93C]">
             <Phone size={18} />
-            <span className="text-sm font-medium">+251 11 465 1234</span>
+            <span className="text-sm font-medium">{phone}</span>
           </div>
           <Link
             href="/contact"
@@ -122,7 +131,7 @@ export function Header() {
           <div className="mt-6 flex flex-col gap-4">
             <div className="flex items-center justify-center gap-2 text-[#D9B93C] py-2">
               <Phone size={20} />
-              <span className="font-medium">+251 11 465 1234</span>
+              <span className="font-medium">{phone}</span>
             </div>
             <Link
               href="/contact"
