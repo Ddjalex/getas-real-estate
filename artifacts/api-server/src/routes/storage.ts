@@ -120,4 +120,44 @@ router.get(
   },
 );
 
+/**
+ * POST /admin/uploads/image
+ *
+ * Accepts a base64 data URL image from the admin panel and returns it back
+ * after validation. The data URL is stored directly in the database (images text[]).
+ * Requires admin session.
+ */
+router.post(
+  '/storage/admin/uploads/image',
+  requireAdmin,
+  async (req: Request, res: Response) => {
+    const { dataUrl, size } = req.body as { dataUrl?: unknown; size?: unknown };
+
+    if (!dataUrl || typeof dataUrl !== 'string') {
+      res.status(400).json({ error: 'Missing dataUrl' });
+      return;
+    }
+    if (!dataUrl.startsWith('data:image/')) {
+      res.status(400).json({ error: 'Only image files are allowed (JPEG, PNG, WebP, GIF)' });
+      return;
+    }
+
+    const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+    const sizeNum = typeof size === 'number' ? size : Number(size);
+    if (!isNaN(sizeNum) && sizeNum > MAX_BYTES) {
+      res.status(400).json({ error: 'Image must be under 5 MB' });
+      return;
+    }
+
+    // Rough base64 size check (each base64 char ≈ 0.75 bytes)
+    const base64Part = dataUrl.split(',')[1] ?? '';
+    if (base64Part.length * 0.75 > MAX_BYTES) {
+      res.status(400).json({ error: 'Image must be under 5 MB' });
+      return;
+    }
+
+    res.json({ url: dataUrl });
+  },
+);
+
 export default router;

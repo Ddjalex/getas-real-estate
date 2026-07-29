@@ -1,9 +1,6 @@
 import React, { useRef, useState } from "react";
-import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Loader2, AlertCircle } from "lucide-react";
 import { useImageUpload } from "@/hooks/useImageUpload";
-
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
-const STORAGE_BASE = `${BASE}/api/storage`;
 
 interface ImageUploaderProps {
   /** Current image paths/URLs stored in the record */
@@ -14,13 +11,15 @@ interface ImageUploaderProps {
 }
 
 export function ImageUploader({ values, onChange, multiple = true, label = "Images" }: ImageUploaderProps) {
-  const { uploadFile, isUploading } = useImageUpload();
+  const { uploadFile, isUploading, error } = useImageUpload();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
+  // data: URLs are used as-is; /objects/ paths are served via the storage API (legacy)
   const resolveDisplayUrl = (path: string) => {
+    if (path.startsWith("data:")) return path;
     if (path.startsWith("http")) return path;
-    if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+    if (path.startsWith("/objects/")) return `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage${path}`;
     return path;
   };
 
@@ -71,6 +70,14 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
         </div>
       )}
 
+      {/* Error message */}
+      {error && (
+        <div className="flex items-center gap-2 mb-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded px-3 py-2">
+          <AlertCircle size={14} className="shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* Drop zone */}
       <div
         className={`border-2 border-dashed rounded px-4 py-6 text-center cursor-pointer transition-colors ${dragOver ? "border-[#1C4C3B] bg-[#1C4C3B]/5" : "border-gray-300 hover:border-[#1C4C3B]/50"}`}
@@ -88,7 +95,7 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
           <div className="flex flex-col items-center gap-2 text-gray-500">
             {values.length > 0 ? <Upload size={20} /> : <ImageIcon size={24} />}
             <span className="text-sm">{multiple ? "Click or drag to add images" : "Click or drag to replace image"}</span>
-            <span className="text-xs text-gray-400">JPG, PNG, WebP</span>
+            <span className="text-xs text-gray-400">JPG, PNG, WebP · max 5 MB</span>
           </div>
         )}
       </div>

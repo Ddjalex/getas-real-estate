@@ -1,46 +1,63 @@
 import { useState, useCallback } from "react";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
-const STORAGE_BASE = `${BASE}/api/storage`;
+const UPLOAD_URL = `${BASE}/api/storage/admin/uploads/image`;
 
 export interface UploadResult {
   objectPath: string;
   url: string;
 }
 
+function readFileAsDataURL(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+}
+
 export function useImageUpload() {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   const uploadFile = useCallback(async (file: File): Promise<UploadResult | null> => {
     setIsUploading(true);
+    setError(null);
     setProgress(10);
+
     try {
-      // Step 1: request presigned URL
-      const metaRes = await fetch(`${STORAGE_BASE}/uploads/request-url`, {
+      const MAX_BYTES = 5 * 1024 * 1024;
+      if (file.size > MAX_BYTES) {
+        throw new Error("Image must be under 5 MB");
+      }
+
+      // Convert file to base64 data URL
+      const dataUrl = await readFileAsDataURL(file);
+      setProgress(60);
+
+      // Send to server for validation
+      const res = await fetch(UPLOAD_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ name: file.name, size: file.size, contentType: file.type || "application/octet-stream" }),
+        body: JSON.stringify({ dataUrl, name: file.name, contentType: file.type, size: file.size }),
       });
-      if (!metaRes.ok) {
-        const err = await metaRes.json().catch(() => ({}));
-        throw new Error((err as { error?: string }).error ?? "Failed to get upload URL");
-      }
-      const { uploadURL, objectPath } = await metaRes.json();
-      setProgress(30);
 
-      // Step 2: upload directly to GCS
-      const uploadRes = await fetch(uploadURL, {
-        method: "PUT",
-        headers: { "Content-Type": file.type || "application/octet-stream" },
-        body: file,
-      });
-      if (!uploadRes.ok) throw new Error("Failed to upload file");
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { error?: string }).error ?? `Upload failed (${res.status})`);
+      }
+
+      const { url } = await res.json() as { url: string };
       setProgress(100);
 
-      return { objectPath, url: `${STORAGE_BASE}${objectPath}` };
+      // objectPath == the data URL; stored directly in the images[] column
+      return { objectPath: url, url };
     } catch (err) {
+      const msg = err instanceof Error ? err.message : "Upload failed";
+      setError(msg);
       console.error("Upload failed:", err);
       return null;
     } finally {
@@ -49,5 +66,5 @@ export function useImageUpload() {
     }
   }, []);
 
-  return { uploadFile, isUploading, progress };
+  return { uploadFile, isUploading, progress, error };
 }
