@@ -9,9 +9,24 @@ A full-stack real estate website for GIFT Real Estate (Addis Ababa). Built with 
 - **DB schema** (`lib/db`): Drizzle schema + migrations; tables for listings, blog posts, hero slides, services, inquiries, agents, site settings, admin users/sessions
 - **API client** (`lib/api-client-react`): Auto-generated React Query hooks from OpenAPI spec via Orval
 
-## Running locally
+## Required secrets
 
-The three services start automatically via Replit workflows:
+| Secret | Description |
+|---|---|
+| `NEON_DATABASE_URL` | Neon PostgreSQL connection string (e.g. `postgresql://user:pass@ep-xxx.neon.tech/dbname?sslmode=require`) |
+| `SESSION_SECRET` | Random string used to sign express-session cookies |
+
+Both must be set as Replit Secrets before the API server will start successfully.
+
+## Running on Replit
+
+Dependencies are managed with pnpm. Install once with:
+
+```
+pnpm install
+```
+
+The two services start automatically via Replit workflows:
 
 | Workflow | Command |
 |---|---|
