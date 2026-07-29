@@ -1,0 +1,53 @@
+The production build currently serves the exact same static index.html (with generic
+placeholder title/description/Open Graph tags) for every route, including property
+detail pages and blog posts. This is a real SEO/sharing problem: social platforms
+(Facebook, Twitter/X, WhatsApp, LinkedIn, iMessage) generate link previews by reading
+the raw HTML WITHOUT executing JavaScript, so no matter what the React app sets
+client-side, shared links will always show the same generic placeholder text and no
+property photo/price.
+
+Fix this by adding server-side meta tag injection in the Express server (dist source,
+i.e. wherever the server currently does `app.use(express.static(...))` / the SPA
+fallback that serves index.html for all routes):
+
+1. Read the built index.html template into memory once at server startup (from
+   dist/public/index.html).
+
+2. Before adding the generic catch-all SPA fallback route, add specific route
+   handlers for the URL patterns that need unique meta tags, that:
+   a. Fetch the relevant data from the database (the listing by slug, or the blog
+      post by slug, or general site settings for the homepage).
+   b. Take the index.html template and replace the placeholder <title>,
+      <meta name="description">, <meta property="og:title">,
+      <meta property="og:description">, <meta property="og:image">,
+      <meta property="og:url">, <meta name="twitter:title">,
+      <meta name="twitter:description"> tags with values generated from that data
+      (e.g. property title/price/neighborhood, first image URL, canonical URL).
+   c. Also inject the appropriate JSON-LD <script type="application/ld+json"> block
+      for that page (Product/Residence schema for listings, BlogPosting for posts,
+      LocalBusiness for home) directly into the HTML string before sending it.
+   d. Send the modified HTML string as the response (Content-Type: text/html),
+      instead of serving the static file directly, for these specific routes:
+        GET /                          → home page meta (from site settings)
+        GET /properties/:slug          → property-specific meta
+        GET /blog/:slug                → blog-post-specific meta
+   e. Keep the existing static-file + SPA-fallback behavior for every other route
+      (About, Services, Properties listing page, Contact, etc.) — those can keep
+      generic-but-still-accurate static meta tags in the base index.html template,
+      since they don't need per-item dynamic data.
+
+3. Make sure this still works correctly with client-side React Router once the page
+   loads — the server-injected tags are just for the initial HTML response (what
+   crawlers/link-preview bots see); the React app can still update document.title
+   etc. client-side as it already does for in-app navigation, that's fine and
+   unrelated to this fix.
+
+4. After implementing, test it without JavaScript: use `curl` (or Replit's equivalent)
+   against a specific property URL, e.g.:
+     curl https://<preview-url>/properties/some-actual-slug
+   and confirm the raw HTML response (not the rendered browser page) contains that
+   property's actual title, description, and image in the meta tags — not the
+   generic placeholder. Do the same for a blog post URL and the homepage.
+
+5. Rebuild the deployment zip only after confirming this works, since this needs to
+   be included in dist/index.mjs before it's packaged for cPanel.

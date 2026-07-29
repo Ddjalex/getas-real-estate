@@ -6,6 +6,12 @@ import { existsSync } from "fs";
 import router from "./routes";
 import { logger } from "./lib/logger";
 import { sessionMiddleware } from "./lib/session";
+import {
+  loadHtmlTemplate,
+  buildHomeHtml,
+  buildListingHtml,
+  buildBlogPostHtml,
+} from "./lib/seo";
 
 const app: Express = express();
 
@@ -44,9 +50,53 @@ app.use("/api", router);
 // deploy-build.sh script, and Express serves it here.
 const publicDir = path.join(__dirname, "public");
 if (existsSync(path.join(publicDir, "index.html"))) {
+  loadHtmlTemplate(publicDir);
+
   app.use(express.static(publicDir));
-  // SPA fallback — any non-API route returns index.html so React Router works
-  app.get("*", (_req, res) => {
+
+  // Derive the canonical base URL from the incoming request
+  function baseUrl(req: express.Request): string {
+    return `${req.protocol}://${req.get("host")}`;
+  }
+
+  // ── SSR meta-tag injection for crawlers / link-preview bots ──────────────
+  // These routes run BEFORE the generic SPA fallback so social platforms and
+  // search engines see per-page title, description, OG, and JSON-LD tags in
+  // the raw HTML — without needing to execute JavaScript.
+
+  app.get("/", async (req, res, next) => {
+    try {
+      const html = await buildHomeHtml(baseUrl(req));
+      if (!html) return next();
+      res.type("html").send(html);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get("/properties/:slug", async (req, res, next) => {
+    try {
+      const html = await buildListingHtml(req.params.slug, baseUrl(req));
+      if (!html) return next(); // 404 slug → fall through to SPA which shows its own 404
+      res.type("html").send(html);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get("/blog/:slug", async (req, res, next) => {
+    try {
+      const html = await buildBlogPostHtml(req.params.slug, baseUrl(req));
+      if (!html) return next();
+      res.type("html").send(html);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // SPA fallback — all other routes return the unmodified index.html
+  // Express 5 requires a named wildcard parameter (bare "*" is invalid in path-to-regexp v8)
+  app.get("/{*path}", (_req, res) => {
     res.sendFile(path.join(publicDir, "index.html"));
   });
 }
