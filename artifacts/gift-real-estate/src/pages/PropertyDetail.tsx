@@ -2,6 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { fetchListing, fetchListings, submitInquiry, fetchSiteSettings } from "@/lib/api";
+
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+const STORAGE_BASE = `${BASE}/api/storage`;
+function resolveImageUrl(path: string): string {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
 import { PropertyCard } from "@/components/PropertyCard";
 import { MapPicker } from "@/components/MapPicker";
 import { SEO, breadcrumbJsonLd, trackEvent } from "@/components/SEO";
@@ -157,7 +166,7 @@ export default function PropertyDetail() {
         <div className="mb-12">
           <div className="aspect-[16/9] md:aspect-[21/9] bg-gray-200 rounded-sm overflow-hidden mb-4">
             <img
-              src={listing.images[activeImage]}
+              src={resolveImageUrl(listing.images[activeImage])}
               alt={`${listing.title} — ${listing.neighborhood}, ${listing.location}, Addis Ababa`}
               width={1200} height={600}
               loading="lazy"
@@ -167,7 +176,7 @@ export default function PropertyDetail() {
           <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
             {listing.images.map((img, idx) => (
               <button key={idx} onClick={() => setActiveImage(idx)} className={`aspect-video rounded-sm overflow-hidden border-2 transition-all ${activeImage === idx ? "border-[#D9B93C] opacity-100" : "border-transparent opacity-60 hover:opacity-100"}`}>
-                <img src={img} alt={`${listing.title} photo ${idx + 1}`} width={200} height={120} loading="lazy" className="w-full h-full object-cover" />
+                <img src={resolveImageUrl(img)} alt={`${listing.title} photo ${idx + 1}`} width={200} height={120} loading="lazy" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -225,7 +234,29 @@ export default function PropertyDetail() {
 
             <div className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-[#0F2E24] mb-4">Location</h2>
-              {listing.latitude != null && listing.longitude != null ? (
+              {listing.mapsUrl ? (
+                <div className="space-y-4">
+                  <div className="w-full rounded-sm overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center py-10 gap-4">
+                    <MapPin size={40} className="text-[#1C4C3B]" />
+                    <div className="text-center">
+                      <p className="font-semibold text-[#0F2E24] text-lg">{listing.neighborhood}, {listing.location}</p>
+                      <p className="text-gray-500 text-sm mt-1">Addis Ababa, Ethiopia</p>
+                    </div>
+                    <a
+                      href={listing.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#1C4C3B] text-white px-6 py-3 rounded-sm font-bold text-sm hover:bg-[#0F2E24] transition-colors shadow-md"
+                    >
+                      <MapPin size={16} />
+                      View Exact Location on Google Maps
+                    </a>
+                  </div>
+                  {listing.latitude != null && listing.longitude != null && (
+                    <MapPicker lat={listing.latitude} lng={listing.longitude} onChange={() => {}} readonly={true} />
+                  )}
+                </div>
+              ) : listing.latitude != null && listing.longitude != null ? (
                 <MapPicker
                   lat={listing.latitude}
                   lng={listing.longitude}

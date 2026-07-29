@@ -24,6 +24,7 @@ export type Listing = {
   dateAdded: string;
   latitude?: number | null;
   longitude?: number | null;
+  mapsUrl?: string | null;
   createdAt?: string;
   updatedAt?: string;
 };

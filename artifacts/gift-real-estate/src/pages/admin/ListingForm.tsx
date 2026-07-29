@@ -11,7 +11,7 @@ const EMPTY: Partial<Listing> = {
   location: "", neighborhood: "", bedrooms: 0, bathrooms: 0, sizeSqm: 0,
   description: "", images: [], status: "For Sale", featured: false,
   dateAdded: new Date().toISOString().split("T")[0] + "T00:00:00Z",
-  latitude: null, longitude: null,
+  latitude: null, longitude: null, mapsUrl: null,
 };
 
 export default function ListingForm() {
@@ -144,7 +144,19 @@ export default function ListingForm() {
             />
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Property Location on Map</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Google Maps Link</label>
+              <input
+                type="url"
+                value={form.mapsUrl ?? ""}
+                onChange={(e) => set("mapsUrl", e.target.value || null)}
+                placeholder="https://maps.app.goo.gl/..."
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B] font-mono text-sm"
+              />
+              <p className="text-xs text-gray-400 mt-1">Paste a Google Maps share link. This will be shown to visitors on the property page.</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Property Location on Map (coordinates)</label>
               <MapPicker
                 lat={form.latitude ?? null}
                 lng={form.longitude ?? null}
