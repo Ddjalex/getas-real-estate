@@ -17,12 +17,17 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
-  const resolveDisplayUrl = (path: string) => {
-    // base64 data URLs and http(s) URLs are used as-is
-    if (path.startsWith("data:") || path.startsWith("http")) return path;
-    // Legacy /objects/ paths — object storage is unavailable; show placeholder
-    if (path.startsWith("/objects/")) return FALLBACK_IMG;
-    return path;
+  const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+
+  const resolveDisplayUrl = (p: string) => {
+    // base64 data URLs and absolute http(s) URLs are used as-is
+    if (p.startsWith("data:") || p.startsWith("http")) return p;
+    // Local uploads: prepend the app base path so the URL is correct in both
+    // dev (proxied via Replit) and production (served from root)
+    if (p.startsWith("/uploads/")) return `${BASE}${p}`;
+    // Legacy /objects/ paths — object storage no longer available; show placeholder
+    if (p.startsWith("/objects/")) return FALLBACK_IMG;
+    return p;
   };
 
   const handleFiles = async (files: FileList | null) => {

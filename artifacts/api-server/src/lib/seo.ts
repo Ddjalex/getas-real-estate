@@ -110,6 +110,21 @@ function truncate(s: string, max: number): string {
   return s.slice(0, max - 1) + "…";
 }
 
+/**
+ * Convert a stored image value to an absolute URL safe for og:image.
+ * - Already-absolute http(s) URLs → unchanged
+ * - data: URIs → fallback logo (social platforms can't fetch data URIs)
+ * - Relative paths like /uploads/... → prepend baseUrl
+ * - null/empty → fallback logo
+ */
+function toAbsoluteUrl(raw: string | null | undefined, baseUrl: string): string {
+  if (!raw) return `${baseUrl}/logo.png`;
+  if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+  if (raw.startsWith("data:")) return `${baseUrl}/logo.png`; // can't be fetched by crawlers
+  if (raw.startsWith("/")) return `${baseUrl}${raw}`;
+  return `${baseUrl}/${raw}`;
+}
+
 // ---------------------------------------------------------------------------
 // Per-route HTML generators
 // ---------------------------------------------------------------------------
@@ -167,7 +182,8 @@ export async function buildListingHtml(slug: string, baseUrl: string): Promise<s
     `${listing.status} in ${listing.neighborhood}. ${listing.bedrooms} bed, ${listing.bathrooms} bath, ${listing.sizeSqm} m². ${listing.priceUnit === "ETB/month" ? `ETB ${priceFormatted}/month` : `USD ${priceFormatted}`}. ${listing.description}`,
     160,
   );
-  const image = listing.images?.[0] ?? `${baseUrl}/logo.png`;
+  const rawImage = listing.images?.[0] ?? null;
+  const image = toAbsoluteUrl(rawImage, baseUrl);
   const url = `${baseUrl}/properties/${listing.slug}`;
 
   const tags: MetaTags = {
@@ -221,11 +237,7 @@ export async function buildBlogPostHtml(slug: string, baseUrl: string): Promise<
 
   const title = `${post.title} | GIFT Real Estate Blog`;
   const description = truncate(post.excerpt, 160);
-  // Avoid prepending the base URL to data URIs or already-absolute URLs
-  const image =
-    post.image.startsWith("http") || post.image.startsWith("data:")
-      ? post.image
-      : `${baseUrl}${post.image}`;
+  const image = toAbsoluteUrl(post.image, baseUrl);
   const url = `${baseUrl}/blog/${post.slug}`;
 
   const tags: MetaTags = {

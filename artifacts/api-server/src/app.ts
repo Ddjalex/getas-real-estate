@@ -12,6 +12,10 @@ import {
   buildListingHtml,
   buildBlogPostHtml,
 } from "./lib/seo";
+import { ensureUploadsDir, uploadsDir } from "./lib/localDiskStorage";
+
+// Ensure uploads/ directory exists at startup (creates it on first run)
+ensureUploadsDir();
 
 const app: Express = express();
 
@@ -43,6 +47,11 @@ app.use(express.urlencoded({ extended: true, limit: "15mb" }));
 app.use(sessionMiddleware);
 
 app.use("/api", router);
+
+// ── Serve uploaded images (dev + production) ──────────────────────────────
+// uploads/ lives at the app root (sibling of dist/), so it persists across
+// rebuilds and redeploys. Accessible at /uploads/<filename>.
+app.use("/uploads", express.static(uploadsDir));
 
 // ── Production: serve the built React app ────────────────────────────────────
 // In dev (Replit) the public dir doesn't exist, so this block is a no-op.

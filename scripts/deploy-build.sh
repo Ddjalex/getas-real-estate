@@ -11,6 +11,9 @@ cd "$ROOT"
 echo "🏗️  Building GIFT Real Estate for cPanel deployment..."
 
 # ── 1. Clean old output ───────────────────────────────────────────────────────
+# NOTE: we only clean deploy-package/ and the zip — never uploads/ on the live
+# server. The uploads/ folder is a sibling of dist/ on cPanel and must persist
+# across every redeploy.  See "cPanel folder structure" notes at bottom of script.
 rm -rf deploy-package gift-real-estate-deploy.zip
 
 # ── 2. Build React frontend (base path = / for cPanel root deployment) ────────
@@ -36,7 +39,7 @@ cp -r artifacts/gift-real-estate/dist/public/. deploy-package/dist/public/
 
 # ── 5. package.json for cPanel ────────────────────────────────────────────────
 # cPanel runs `npm install` from Application Root.
-# Only @google-cloud/storage needs installing (everything else is bundled).
+# All dependencies are bundled into dist/index.mjs — no npm install needed.
 cat > deploy-package/package.json << 'PKGJSON'
 {
   "name": "gift-real-estate",
@@ -50,9 +53,7 @@ cat > deploy-package/package.json << 'PKGJSON'
   "engines": {
     "node": ">=20.0.0"
   },
-  "dependencies": {
-    "@google-cloud/storage": "^7.21.0"
-  }
+  "dependencies": {}
 }
 PKGJSON
 
@@ -90,3 +91,29 @@ find deploy-package -not -name "*.map" -type f \
   | sort
 echo ""
 echo "Zip size: $(du -sh gift-real-estate-deploy.zip | cut -f1)"
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  cPanel folder structure — IMPORTANT"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+echo "  FIRST DEPLOY — create this structure manually before starting:"
+echo ""
+echo "    <app_root>/          ← your cPanel Node.js Application Root"
+echo "    ├── dist/            ← extracted from this zip"
+echo "    │   ├── index.mjs"
+echo "    │   └── public/"
+echo "    ├── uploads/         ← create this empty folder manually!"
+echo "    │                       chmod 755 uploads/"
+echo "    ├── package.json     ← extracted from this zip"
+echo "    └── .env             ← set NEON_DATABASE_URL and SESSION_SECRET"
+echo ""
+echo "  EVERY FUTURE REDEPLOY — only replace dist/ and package.json."
+echo "  NEVER delete or overwrite uploads/ — that folder holds all"
+echo "  property photos and is NOT included in this zip."
+echo ""
+echo "  Quick redeploy checklist:"
+echo "    1. Unzip gift-real-estate-deploy.zip into a temp folder"
+echo "    2. Upload/replace only: dist/  and  package.json"
+echo "    3. Leave uploads/ and .env completely untouched"
+echo "    4. Restart the Node.js application in cPanel"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
