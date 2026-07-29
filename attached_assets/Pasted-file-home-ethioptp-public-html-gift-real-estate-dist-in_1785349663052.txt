@@ -1,0 +1,70 @@
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
+file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101
+  throw new Error(
+        ^
+
+Error: PORT environment variable is required but was not provided.
+    at file:///home/ethioptp/public_html/gift-real-estate/dist/index.mjs:64101:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+Node.js v20.20.2
