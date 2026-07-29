@@ -319,36 +319,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-enter py-20 bg-[#FDFDF8]">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-12">
-            <p className="text-[#D9B93C] font-bold tracking-widest uppercase text-sm mb-2">Client Stories</p>
-            <h2 className="font-serif text-4xl font-bold text-[#0F2E24]">What Our Clients Say</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Tesfaye Bekele", role: "Property Investor", quote: "GIFT helped me find a premium villa in Old Airport. Their professionalism and market knowledge are unmatched in Addis Ababa." },
-              { name: "Meron Haile", role: "Diaspora Buyer", quote: "As an Ethiopian living abroad, I trusted GIFT to handle my first investment property. The process was smooth and transparent." },
-              { name: "NGO Director", role: "Corporate Client", quote: "We've leased three office spaces through GIFT. They understand the unique needs of international organizations." },
-            ].map((t, i) => (
-              <div key={i} className="testimonial-card bg-white border border-gray-100 p-8 rounded-sm shadow-sm">
-                <p className="text-gray-700 leading-relaxed mb-6 italic">"{t.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#1C4C3B] rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-bold text-[#0F2E24] text-sm">{t.name}</div>
-                    <div className="text-gray-400 text-xs">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Banner */}
       <section className="section-enter bg-[#D9B93C] py-20">
         <div className="container mx-auto px-4 text-center cta-content">

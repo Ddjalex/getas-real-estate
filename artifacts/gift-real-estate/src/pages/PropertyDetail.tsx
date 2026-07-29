@@ -165,19 +165,19 @@ export default function PropertyDetail() {
 
         {/* Gallery */}
         <div className="mb-12">
-          <div className="aspect-[16/9] md:aspect-[21/9] bg-gray-200 rounded-sm overflow-hidden mb-4">
+          <div className="bg-[#0F2E24] rounded-sm overflow-hidden mb-4 flex items-center justify-center" style={{ maxHeight: "70vh" }}>
             <img
               src={resolveImageUrl(listing.images[activeImage])}
               alt={`${listing.title} — ${listing.neighborhood}, ${listing.location}, Addis Ababa`}
-              width={1200} height={600}
+              width={1200} height={800}
               loading="lazy"
-              className="w-full h-full object-cover transition-opacity duration-300"
+              className="w-full h-auto max-h-[70vh] object-contain transition-opacity duration-300"
             />
           </div>
           <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
             {listing.images.map((img, idx) => (
-              <button key={idx} onClick={() => setActiveImage(idx)} className={`aspect-video rounded-sm overflow-hidden border-2 transition-all ${activeImage === idx ? "border-[#D9B93C] opacity-100" : "border-transparent opacity-60 hover:opacity-100"}`}>
-                <img src={resolveImageUrl(img)} alt={`${listing.title} photo ${idx + 1}`} width={200} height={120} loading="lazy" className="w-full h-full object-cover" />
+              <button key={idx} onClick={() => setActiveImage(idx)} className={`aspect-video rounded-sm overflow-hidden border-2 transition-all bg-[#0F2E24] ${activeImage === idx ? "border-[#D9B93C] opacity-100" : "border-transparent opacity-60 hover:opacity-100"}`}>
+                <img src={resolveImageUrl(img)} alt={`${listing.title} photo ${idx + 1}`} width={200} height={120} loading="lazy" className="w-full h-full object-contain" />
               </button>
             ))}
           </div>

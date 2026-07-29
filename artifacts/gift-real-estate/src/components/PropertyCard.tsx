@@ -25,12 +25,13 @@ export function PropertyCard({ listing }: PropertyCardProps) {
 
   return (
     <div className="group bg-white rounded-md overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3]">
+      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3] bg-[#0F2E24]">
         <img
           src={resolveImage(listing.images?.[0])}
           alt={listing.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
         />
         <div className="absolute top-4 left-4 flex gap-2">
           {listing.status && (
