@@ -33,6 +33,7 @@ pnpm --filter @workspace/api-server run seed
 ## Required secrets
 
 - `SESSION_SECRET` — Express session secret (already set)
+- `NEON_DATABASE_URL` — Neon PostgreSQL connection string, e.g. `postgresql://user:pass@host.neon.tech/dbname?sslmode=require` (already set)
 
 ## Optional secrets (for image uploads)
 
@@ -44,10 +45,12 @@ Visit `/admin` on the frontend. Default credentials are set during the seed step
 
 ## Setup verification
 
-Verified on import:
-- `pnpm install` — all 572 packages installed cleanly
-- DB schema pushed via `cd lib/db && pnpm run push`
-- Seed data loaded: 7 listings, 4 blog posts, 5 agents, admin user (`admin` / `gift2024!` — change after first login)
-- Both workflows confirmed running: frontend at `/`, API at `/api`
+Verified on Replit import:
+- `pnpm install` — all packages installed cleanly
+- `NEON_DATABASE_URL` secret configured; API server connects on startup
+- DB schema up to date (pushed via `cd lib/db && pnpm run push`)
+- Seed data present: 7 listings, 4 blog posts, 5 agents, admin user (`admin` / `gift2024!` — change after first login)
+- Both workflows running: frontend at `/`, API at `/api`
+- `GET /api/listings` returns data — end-to-end verified
 
 ## User preferences
