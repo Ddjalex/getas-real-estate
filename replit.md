@@ -18,7 +18,7 @@ Both workflows start automatically:
 
 ## Database
 
-Uses Replit's built-in PostgreSQL. `DATABASE_URL` is injected automatically.
+Uses a Neon PostgreSQL database. The connection string is stored as the `NEON_DATABASE_URL` secret. The db client checks for `NEON_DATABASE_URL` first, then falls back to `DATABASE_URL`.
 
 Push schema changes:
 ```
