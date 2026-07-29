@@ -52,6 +52,21 @@ export type Agent = {
   image: string;
 };
 
+export type HeroSlide = {
+  id: number;
+  imageUrl: string;
+  caption: string;
+  displayOrder: number;
+  active: boolean;
+  createdAt: string;
+};
+
+export async function fetchHeroSlides(): Promise<HeroSlide[]> {
+  const res = await fetch(`${API}/hero-slides`);
+  if (!res.ok) throw new Error("Failed to fetch hero slides");
+  return res.json();
+}
+
 export type Service = {
   id: string;
   title: string;
@@ -227,5 +242,16 @@ export const admin = {
       newPassword?: string;
     }): Promise<{ ok: boolean }> =>
       adminFetch("/admin/auth/credentials", { method: "PUT", body: JSON.stringify(data) }),
+  },
+  heroSlides: {
+    list: (): Promise<HeroSlide[]> => adminFetch("/admin/hero-slides"),
+    create: (data: { imageUrl: string; caption?: string }): Promise<HeroSlide> =>
+      adminFetch("/admin/hero-slides", { method: "POST", body: JSON.stringify(data) }),
+    update: (id: number, data: Partial<HeroSlide>): Promise<HeroSlide> =>
+      adminFetch(`/admin/hero-slides/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+    delete: (id: number): Promise<void> =>
+      adminFetch(`/admin/hero-slides/${id}`, { method: "DELETE" }),
+    reorder: (items: { id: number; displayOrder: number }[]): Promise<HeroSlide[]> =>
+      adminFetch("/admin/hero-slides/reorder/bulk", { method: "PUT", body: JSON.stringify(items) }),
   },
 };

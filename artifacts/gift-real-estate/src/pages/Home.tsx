@@ -1,12 +1,84 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useQuery } from "@tanstack/react-query";
-import { fetchListings } from "@/lib/api";
+import { fetchListings, fetchHeroSlides, type HeroSlide } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO, localBusinessJsonLd, trackEvent } from "@/components/SEO";
 import { Search, MapPin, Building2, ShieldCheck, Award, TrendingUp } from "lucide-react";
+
+const STORAGE_BASE = `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage`;
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920";
+
+function resolveSlideUrl(path: string) {
+  if (!path) return FALLBACK_IMAGE;
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  return path;
+}
+
+function HeroSlider({ slides }: { slides: HeroSlide[] }) {
+  const [current, setCurrent] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrent((c) => {
+        const next = (c + 1) % slides.length;
+        setPrev(c);
+        setTransitioning(true);
+        setTimeout(() => { setPrev(null); setTransitioning(false); }, 900);
+        return next;
+      });
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const images = slides.length > 0 ? slides : [{ id: 0, imageUrl: FALLBACK_IMAGE, caption: "", displayOrder: 0, active: true, createdAt: "" }];
+
+  return (
+    <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 bg-[#0F2E24]/60 mix-blend-multiply z-10" />
+
+      {/* Previous slide (fades out) */}
+      {prev !== null && (
+        <img
+          key={`prev-${prev}`}
+          src={resolveSlideUrl(images[prev].imageUrl)}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: transitioning ? 0 : 1, transition: "opacity 900ms ease-in-out" }}
+        />
+      )}
+
+      {/* Current slide (fades in) */}
+      <img
+        key={`curr-${current}`}
+        src={resolveSlideUrl(images[current].imageUrl)}
+        alt={images[current].caption || "GIFT Real Estate"}
+        className="absolute inset-0 w-full h-full object-cover ken-burns"
+        style={{ opacity: 1, transition: "opacity 900ms ease-in-out" }}
+      />
+
+      {/* Dot indicators (only if >1 slide) */}
+      {images.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setPrev(current); setCurrent(i); setTransitioning(true); setTimeout(() => { setPrev(null); setTransitioning(false); }, 900); }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? "bg-[#D9B93C] w-5" : "bg-white/50 hover:bg-white/80"}`}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +105,10 @@ export default function Home() {
   const { data: allListings = [] } = useQuery({
     queryKey: ["listings"],
     queryFn: () => fetchListings(),
+  });
+  const { data: heroSlides = [] } = useQuery({
+    queryKey: ["hero-slides"],
+    queryFn: fetchHeroSlides,
   });
   const featuredListings = allListings.filter((l) => l.featured).slice(0, 3);
 
@@ -142,16 +218,7 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[#0F2E24]/60 mix-blend-multiply z-10" />
-          <img
-            src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920"
-            alt="Addis Ababa luxury real estate"
-            width={1920} height={1080}
-            loading="eager"
-            className="ken-burns w-full h-full object-cover"
-          />
-        </div>
+        <HeroSlider slides={heroSlides} />
 
         <div className="container relative z-20 mx-auto px-4 text-center mt-16">
           <span className="hero-badge inline-block px-4 py-1 border border-[#D9B93C] text-[#D9B93C] text-sm font-bold tracking-widest uppercase mb-6 rounded-sm backdrop-blur-sm bg-black/20">

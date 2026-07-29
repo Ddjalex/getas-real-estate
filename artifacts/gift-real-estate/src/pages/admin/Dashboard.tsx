@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
-import { adminMe, adminLogout, admin, type Service, type Agent } from "@/lib/api";
+import { adminMe, adminLogout, admin, type Service, type Agent, type HeroSlide } from "@/lib/api";
+import { ImageUploader } from "@/components/ImageUploader";
 import {
   Building2, FileText, MessageSquare, LogOut, Plus, Trash2, Pencil, Eye,
   Users, Layers, Phone, Settings, MapPin, Globe, Info, MessageCircle,
+  Image, ChevronUp, ChevronDown, ToggleLeft, ToggleRight,
 } from "lucide-react";
 
-type Tab = "listings" | "blog" | "agents" | "services" | "inquiries" | "contact" | "settings";
+type Tab = "listings" | "blog" | "agents" | "services" | "inquiries" | "contact" | "hero" | "settings";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -17,6 +19,178 @@ function resolveImageUrl(path: string) {
   if (path.startsWith("http")) return path;
   if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
   return path;
+}
+
+// ── Hero Slider Tab ───────────────────────────────────────────────────────────
+function HeroSliderTab() {
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editCaption, setEditCaption] = useState("");
+  const [error, setError] = useState("");
+
+  const load = () => {
+    setLoading(true);
+    admin.heroSlides.list().then(setSlides).finally(() => setLoading(false));
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const handleUpload = async (paths: string[]) => {
+    if (!paths.length) return;
+    setUploading(true); setError("");
+    try {
+      for (const imageUrl of paths) {
+        await admin.heroSlides.create({ imageUrl, caption: "" });
+      }
+      load();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const toggleActive = async (slide: HeroSlide) => {
+    try {
+      const updated = await admin.heroSlides.update(slide.id, { active: !slide.active });
+      setSlides((prev) => prev.map((s) => s.id === slide.id ? updated : s));
+    } catch { setError("Failed to update slide"); }
+  };
+
+  const deleteSlide = async (id: number) => {
+    if (!confirm("Delete this slide?")) return;
+    try {
+      await admin.heroSlides.delete(id);
+      setSlides((prev) => prev.filter((s) => s.id !== id));
+    } catch { setError("Failed to delete slide"); }
+  };
+
+  const saveCaption = async (id: number) => {
+    try {
+      const updated = await admin.heroSlides.update(id, { caption: editCaption });
+      setSlides((prev) => prev.map((s) => s.id === id ? updated : s));
+      setEditId(null);
+    } catch { setError("Failed to save caption"); }
+  };
+
+  const move = async (idx: number, dir: -1 | 1) => {
+    const next = [...slides];
+    const target = idx + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[idx], next[target]] = [next[target], next[idx]];
+    const reordered = next.map((s, i) => ({ ...s, displayOrder: i }));
+    setSlides(reordered);
+    try {
+      await admin.heroSlides.reorder(reordered.map((s) => ({ id: s.id, displayOrder: s.displayOrder })));
+    } catch { setError("Failed to reorder"); load(); }
+  };
+
+  return (
+    <div>
+      <div className="p-6 border-b">
+        <h2 className="font-bold text-xl text-gray-800">Hero Slider Images</h2>
+        <p className="text-sm text-gray-500 mt-1">Upload and manage the full-screen background images on the home page hero section.</p>
+      </div>
+
+      <div className="p-6 border-b">
+        <ImageUploader
+          values={[]}
+          onChange={handleUpload}
+          multiple={true}
+          label="Upload New Slide Images"
+        />
+        {uploading && <p className="text-sm text-[#1C4C3B] mt-2 font-medium">Adding slides…</p>}
+        {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+      </div>
+
+      {loading ? (
+        <div className="p-8 text-center text-gray-400">Loading…</div>
+      ) : slides.length === 0 ? (
+        <div className="p-8 text-center text-gray-400">
+          <Image size={32} className="mx-auto mb-3 text-gray-300" />
+          <p>No slides yet. Upload an image above to get started.</p>
+          <p className="text-xs mt-1 text-gray-400">If no slides are configured, the home page shows the default background image.</p>
+        </div>
+      ) : (
+        <div className="divide-y">
+          {slides.map((slide, idx) => (
+            <div key={slide.id} className={`flex items-center gap-4 px-6 py-4 ${!slide.active ? "opacity-50" : ""}`}>
+              {/* Thumbnail */}
+              <img
+                src={resolveImageUrl(slide.imageUrl)}
+                alt=""
+                className="w-28 h-16 object-cover rounded border border-gray-200 flex-shrink-0"
+              />
+
+              {/* Caption editor */}
+              <div className="flex-1 min-w-0">
+                {editId === slide.id ? (
+                  <div className="flex gap-2 items-center">
+                    <input
+                      value={editCaption}
+                      onChange={(e) => setEditCaption(e.target.value)}
+                      className="flex-1 border border-[#1C4C3B] rounded px-2 py-1 text-sm focus:outline-none"
+                      placeholder="Optional caption"
+                      autoFocus
+                    />
+                    <button onClick={() => saveCaption(slide.id)} className="text-xs bg-[#1C4C3B] text-white px-3 py-1 rounded font-bold">Save</button>
+                    <button onClick={() => setEditId(null)} className="text-xs text-gray-500 hover:text-gray-700">Cancel</button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600 truncate">
+                      {slide.caption || <span className="italic text-gray-400">No caption</span>}
+                    </span>
+                    <button
+                      onClick={() => { setEditId(slide.id); setEditCaption(slide.caption); }}
+                      className="text-gray-400 hover:text-[#1C4C3B] flex-shrink-0"
+                      title="Edit caption"
+                    >
+                      <Pencil size={13} />
+                    </button>
+                  </div>
+                )}
+                <p className="text-xs text-gray-400 mt-1">Slide {idx + 1} of {slides.length}</p>
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Reorder */}
+                <div className="flex flex-col gap-0.5">
+                  <button onClick={() => move(idx, -1)} disabled={idx === 0} className="text-gray-400 hover:text-[#1C4C3B] disabled:opacity-30" title="Move up">
+                    <ChevronUp size={16} />
+                  </button>
+                  <button onClick={() => move(idx, 1)} disabled={idx === slides.length - 1} className="text-gray-400 hover:text-[#1C4C3B] disabled:opacity-30" title="Move down">
+                    <ChevronDown size={16} />
+                  </button>
+                </div>
+
+                {/* Toggle active */}
+                <button onClick={() => toggleActive(slide)} title={slide.active ? "Hide slide" : "Show slide"} className={slide.active ? "text-[#1C4C3B]" : "text-gray-300"}>
+                  {slide.active ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
+                </button>
+
+                {/* Delete */}
+                <button onClick={() => deleteSlide(slide.id)} className="text-gray-400 hover:text-red-500" title="Delete">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {slides.length > 0 && (
+        <div className="px-6 py-4 bg-gray-50 border-t">
+          <p className="text-xs text-gray-500">
+            ✓ Active slides auto-cycle on the home page every 5 seconds · Toggle the switch to show/hide a slide without deleting it
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ── Contact Info Tab ──────────────────────────────────────────────────────────
@@ -300,6 +474,7 @@ export default function AdminDashboard() {
     { id: "agents", label: "Agents", icon: <Users size={14} /> },
     { id: "services", label: "Services", icon: <Layers size={14} /> },
     { id: "inquiries", label: "Inquiries", icon: <MessageSquare size={14} /> },
+    { id: "hero", label: "Hero Slider", icon: <Image size={14} /> },
     { id: "contact", label: "Contact Info", icon: <Phone size={14} /> },
     { id: "settings", label: "Settings", icon: <Settings size={14} /> },
   ];
@@ -510,6 +685,9 @@ export default function AdminDashboard() {
                 )}
               </div>
             )}
+
+            {/* Hero Slider */}
+            {tab === "hero" && <HeroSliderTab />}
 
             {/* Contact Info */}
             {tab === "contact" && <ContactTab />}

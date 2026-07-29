@@ -14,6 +14,8 @@ import adminInquiriesRouter from "./admin/inquiries";
 import adminAgentsRouter from "./admin/agents";
 import adminServicesRouter from "./admin/services";
 import adminSettingsRouter from "./admin/settings";
+import heroSlidesRouter from "./heroSlides";
+import adminHeroSlidesRouter from "./admin/heroSlides";
 
 const router: IRouter = Router();
 
@@ -39,5 +41,7 @@ router.use("/admin/inquiries", adminInquiriesRouter);
 router.use("/admin/agents", adminAgentsRouter);
 router.use("/admin/services", adminServicesRouter);
 router.use("/admin/settings", adminSettingsRouter);
+router.use("/hero-slides", heroSlidesRouter);
+router.use("/admin/hero-slides", adminHeroSlidesRouter);
 
 export default router;

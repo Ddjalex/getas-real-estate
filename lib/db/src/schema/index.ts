@@ -6,3 +6,4 @@ export * from "./adminUsers";
 export * from "./adminSessions";
 export * from "./services";
 export * from "./siteSettings";
+export * from "./heroSlides";
