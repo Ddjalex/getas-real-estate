@@ -142,17 +142,17 @@ router.post(
       return;
     }
 
-    const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+    const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
     const sizeNum = typeof size === 'number' ? size : Number(size);
     if (!isNaN(sizeNum) && sizeNum > MAX_BYTES) {
-      res.status(400).json({ error: 'Image must be under 5 MB' });
+      res.status(400).json({ error: 'Image must be under 10 MB' });
       return;
     }
 
     // Rough base64 size check (each base64 char ≈ 0.75 bytes)
     const base64Part = dataUrl.split(',')[1] ?? '';
     if (base64Part.length * 0.75 > MAX_BYTES) {
-      res.status(400).json({ error: 'Image must be under 5 MB' });
+      res.status(400).json({ error: 'Image must be under 10 MB' });
       return;
     }
 

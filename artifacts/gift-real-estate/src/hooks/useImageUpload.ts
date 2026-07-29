@@ -3,17 +3,41 @@ import { useState, useCallback } from "react";
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const UPLOAD_URL = `${BASE}/api/storage/admin/uploads/image`;
 
+const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+
 export interface UploadResult {
   objectPath: string;
   url: string;
 }
 
-function readFileAsDataURL(file: File): Promise<string> {
+/** Convert any image File to a WebP data URL using an off-screen canvas. */
+function convertToWebP(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error("Failed to read file"));
-    reader.readAsDataURL(file);
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        reject(new Error("Canvas not supported"));
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      // Quality 0.85 gives a good size/quality balance
+      const dataUrl = canvas.toDataURL("image/webp", 0.85);
+      resolve(dataUrl);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Failed to load image for conversion"));
+    };
+
+    img.src = objectUrl;
   });
 }
 
@@ -28,21 +52,31 @@ export function useImageUpload() {
     setProgress(10);
 
     try {
-      const MAX_BYTES = 5 * 1024 * 1024;
+      if (!file.type.startsWith("image/")) {
+        throw new Error("Only image files are allowed");
+      }
       if (file.size > MAX_BYTES) {
-        throw new Error("Image must be under 5 MB");
+        throw new Error("Image must be under 10 MB");
       }
 
-      // Convert file to base64 data URL
-      const dataUrl = await readFileAsDataURL(file);
+      // Convert to WebP for smaller file size
+      setProgress(30);
+      const dataUrl = await convertToWebP(file);
       setProgress(60);
 
-      // Send to server for validation
+      // Rough size check on the resulting base64 (~0.75 bytes per char)
+      const base64Part = dataUrl.split(",")[1] ?? "";
+      const approxBytes = base64Part.length * 0.75;
+      if (approxBytes > MAX_BYTES) {
+        throw new Error("Image must be under 10 MB");
+      }
+
+      // Send to server for final validation
       const res = await fetch(UPLOAD_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ dataUrl, name: file.name, contentType: file.type, size: file.size }),
+        body: JSON.stringify({ dataUrl, name: file.name, contentType: "image/webp", size: approxBytes }),
       });
 
       if (!res.ok) {
@@ -50,10 +84,9 @@ export function useImageUpload() {
         throw new Error((body as { error?: string }).error ?? `Upload failed (${res.status})`);
       }
 
-      const { url } = await res.json() as { url: string };
+      const { url } = (await res.json()) as { url: string };
       setProgress(100);
 
-      // objectPath == the data URL; stored directly in the images[] column
       return { objectPath: url, url };
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Upload failed";

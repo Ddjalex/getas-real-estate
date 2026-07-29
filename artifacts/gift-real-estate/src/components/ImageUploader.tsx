@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { Upload, X, Image as ImageIcon, Loader2, AlertCircle } from "lucide-react";
 import { useImageUpload } from "@/hooks/useImageUpload";
 
+const FALLBACK_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='11' fill='%239ca3af'%3ENo image%3C/text%3E%3C/svg%3E";
+
 interface ImageUploaderProps {
   /** Current image paths/URLs stored in the record */
   values: string[];
@@ -15,11 +17,11 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
-  // data: URLs are used as-is; /objects/ paths are served via the storage API (legacy)
   const resolveDisplayUrl = (path: string) => {
-    if (path.startsWith("data:")) return path;
-    if (path.startsWith("http")) return path;
-    if (path.startsWith("/objects/")) return `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage${path}`;
+    // base64 data URLs and http(s) URLs are used as-is
+    if (path.startsWith("data:") || path.startsWith("http")) return path;
+    // Legacy /objects/ paths — object storage is unavailable; show placeholder
+    if (path.startsWith("/objects/")) return FALLBACK_IMG;
     return path;
   };
 
@@ -52,7 +54,12 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
         <div className="flex flex-wrap gap-3 mb-3">
           {values.map((path, idx) => (
             <div key={idx} className="relative group w-24 h-24 rounded border border-gray-200 overflow-hidden bg-gray-50">
-              <img src={resolveDisplayUrl(path)} alt="" className="w-full h-full object-cover" />
+              <img
+                src={resolveDisplayUrl(path)}
+                alt=""
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG; }}
+              />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
                 {idx > 0 && (
                   <button type="button" onClick={() => move(idx, idx - 1)} className="bg-white/90 rounded p-0.5 text-xs text-gray-700 hover:bg-white" title="Move left">←</button>
@@ -89,13 +96,13 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
         {isUploading ? (
           <div className="flex flex-col items-center gap-2 text-[#1C4C3B]">
             <Loader2 size={24} className="animate-spin" />
-            <span className="text-sm font-medium">Uploading…</span>
+            <span className="text-sm font-medium">Converting & uploading…</span>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 text-gray-500">
             {values.length > 0 ? <Upload size={20} /> : <ImageIcon size={24} />}
             <span className="text-sm">{multiple ? "Click or drag to add images" : "Click or drag to replace image"}</span>
-            <span className="text-xs text-gray-400">JPG, PNG, WebP · max 5 MB</span>
+            <span className="text-xs text-gray-400">JPG, PNG, WebP · auto-converted to WebP · max 10 MB</span>
           </div>
         )}
       </div>
