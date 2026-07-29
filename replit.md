@@ -15,7 +15,7 @@ A real estate website for an Addis Ababa–based agency (est. 1990), with pages 
 
 ## Admin Portal
 
-- URL: `/staff-portal` (not linked anywhere on the public site)
+- URL: `/admin` (not linked anywhere on the public site)
 - Default credentials: `admin` / `gift2024!` — **change immediately after first login**
 - All admin API endpoints require a valid server-side session
 - Rate-limited login (10 attempts per 15 min), 1-hour inactivity timeout, noindex on all admin pages
@@ -52,7 +52,7 @@ A real estate website for an Addis Ababa–based agency (est. 1990), with pages 
 
 ## Product
 
-GIFT Real Estate is a full-stack website for a premium Addis Ababa agency (est. 1990). Public visitors browse properties, read blog posts, view agents, and submit inquiries. Staff manage all content and view submissions via a secure `/staff-portal` admin panel not linked anywhere on the public site.
+GIFT Real Estate is a full-stack website for a premium Addis Ababa agency (est. 1990). Public visitors browse properties, read blog posts, view agents, and submit inquiries. Staff manage all content and view submissions via a secure `/admin` panel not linked anywhere on the public site.
 
 ## User preferences
 
