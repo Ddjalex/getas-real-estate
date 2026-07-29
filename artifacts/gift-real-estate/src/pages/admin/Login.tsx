@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "wouter";
 import { adminLogin } from "@/lib/api";
 import { Helmet } from "react-helmet-async";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AdminLogin() {
   const [, navigate] = useLocation();
@@ -9,6 +10,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,14 +52,24 @@ export default function AdminLogin() {
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Password</label>
-              <input
-                required
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-[#1C4C3B] focus:ring-1 focus:ring-[#1C4C3B]"
-              />
+              <div className="relative">
+                <input
+                  required
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-4 py-3 pr-11 focus:outline-none focus:border-[#1C4C3B] focus:ring-1 focus:ring-[#1C4C3B]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-[#1C4C3B] transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
             {error && <p className="text-red-600 text-sm bg-red-50 p-3 rounded border border-red-200">{error}</p>}
             <button
