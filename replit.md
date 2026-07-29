@@ -42,4 +42,12 @@ pnpm --filter @workspace/api-server run seed
 
 Visit `/admin` on the frontend. Default credentials are set during the seed step.
 
+## Setup verification
+
+Verified on import:
+- `pnpm install` — all 572 packages installed cleanly
+- DB schema pushed via `cd lib/db && pnpm run push`
+- Seed data loaded: 7 listings, 4 blog posts, 5 agents, admin user (`admin` / `gift2024!` — change after first login)
+- Both workflows confirmed running: frontend at `/`, API at `/api`
+
 ## User preferences
