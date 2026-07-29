@@ -13,6 +13,7 @@ import adminBlogRouter from "./admin/blog";
 import adminInquiriesRouter from "./admin/inquiries";
 import adminAgentsRouter from "./admin/agents";
 import adminServicesRouter from "./admin/services";
+import adminSettingsRouter from "./admin/settings";
 
 const router: IRouter = Router();
 
@@ -37,5 +38,6 @@ router.use("/admin/blog", adminBlogRouter);
 router.use("/admin/inquiries", adminInquiriesRouter);
 router.use("/admin/agents", adminAgentsRouter);
 router.use("/admin/services", adminServicesRouter);
+router.use("/admin/settings", adminSettingsRouter);
 
 export default router;

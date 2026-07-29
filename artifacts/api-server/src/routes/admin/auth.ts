@@ -52,6 +52,66 @@ router.post("/logout", (req, res) => {
   });
 });
 
+// Change email (username) and/or password — requires current password to confirm identity
+router.put("/credentials", async (req, res) => {
+  if (!req.session?.adminId) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  const { currentPassword, newUsername, newPassword } = req.body as {
+    currentPassword?: string;
+    newUsername?: string;
+    newPassword?: string;
+  };
+
+  if (!currentPassword) {
+    res.status(400).json({ error: "Current password is required" });
+    return;
+  }
+  if (!newUsername && !newPassword) {
+    res.status(400).json({ error: "Provide a new username or new password" });
+    return;
+  }
+
+  try {
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.id, req.session.adminId));
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) {
+      res.status(401).json({ error: "Current password is incorrect" });
+      return;
+    }
+
+    const updates: Partial<typeof adminUsersTable.$inferInsert> = {};
+    if (newUsername && newUsername !== user.username) {
+      updates.username = newUsername;
+    }
+    if (newPassword) {
+      updates.passwordHash = await bcrypt.hash(newPassword, 12);
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await db.update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, user.id));
+      if (updates.username) {
+        req.session.adminUsername = updates.username;
+      }
+    }
+
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: "Failed to update credentials" });
+  }
+});
+
 router.get("/me", (req, res) => {
   if (!req.session?.adminId) {
     res.status(401).json({ error: "Not authenticated" });

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "wouter";
-import { GiftBadge } from "./Badge";
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 
 export function Footer() {
@@ -10,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Info */}
           <div className="col-span-1 lg:col-span-1 flex flex-col items-start">
-            <GiftBadge size={70} className="mb-6" />
+            <img src="/logo.png" alt="GIFT Real Estate" className="h-16 w-auto mb-6 object-contain" />
             <h3 className="font-serif text-2xl font-bold text-[#D9B93C] mb-2">GIFT Real Estate</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Ethiopia’s most trusted real estate partner since 1990. We build communities, not just houses.

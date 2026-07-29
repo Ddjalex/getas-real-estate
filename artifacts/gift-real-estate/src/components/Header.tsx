@@ -26,10 +26,12 @@ export function Header() {
     { name: "Contact", path: "/contact" },
   ];
 
+  const isHomePage = location === "/";
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-in-out ${
-        isScrolled
+        isScrolled || !isHomePage
           ? "bg-[#0F2E24] shadow-lg py-2"
           : "bg-[#0F2E24]/0 backdrop-blur-none py-5"
       }`}

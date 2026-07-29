@@ -215,4 +215,17 @@ export const admin = {
     delete: (id: string): Promise<void> =>
       adminFetch(`/admin/services/${id}`, { method: "DELETE" }),
   },
+  settings: {
+    get: (): Promise<Record<string, string>> => adminFetch("/admin/settings"),
+    update: (data: Record<string, string>): Promise<Record<string, string>> =>
+      adminFetch("/admin/settings", { method: "PUT", body: JSON.stringify(data) }),
+  },
+  auth: {
+    changeCredentials: (data: {
+      currentPassword: string;
+      newUsername?: string;
+      newPassword?: string;
+    }): Promise<{ ok: boolean }> =>
+      adminFetch("/admin/auth/credentials", { method: "PUT", body: JSON.stringify(data) }),
+  },
 };
