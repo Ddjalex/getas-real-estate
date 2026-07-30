@@ -29,13 +29,13 @@ export default function AdminLogin() {
   return (
     <>
       <Helmet>
-        <title>Staff Login — GIFT Real Estate</title>
+        <title>Staff Login — GETAS Real Estate</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-        <div className="bg-white rounded shadow-lg w-full max-w-md p-10 border-t-4 border-[#1C4C3B]">
+        <div className="bg-white rounded shadow-lg w-full max-w-md p-10 border-t-4 border-[#E31E24]">
           <div className="text-center mb-8">
-            <div className="text-[#1C4C3B] font-serif text-2xl font-bold mb-1">GIFT Real Estate</div>
+            <div className="text-[#E31E24] font-serif text-2xl font-bold mb-1">GETAS Real Estate</div>
             <p className="text-gray-500 text-sm">Staff Portal — Authorised Access Only</p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -47,7 +47,7 @@ export default function AdminLogin() {
                 autoComplete="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-[#1C4C3B] focus:ring-1 focus:ring-[#1C4C3B]"
+                className="w-full border border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-[#E31E24] focus:ring-1 focus:ring-[#E31E24]"
               />
             </div>
             <div>
@@ -59,12 +59,12 @@ export default function AdminLogin() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-gray-300 rounded px-4 py-3 pr-11 focus:outline-none focus:border-[#1C4C3B] focus:ring-1 focus:ring-[#1C4C3B]"
+                  className="w-full border border-gray-300 rounded px-4 py-3 pr-11 focus:outline-none focus:border-[#E31E24] focus:ring-1 focus:ring-[#E31E24]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-[#1C4C3B] transition-colors"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-[#E31E24] transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -75,12 +75,12 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1C4C3B] text-white py-3 rounded font-bold hover:bg-[#0F2E24] transition-colors disabled:opacity-60"
+              className="w-full bg-[#E31E24] text-white py-3 rounded font-bold hover:bg-[#1A1A1A] transition-colors disabled:opacity-60"
             >
               {loading ? "Signing in…" : "Sign In"}
             </button>
           </form>
-          <p className="text-center text-xs text-gray-400 mt-8">This portal is for authorised GIFT staff only. Unauthorised access is prohibited.</p>
+          <p className="text-center text-xs text-gray-400 mt-8">This portal is for authorised GETAS staff only. Unauthorised access is prohibited.</p>
         </div>
       </div>
     </>

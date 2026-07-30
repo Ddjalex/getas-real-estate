@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = "GIFT Real Estate";
+const SITE_NAME = "GETAS Real Estate";
 const DEFAULT_DESCRIPTION =
   "Addis Ababa's most trusted real estate agency since 1990. Browse premium properties for sale and rent in Ethiopia.";
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200";
-const SITE_URL = "https://giftrealestate.et";
+const SITE_URL = "https://getasrealestate.et";
 
 // Replace with real GA4 Measurement ID when available
 const GA4_ID = "G-XXXXXXXXXX";
@@ -84,9 +84,9 @@ export function localBusinessJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": ["RealEstateAgent", "LocalBusiness"],
-    name: "GIFT Real Estate",
+    name: "GETAS Real Estate",
     url: SITE_URL,
-    logo: `${SITE_URL}/gift-logo.png`,
+    logo: `${SITE_URL}/logo.png`,
     image: DEFAULT_IMAGE,
     description: DEFAULT_DESCRIPTION,
     foundingDate: "1990",

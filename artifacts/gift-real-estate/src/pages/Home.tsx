@@ -58,7 +58,7 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       <img
         key={`curr-${current}`}
         src={resolveSlideUrl(images[current].imageUrl)}
-        alt={images[current].caption || "GIFT Real Estate"}
+        alt={images[current].caption || "GETAS Real Estate"}
         className="absolute inset-0 w-full h-full object-cover ken-burns"
         style={{ opacity: 1, transition: "opacity 900ms ease-in-out" }}
       />
@@ -70,7 +70,7 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             <button
               key={i}
               onClick={() => { setPrev(current); setCurrent(i); setTransitioning(true); setTimeout(() => { setPrev(null); setTransitioning(false); }, 900); }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? "bg-[#D9B93C] w-5" : "bg-white/50 hover:bg-white/80"}`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? "bg-[#E31E24] w-5" : "bg-white/50 hover:bg-white/80"}`}
               aria-label={`Slide ${i + 1}`}
             />
           ))}
@@ -216,7 +216,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div ref={homeRef} className="min-h-screen bg-[#FDFDF8]">
+    <div ref={homeRef} className="min-h-screen bg-[#FFFFFF]">
       <SEO
         path="/"
         jsonLd={localBusinessJsonLd()}
@@ -227,7 +227,7 @@ export default function Home() {
         <HeroSlider slides={heroSlides} />
 
         <div className="container relative z-20 mx-auto px-4 text-center mt-14 sm:mt-16">
-          <span className="hero-badge inline-block px-4 py-1 border border-[#D9B93C] text-[#D9B93C] text-sm font-bold tracking-widest uppercase mb-6 rounded-sm backdrop-blur-sm bg-black/20">
+          <span className="hero-badge inline-block px-4 py-1 border border-[#E31E24] text-[#E31E24] text-sm font-bold tracking-widest uppercase mb-6 rounded-sm backdrop-blur-sm bg-black/20">
             Est. 1990
           </span>
           <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg max-w-4xl mx-auto leading-tight">
@@ -244,7 +244,7 @@ export default function Home() {
             <Link
               href="/properties"
               onClick={() => trackEvent("cta_click", { button: "View All Properties" })}
-              className="flex-1 bg-[#D9B93C] text-[#0F2E24] px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#c8a82f] transition-colors shadow-lg flex items-center justify-center gap-2"
+              className="flex-1 bg-[#E31E24] text-[#1A1A1A] px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#c8a82f] transition-colors shadow-lg flex items-center justify-center gap-2"
             >
               <Search size={18} /> View All Properties
             </Link>
@@ -252,7 +252,7 @@ export default function Home() {
               <a
                 href={`tel:${phone.replace(/\s/g, "")}`}
                 onClick={() => trackEvent("cta_click", { button: "Call Now" })}
-                className="flex-1 border-2 border-white text-white px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-white hover:text-[#0F2E24] transition-colors shadow-lg flex items-center justify-center gap-2"
+                className="flex-1 border-2 border-white text-white px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-white hover:text-[#1A1A1A] transition-colors shadow-lg flex items-center justify-center gap-2"
               >
                 Call Now
               </a>
@@ -262,12 +262,12 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="section-enter bg-[#0F2E24] py-12">
+      <section className="section-enter bg-[#1A1A1A] py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {STATS.map((stat, i) => (
               <div key={i} className="text-white">
-                <div ref={(el) => { statRefs.current[i] = el; }} className="font-serif text-4xl font-bold text-[#D9B93C] mb-1">
+                <div ref={(el) => { statRefs.current[i] = el; }} className="font-serif text-4xl font-bold text-[#E31E24] mb-1">
                   0{stat.suffix}
                 </div>
                 <div className="text-white/70 text-sm uppercase tracking-widest font-medium">{stat.label}</div>
@@ -278,14 +278,14 @@ export default function Home() {
       </section>
 
       {/* Featured Listings */}
-      <section className="section-enter py-20 bg-[#FDFDF8]">
+      <section className="section-enter py-20 bg-[#FFFFFF]">
         <div className="container mx-auto px-4">
           <div className="featured-header flex items-end justify-between mb-12">
             <div>
-              <p className="text-[#D9B93C] font-bold tracking-widest uppercase text-sm mb-2">Handpicked for You</p>
-              <h2 className="font-serif text-4xl font-bold text-[#0F2E24]">Featured Properties</h2>
+              <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-2">Handpicked for You</p>
+              <h2 className="font-serif text-4xl font-bold text-[#1A1A1A]">Featured Properties</h2>
             </div>
-            <Link href="/properties" className="text-[#1C4C3B] font-bold text-sm tracking-wider uppercase border-b-2 border-[#D9B93C] pb-1 hover:text-[#D9B93C] transition-colors hidden md:block">
+            <Link href="/properties" className="text-[#E31E24] font-bold text-sm tracking-wider uppercase border-b-2 border-[#E31E24] pb-1 hover:text-[#E31E24] transition-colors hidden md:block">
               View All →
             </Link>
           </div>
@@ -303,19 +303,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why GIFT */}
-      <section ref={whySectionRef} className="section-enter bg-[#0F2E24] py-24">
+      {/* Why GETAS */}
+      <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <p className="text-[#D9B93C] font-bold tracking-widest uppercase text-sm mb-3">Our Commitment</p>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-white">Why Choose GIFT</h2>
+            <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-3">Our Commitment</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-white">Why Choose GETAS</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: <Award size={36} className="text-[#D9B93C]" />, title: "34 Years of Trust", desc: "A proven track record since 1990 in Ethiopia's real estate market." },
-              { icon: <MapPin size={36} className="text-[#D9B93C]" />, title: "Local Expertise", desc: "Deep knowledge of every Addis Ababa neighborhood and its investment potential." },
-              { icon: <ShieldCheck size={36} className="text-[#D9B93C]" />, title: "Verified Listings", desc: "Every property is thoroughly vetted for legal compliance and quality." },
-              { icon: <TrendingUp size={36} className="text-[#D9B93C]" />, title: "Investment ROI", desc: "We help you find properties that generate long-term value and returns." },
+              { icon: <Award size={36} className="text-[#E31E24]" />, title: "34 Years of Trust", desc: "A proven track record since 1990 in Ethiopia's real estate market." },
+              { icon: <MapPin size={36} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of every Addis Ababa neighborhood and its investment potential." },
+              { icon: <ShieldCheck size={36} className="text-[#E31E24]" />, title: "Verified Listings", desc: "Every property is thoroughly vetted for legal compliance and quality." },
+              { icon: <TrendingUp size={36} className="text-[#E31E24]" />, title: "Investment ROI", desc: "We help you find properties that generate long-term value and returns." },
             ].map((item, i) => (
               <div key={i} className="why-item bg-white/5 border border-white/10 p-8 rounded-sm hover:bg-white/10 transition-colors">
                 <div className="mb-4">{item.icon}</div>
@@ -328,22 +328,22 @@ export default function Home() {
       </section>
 
       {/* CTA Banner */}
-      <section className="section-enter bg-[#D9B93C] py-20">
+      <section className="section-enter bg-[#E31E24] py-20">
         <div className="container mx-auto px-4 text-center cta-content">
-          <Building2 size={48} className="text-[#0F2E24]/40 mx-auto mb-6" />
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#0F2E24] mb-4">Ready to Find Your Property?</h2>
-          <p className="text-[#0F2E24]/80 text-lg max-w-2xl mx-auto mb-10">
+          <Building2 size={48} className="text-[#1A1A1A]/40 mx-auto mb-6" />
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4">Ready to Find Your Property?</h2>
+          <p className="text-[#1A1A1A]/80 text-lg max-w-2xl mx-auto mb-10">
             Whether you're buying, renting, or investing, our expert team is ready to guide you every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               onClick={() => trackEvent("cta_click", { button: "Book a Visit" })}
-              className="bg-[#0F2E24] text-white px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#1C4C3B] transition-colors shadow-lg"
+              className="bg-[#1A1A1A] text-white px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#E31E24] transition-colors shadow-lg"
             >
               Book a Visit
             </Link>
-            <Link href="/properties" className="border-2 border-[#0F2E24] text-[#0F2E24] px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#0F2E24] hover:text-white transition-colors">
+            <Link href="/properties" className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-[#1A1A1A] hover:text-white transition-colors">
               Browse Properties
             </Link>
           </div>

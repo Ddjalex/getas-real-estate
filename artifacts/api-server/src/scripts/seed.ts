@@ -168,7 +168,7 @@ const blogSeed = [
     slug: "addis-ababa-real-estate-trends-2024",
     title: "Addis Ababa Real Estate Trends to Watch in 2024",
     excerpt: "As the capital continues to expand, we explore the emerging neighborhoods and investment opportunities shaping the Ethiopian real estate market this year.",
-    content: "The real estate market in Addis Ababa has seen unprecedented growth over the last decade. In 2024, we are witnessing a shift towards integrated community living and high-rise developments in areas like CMC and Ayat.\n\nHistorically, areas like Bole and Old Airport dominated luxury housing, but improving infrastructure and road networks are unlocking value in peripheral zones. Investors are increasingly looking at mixed-use developments that offer residential, commercial, and retail spaces in one location.\n\nAt GIFT Real Estate, we've observed a 25% year-over-year increase in inquiries for premium apartment complexes, indicating a strong preference for secure, managed properties over standalone houses among young professionals.",
+    content: "The real estate market in Addis Ababa has seen unprecedented growth over the last decade. In 2024, we are witnessing a shift towards integrated community living and high-rise developments in areas like CMC and Ayat.\n\nHistorically, areas like Bole and Old Airport dominated luxury housing, but improving infrastructure and road networks are unlocking value in peripheral zones. Investors are increasingly looking at mixed-use developments that offer residential, commercial, and retail spaces in one location.\n\nAt GETAS Real Estate, we've observed a 25% year-over-year increase in inquiries for premium apartment complexes, indicating a strong preference for secure, managed properties over standalone houses among young professionals.",
     author: "Dawit Tadesse",
     date: "2024-11-05",
     category: "Market Insights",
@@ -180,7 +180,7 @@ const blogSeed = [
     slug: "guide-to-buying-property-ethiopia",
     title: "A Comprehensive Guide to Buying Property in Ethiopia",
     excerpt: "Navigating the property market can be complex. Here is our step-by-step guide for diaspora and local buyers looking to invest in Addis Ababa.",
-    content: "Purchasing property is one of the most significant investments you will make. For diaspora Ethiopians and locals alike, understanding the legal frameworks, financing options, and market dynamics is crucial.\n\nFirst, it's essential to verify the title deed and ensure the property is free from any encumbrances. Working with established real estate agencies like GIFT ensures that all due diligence is handled professionally.\n\nFinancing is another critical aspect. Several local banks now offer mortgage options specifically tailored for the diaspora community. When buying off-plan, always evaluate the track record of the developer. With over 34 years in the industry, GIFT Real Estate prides itself on delivering quality homes on schedule.",
+    content: "Purchasing property is one of the most significant investments you will make. For diaspora Ethiopians and locals alike, understanding the legal frameworks, financing options, and market dynamics is crucial.\n\nFirst, it's essential to verify the title deed and ensure the property is free from any encumbrances. Working with established real estate agencies like GETAS ensures that all due diligence is handled professionally.\n\nFinancing is another critical aspect. Several local banks now offer mortgage options specifically tailored for the diaspora community. When buying off-plan, always evaluate the track record of the developer. With over 34 years in the industry, GETAS Real Estate prides itself on delivering quality homes on schedule.",
     author: "Bethlehem Alemu",
     date: "2024-10-22",
     category: "Buying Guide",
@@ -204,7 +204,7 @@ const blogSeed = [
     slug: "sustainable-building-ethiopia",
     title: "The Rise of Sustainable Architecture in Ethiopia",
     excerpt: "How modern Ethiopian developers are blending traditional design elements with contemporary sustainable building practices.",
-    content: "Sustainability is no longer a buzzword; it is a necessity. As Addis Ababa grows, the environmental impact of construction is a pressing concern. Forward-thinking developers are now prioritizing energy efficiency and sustainable materials.\n\nWe are seeing an increase in the use of localized materials, which not only reduces the carbon footprint associated with transportation but also supports the local economy. Solar water heaters, rainwater harvesting systems, and passive cooling designs are becoming standard features in new premium developments.\n\nAt GIFT Real Estate, we are committed to integrating green building principles into our upcoming projects, ensuring that we not only build homes for today but preserve our beautiful city for future generations.",
+    content: "Sustainability is no longer a buzzword; it is a necessity. As Addis Ababa grows, the environmental impact of construction is a pressing concern. Forward-thinking developers are now prioritizing energy efficiency and sustainable materials.\n\nWe are seeing an increase in the use of localized materials, which not only reduces the carbon footprint associated with transportation but also supports the local economy. Solar water heaters, rainwater harvesting systems, and passive cooling designs are becoming standard features in new premium developments.\n\nAt GETAS Real Estate, we are committed to integrating green building principles into our upcoming projects, ensuring that we not only build homes for today but preserve our beautiful city for future generations.",
     author: "Senait Gebre",
     date: "2024-09-28",
     category: "Architecture & Design",
@@ -220,8 +220,8 @@ const agentsSeed = [
     name: "Dawit Tadesse",
     role: "Managing Director",
     phone: "+251 91 123 4567",
-    email: "dawit@giftrealestate.com",
-    bio: "With over 25 years of experience in the Ethiopian real estate market, Dawit has been instrumental in shaping GIFT's vision and leading high-profile commercial and residential projects across Addis Ababa.",
+    email: "dawit@getasrealestate.com",
+    bio: "With over 25 years of experience in the Ethiopian real estate market, Dawit has been instrumental in shaping GETAS's vision and leading high-profile commercial and residential projects across Addis Ababa.",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400",
   },
   {
@@ -229,7 +229,7 @@ const agentsSeed = [
     name: "Bethlehem Alemu",
     role: "Senior Investment Consultant",
     phone: "+251 91 234 5678",
-    email: "bethlehem@giftrealestate.com",
+    email: "bethlehem@getasrealestate.com",
     bio: "Bethlehem specializes in diaspora investments and luxury properties. Her deep understanding of the local market dynamics helps clients make informed, highly profitable investment decisions.",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
   },
@@ -238,7 +238,7 @@ const agentsSeed = [
     name: "Yonas Mekonnen",
     role: "Head of Property Management",
     phone: "+251 92 345 6789",
-    email: "yonas@giftrealestate.com",
+    email: "yonas@getasrealestate.com",
     bio: "Yonas leads our property management division, ensuring that both landlords and tenants receive exceptional service. He manages a portfolio of over 200 premium rental properties in the capital.",
     image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400",
   },
@@ -247,7 +247,7 @@ const agentsSeed = [
     name: "Senait Gebre",
     role: "Lead Sales Agent - Residential",
     phone: "+251 93 456 7890",
-    email: "senait@giftrealestate.com",
+    email: "senait@getasrealestate.com",
     bio: "Known for her relentless dedication and unparalleled client service, Senait is our top residential sales agent. She excels at finding the perfect home for families in Addis Ababa's most desirable neighborhoods.",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400",
   },
@@ -256,7 +256,7 @@ const agentsSeed = [
     name: "Abebe Kebede",
     role: "Commercial Real Estate Expert",
     phone: "+251 94 567 8901",
-    email: "abebe@giftrealestate.com",
+    email: "abebe@getasrealestate.com",
     bio: "Abebe focuses exclusively on commercial real estate, assisting businesses, NGOs, and corporations in securing prime office spaces and commercial plots that drive their operations forward.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
   },
@@ -292,14 +292,14 @@ async function seed() {
   }
   console.log(`✓ ${agentsSeed.length} agents`);
 
-  // Default admin user (username: admin, password: gift2024!)
+  // Default admin user (username: admin, password: getas2024!)
   // CHANGE THIS PASSWORD immediately after first login.
-  const passwordHash = await bcrypt.hash("gift2024!", 12);
+  const passwordHash = await bcrypt.hash("getas2024!", 12);
   await db
     .insert(adminUsersTable)
     .values({ username: "admin", passwordHash })
     .onConflictDoNothing();
-  console.log("✓ Admin user (username: admin, password: gift2024! — CHANGE AFTER FIRST LOGIN)");
+  console.log("✓ Admin user (username: admin, password: getas2024! — CHANGE AFTER FIRST LOGIN)");
 
   console.log("✅ Seed complete");
   process.exit(0);

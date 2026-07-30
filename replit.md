@@ -1,6 +1,6 @@
-# GIFT Real Estate
+# GETAS Real Estate
 
-A full-stack real estate website for **GIFT Real Estate** (Addis Ababa, Est. 1990), built as a pnpm monorepo.
+A full-stack real estate website for **GETAS Real Estate** (Addis Ababa), built as a pnpm monorepo.
 
 ## Stack
 

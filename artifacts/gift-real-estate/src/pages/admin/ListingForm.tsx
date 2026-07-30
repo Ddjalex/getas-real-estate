@@ -92,7 +92,7 @@ export default function ListingForm() {
         type={type}
         value={String(form[key] ?? "")}
         onChange={(e) => set(key, e.target.value)}
-        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]"
+        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]"
         {...extra}
       />
     </div>
@@ -102,7 +102,7 @@ export default function ListingForm() {
     <>
       <Helmet><title>{isNew ? "New Listing" : "Edit Listing"} — Staff Portal</title><meta name="robots" content="noindex, nofollow" /></Helmet>
       <div className="min-h-screen bg-gray-100">
-        <div className="bg-[#0F2E24] text-white px-6 py-4 flex items-center gap-3">
+        <div className="bg-[#1A1A1A] text-white px-6 py-4 flex items-center gap-3">
           <button onClick={() => navigate("/admin/dashboard")} className="text-white/70 hover:text-white"><ArrowLeft size={20} /></button>
           <span className="font-bold">{isNew ? "New Listing" : "Edit Listing"}</span>
         </div>
@@ -118,14 +118,14 @@ export default function ListingForm() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Type</label>
-                <select value={form.type} onChange={(e) => set("type", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]">
+                <select value={form.type} onChange={(e) => set("type", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]">
                   <option value="sale">For Sale</option>
                   <option value="rent">For Rent</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Status</label>
-                <select value={form.status} onChange={(e) => set("status", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]">
+                <select value={form.status} onChange={(e) => set("status", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]">
                   <option>For Sale</option>
                   <option>For Rent</option>
                   <option>New</option>
@@ -143,7 +143,7 @@ export default function ListingForm() {
                   type="number"
                   value={String(form.price ?? "")}
                   onChange={(e) => set("price", e.target.value)}
-                  className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B]"
+                  className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]"
                   placeholder="e.g. 4500000"
                   required
                 />
@@ -161,7 +161,7 @@ export default function ListingForm() {
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Description</label>
-              <textarea rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B] resize-y" />
+              <textarea rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24] resize-y" />
             </div>
 
             <ImageUploader
@@ -178,7 +178,7 @@ export default function ListingForm() {
                 value={form.mapsUrl ?? ""}
                 onChange={(e) => set("mapsUrl", e.target.value || null)}
                 placeholder="https://maps.app.goo.gl/..."
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#1C4C3B] font-mono text-sm"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24] font-mono text-sm"
               />
               <p className="text-xs text-gray-400 mt-1">Paste a Google Maps share link. This will be shown to visitors on the property page.</p>
             </div>
@@ -193,11 +193,11 @@ export default function ListingForm() {
             </div>
 
             <div className="flex items-center gap-3">
-              <input type="checkbox" id="featured" checked={!!form.featured} onChange={(e) => set("featured", e.target.checked)} className="w-4 h-4 accent-[#1C4C3B]" />
+              <input type="checkbox" id="featured" checked={!!form.featured} onChange={(e) => set("featured", e.target.checked)} className="w-4 h-4 accent-[#E31E24]" />
               <label htmlFor="featured" className="text-sm font-bold text-gray-700 uppercase tracking-wider">Mark as Featured</label>
             </div>
             {error && <p className="text-red-600 text-sm bg-red-50 p-3 rounded">{error}</p>}
-            <button type="submit" disabled={saving} className="bg-[#1C4C3B] text-white px-8 py-3 rounded font-bold flex items-center gap-2 hover:bg-[#0F2E24] disabled:opacity-60">
+            <button type="submit" disabled={saving} className="bg-[#E31E24] text-white px-8 py-3 rounded font-bold flex items-center gap-2 hover:bg-[#1A1A1A] disabled:opacity-60">
               <Save size={16} /> {saving ? "Saving…" : "Save Listing"}
             </button>
           </form>

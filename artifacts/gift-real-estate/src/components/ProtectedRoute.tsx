@@ -24,7 +24,7 @@ export function ProtectedRoute({ children }: Props) {
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-[#1C4C3B] font-serif text-lg">Checking credentials…</div>
+        <div className="text-[#E31E24] font-serif text-lg">Checking credentials…</div>
       </div>
     );
   }

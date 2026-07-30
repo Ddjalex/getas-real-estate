@@ -41,8 +41,8 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-in-out ${
         isScrolled || !isHomePage
-          ? "bg-[#0F2E24] shadow-lg py-2"
-          : "bg-[#0F2E24]/0 backdrop-blur-none py-5"
+          ? "bg-[#1A1A1A] shadow-lg py-2"
+          : "bg-[#1A1A1A]/0 backdrop-blur-none py-5"
       }`}
       style={{
         // Cinematic 700ms ease for the background fade-in
@@ -55,13 +55,13 @@ export function Header() {
         <Link href="/" className="flex items-center gap-4 group">
           <img
             src={`${import.meta.env.BASE_URL}logo.png`}
-            alt="GIFT Real Estate logo"
+            alt="GETAS Real Estate logo"
             className="transition-all duration-700 object-contain drop-shadow-md"
             style={{ width: isScrolled ? 50 : 58, height: isScrolled ? 50 : 58 }}
           />
           <div className="hidden sm:block">
-            <h1 className="text-[#D9B93C] font-serif text-xl md:text-2xl font-bold tracking-wide">
-              GIFT
+            <h1 className="text-[#E31E24] font-serif text-xl md:text-2xl font-bold tracking-wide">
+              GETAS
             </h1>
             <p className="text-white/80 text-xs tracking-widest uppercase mt-0.5">
               Real Estate
@@ -75,8 +75,8 @@ export function Header() {
             <Link
               key={link.path}
               href={link.path}
-              className={`text-sm font-medium transition-colors duration-300 hover:text-[#D9B93C] ${
-                location === link.path ? "text-[#D9B93C]" : "text-white"
+              className={`text-sm font-medium transition-colors duration-300 hover:text-[#E31E24] ${
+                location === link.path ? "text-[#E31E24]" : "text-white"
               }`}
             >
               {link.name}
@@ -86,13 +86,13 @@ export function Header() {
 
         {/* Action Section */}
         <div className="hidden lg:flex items-center gap-6">
-          <div className="flex items-center gap-2 text-[#D9B93C]">
+          <div className="flex items-center gap-2 text-[#E31E24]">
             <Phone size={18} />
             <span className="text-sm font-medium">{phone}</span>
           </div>
           <Link
             href="/contact"
-            className="bg-[#D9B93C] text-[#0F2E24] px-6 py-2.5 rounded-sm font-bold text-sm transition-all hover:bg-white hover:text-[#0F2E24] shadow-md"
+            className="bg-[#E31E24] text-[#1A1A1A] px-6 py-2.5 rounded-sm font-bold text-sm transition-all hover:bg-white hover:text-[#1A1A1A] shadow-md"
             data-testid="link-book-visit"
           >
             Book a Visit
@@ -113,7 +113,7 @@ export function Header() {
       {mobileMenuOpen && (
         <div
           className={`lg:hidden absolute top-full left-0 right-0 border-t border-white/10 shadow-xl flex flex-col pb-6 px-4 transition-all duration-700 ${
-            isScrolled ? "bg-[#0F2E24]" : "bg-[#0F2E24]/90 backdrop-blur-sm"
+            isScrolled ? "bg-[#1A1A1A]" : "bg-[#1A1A1A]/90 backdrop-blur-sm"
           }`}
         >
           {navLinks.map((link) => (
@@ -122,21 +122,21 @@ export function Header() {
               href={link.path}
               onClick={() => setMobileMenuOpen(false)}
               className={`py-4 border-b border-white/5 text-lg font-medium transition-colors ${
-                location === link.path ? "text-[#D9B93C]" : "text-white"
+                location === link.path ? "text-[#E31E24]" : "text-white"
               }`}
             >
               {link.name}
             </Link>
           ))}
           <div className="mt-6 flex flex-col gap-4">
-            <div className="flex items-center justify-center gap-2 text-[#D9B93C] py-2">
+            <div className="flex items-center justify-center gap-2 text-[#E31E24] py-2">
               <Phone size={20} />
               <span className="font-medium">{phone}</span>
             </div>
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="bg-[#D9B93C] text-[#0F2E24] text-center px-6 py-3 rounded-sm font-bold w-full"
+              className="bg-[#E31E24] text-[#1A1A1A] text-center px-6 py-3 rounded-sm font-bold w-full"
             >
               Book a Visit
             </Link>

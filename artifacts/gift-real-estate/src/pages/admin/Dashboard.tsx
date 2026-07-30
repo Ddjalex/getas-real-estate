@@ -101,7 +101,7 @@ function HeroSliderTab() {
           multiple={true}
           label="Upload New Slide Images"
         />
-        {uploading && <p className="text-sm text-[#1C4C3B] mt-2 font-medium">Adding slides…</p>}
+        {uploading && <p className="text-sm text-[#E31E24] mt-2 font-medium">Adding slides…</p>}
         {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
       </div>
 
@@ -131,11 +131,11 @@ function HeroSliderTab() {
                     <input
                       value={editCaption}
                       onChange={(e) => setEditCaption(e.target.value)}
-                      className="flex-1 border border-[#1C4C3B] rounded px-2 py-1 text-sm focus:outline-none"
+                      className="flex-1 border border-[#E31E24] rounded px-2 py-1 text-sm focus:outline-none"
                       placeholder="Optional caption"
                       autoFocus
                     />
-                    <button onClick={() => saveCaption(slide.id)} className="text-xs bg-[#1C4C3B] text-white px-3 py-1 rounded font-bold">Save</button>
+                    <button onClick={() => saveCaption(slide.id)} className="text-xs bg-[#E31E24] text-white px-3 py-1 rounded font-bold">Save</button>
                     <button onClick={() => setEditId(null)} className="text-xs text-gray-500 hover:text-gray-700">Cancel</button>
                   </div>
                 ) : (
@@ -145,7 +145,7 @@ function HeroSliderTab() {
                     </span>
                     <button
                       onClick={() => { setEditId(slide.id); setEditCaption(slide.caption); }}
-                      className="text-gray-400 hover:text-[#1C4C3B] flex-shrink-0"
+                      className="text-gray-400 hover:text-[#E31E24] flex-shrink-0"
                       title="Edit caption"
                     >
                       <Pencil size={13} />
@@ -159,16 +159,16 @@ function HeroSliderTab() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 {/* Reorder */}
                 <div className="flex flex-col gap-0.5">
-                  <button onClick={() => move(idx, -1)} disabled={idx === 0} className="text-gray-400 hover:text-[#1C4C3B] disabled:opacity-30" title="Move up">
+                  <button onClick={() => move(idx, -1)} disabled={idx === 0} className="text-gray-400 hover:text-[#E31E24] disabled:opacity-30" title="Move up">
                     <ChevronUp size={16} />
                   </button>
-                  <button onClick={() => move(idx, 1)} disabled={idx === slides.length - 1} className="text-gray-400 hover:text-[#1C4C3B] disabled:opacity-30" title="Move down">
+                  <button onClick={() => move(idx, 1)} disabled={idx === slides.length - 1} className="text-gray-400 hover:text-[#E31E24] disabled:opacity-30" title="Move down">
                     <ChevronDown size={16} />
                   </button>
                 </div>
 
                 {/* Toggle active */}
-                <button onClick={() => toggleActive(slide)} title={slide.active ? "Hide slide" : "Show slide"} className={slide.active ? "text-[#1C4C3B]" : "text-gray-300"}>
+                <button onClick={() => toggleActive(slide)} title={slide.active ? "Hide slide" : "Show slide"} className={slide.active ? "text-[#E31E24]" : "text-gray-300"}>
                   {slide.active ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
                 </button>
 
@@ -242,74 +242,74 @@ function ContactTab() {
       <form onSubmit={handleSave} className="p-6 space-y-5 max-w-2xl">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <Phone size={14} className="text-[#1C4C3B]" /> Phone Number
+            <Phone size={14} className="text-[#E31E24]" /> Phone Number
           </label>
           <input
             type="tel"
             value={fields.phone}
             onChange={(e) => setFields({ ...fields, phone: e.target.value })}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
             placeholder="+251 11 465 1234"
           />
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <MessageCircle size={14} className="text-[#1C4C3B]" /> WhatsApp Number
+            <MessageCircle size={14} className="text-[#E31E24]" /> WhatsApp Number
           </label>
           <input
             type="tel"
             value={fields.whatsapp}
             onChange={(e) => setFields({ ...fields, whatsapp: e.target.value })}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
             placeholder="+251911234567 (digits only, no spaces)"
           />
           <p className="text-xs text-gray-400 mt-1">Used to generate the WhatsApp chat link.</p>
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <MapPin size={14} className="text-[#1C4C3B]" /> Office Location
+            <MapPin size={14} className="text-[#E31E24]" /> Office Location
           </label>
           <textarea
             value={fields.location}
             onChange={(e) => setFields({ ...fields, location: e.target.value })}
             rows={3}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
-            placeholder="GIFT Tower, 8th Floor, Bole Road, Addis Ababa"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-none"
+            placeholder="GETAS Tower, 8th Floor, Bole Road, Addis Ababa"
           />
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <span className="text-[#1C4C3B] font-bold text-xs">@</span> Email Address
+            <span className="text-[#E31E24] font-bold text-xs">@</span> Email Address
           </label>
           <input
             type="email"
             value={fields.email}
             onChange={(e) => setFields({ ...fields, email: e.target.value })}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
-            placeholder="info@giftrealestate.com"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
+            placeholder="info@getasrealestate.com"
           />
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <Globe size={14} className="text-[#1C4C3B]" /> Portfolio / Website Link
+            <Globe size={14} className="text-[#E31E24]" /> Portfolio / Website Link
           </label>
           <input
             type="url"
             value={fields.portfolio}
             onChange={(e) => setFields({ ...fields, portfolio: e.target.value })}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
-            placeholder="https://giftrealestate.com"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
+            placeholder="https://getasrealestate.com"
           />
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">
-            <Info size={14} className="text-[#1C4C3B]" /> Other Information
+            <Info size={14} className="text-[#E31E24]" /> Other Information
           </label>
           <textarea
             value={fields.otherInfo}
             onChange={(e) => setFields({ ...fields, otherInfo: e.target.value })}
             rows={3}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-none"
             placeholder="Opening hours, social media handles, etc."
           />
         </div>
@@ -318,7 +318,7 @@ function ContactTab() {
         <button
           type="submit"
           disabled={saving}
-          className="bg-[#1C4C3B] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#0F2E24] disabled:opacity-50 transition-colors"
+          className="bg-[#E31E24] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#1A1A1A] disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving…" : "Save Changes"}
         </button>
@@ -375,7 +375,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}
             autoComplete="username"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
           />
         </div>
         <hr className="border-gray-200" />
@@ -387,7 +387,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             autoComplete="new-password"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
             placeholder="Min. 8 characters"
           />
         </div>
@@ -398,7 +398,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             autoComplete="new-password"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
           />
         </div>
         <hr className="border-gray-200" />
@@ -409,7 +409,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             autoComplete="current-password"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
             placeholder="Required to confirm changes"
           />
         </div>
@@ -418,7 +418,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
         <button
           type="submit"
           disabled={saving}
-          className="bg-[#1C4C3B] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#0F2E24] disabled:opacity-50 transition-colors"
+          className="bg-[#E31E24] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#1A1A1A] disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving…" : "Update Credentials"}
         </button>
@@ -431,7 +431,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
 type Milestone = { year: string; title: string; desc: string };
 
 const DEFAULT_MILESTONES: Milestone[] = [
-  { year: "1990", title: "Foundation", desc: "GIFT Real Estate established in Addis Ababa with a small office in Piazza." },
+  { year: "1990", title: "Foundation", desc: "GETAS Real Estate established in Addis Ababa with a small office in Piazza." },
   { year: "2002", title: "First Mega Project", desc: "Successfully completed and delivered a 50-villa complex in CMC, setting a new standard for gated communities." },
   { year: "2015", title: "Commercial Expansion", desc: "Launched the commercial real estate division, managing premium office spaces in Bole and Kazanchis." },
   { year: "2024", title: "Modern Era", desc: "Celebrating over three decades of trust with a portfolio of over 1,200 managed and sold properties." },
@@ -502,8 +502,8 @@ function AboutTab() {
               <input
                 value={fields.about_hero_heading}
                 onChange={(e) => setFields({ ...fields, about_hero_heading: e.target.value })}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
-                placeholder="About GIFT Real Estate"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
+                placeholder="About GETAS Real Estate"
               />
             </div>
             <div>
@@ -512,7 +512,7 @@ function AboutTab() {
                 value={fields.about_hero_subtext}
                 onChange={(e) => setFields({ ...fields, about_hero_subtext: e.target.value })}
                 rows={2}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-none"
                 placeholder="Building Ethiopia's future since 1990…"
               />
             </div>
@@ -529,7 +529,7 @@ function AboutTab() {
                 value={fields.about_mission}
                 onChange={(e) => setFields({ ...fields, about_mission: e.target.value })}
                 rows={5}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-y"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-y"
                 placeholder="To provide unparalleled real estate services in Ethiopia…"
               />
             </div>
@@ -539,7 +539,7 @@ function AboutTab() {
                 value={fields.about_vision}
                 onChange={(e) => setFields({ ...fields, about_vision: e.target.value })}
                 rows={5}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-y"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-y"
                 placeholder="To remain the most trusted, respected, and innovative…"
               />
             </div>
@@ -550,7 +550,7 @@ function AboutTab() {
         <section>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">History Milestones</h3>
-            <button type="button" onClick={addMilestone} className="text-xs bg-[#1C4C3B] text-white px-3 py-1.5 rounded font-bold flex items-center gap-1 hover:bg-[#0F2E24]">
+            <button type="button" onClick={addMilestone} className="text-xs bg-[#E31E24] text-white px-3 py-1.5 rounded font-bold flex items-center gap-1 hover:bg-[#1A1A1A]">
               <Plus size={12} /> Add Milestone
             </button>
           </div>
@@ -563,7 +563,7 @@ function AboutTab() {
                     <input
                       value={ms.year}
                       onChange={(e) => updateMilestone(i, "year", e.target.value)}
-                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
                       placeholder="1990"
                     />
                   </div>
@@ -572,7 +572,7 @@ function AboutTab() {
                     <input
                       value={ms.title}
                       onChange={(e) => updateMilestone(i, "title", e.target.value)}
-                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B]"
+                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
                       placeholder="Foundation"
                     />
                   </div>
@@ -586,7 +586,7 @@ function AboutTab() {
                     value={ms.desc}
                     onChange={(e) => updateMilestone(i, "desc", e.target.value)}
                     rows={2}
-                    className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1C4C3B] resize-none"
+                    className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-none"
                   />
                 </div>
               </div>
@@ -602,7 +602,7 @@ function AboutTab() {
         <button
           type="submit"
           disabled={saving}
-          className="bg-[#1C4C3B] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#0F2E24] disabled:opacity-50 transition-colors"
+          className="bg-[#E31E24] text-white px-6 py-2.5 rounded text-sm font-bold hover:bg-[#1A1A1A] disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving…" : "Save About Page"}
         </button>
@@ -667,14 +667,14 @@ export default function AdminDashboard() {
   return (
     <>
       <Helmet>
-        <title>Staff Dashboard — GIFT Real Estate</title>
+        <title>Staff Dashboard — GETAS Real Estate</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="min-h-screen bg-gray-100">
-        <div className="bg-[#0F2E24] text-white px-6 py-4 flex items-center justify-between">
+        <div className="bg-[#1A1A1A] text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Building2 size={24} className="text-[#D9B93C]" />
-            <span className="font-bold text-lg">GIFT Staff Portal</span>
+            <Building2 size={24} className="text-[#E31E24]" />
+            <span className="font-bold text-lg">GETAS Staff Portal</span>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/" target="_blank" className="text-white/60 hover:text-white text-sm flex items-center gap-1">
@@ -693,7 +693,7 @@ export default function AdminDashboard() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`px-4 py-2 rounded text-sm font-bold flex items-center gap-2 transition-colors ${tab === t.id ? "bg-[#1C4C3B] text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                className={`px-4 py-2 rounded text-sm font-bold flex items-center gap-2 transition-colors ${tab === t.id ? "bg-[#E31E24] text-white" : "text-gray-600 hover:bg-gray-100"}`}
               >
                 {t.icon} {t.label}
               </button>
@@ -706,7 +706,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="p-6 border-b flex items-center justify-between">
                   <h2 className="font-bold text-xl text-gray-800">Property Listings</h2>
-                  <Link href="/admin/listings/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/listings/new" className="bg-[#E31E24] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#1A1A1A]">
                     <Plus size={16} /> New Listing
                   </Link>
                 </div>
@@ -724,8 +724,8 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
-                          <Link href={`/properties/${l.id}`} target="_blank" className="text-gray-400 hover:text-[#1C4C3B]"><Eye size={16} /></Link>
-                          <Link href={`/admin/listings/${l.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/properties/${l.id}`} target="_blank" className="text-gray-400 hover:text-[#E31E24]"><Eye size={16} /></Link>
+                          <Link href={`/admin/listings/${l.id}/edit`} className="text-gray-400 hover:text-[#E31E24]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(l.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -741,7 +741,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="p-6 border-b flex items-center justify-between">
                   <h2 className="font-bold text-xl text-gray-800">Blog Posts</h2>
-                  <Link href="/admin/blog/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/blog/new" className="bg-[#E31E24] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#1A1A1A]">
                     <Plus size={16} /> New Post
                   </Link>
                 </div>
@@ -759,7 +759,7 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
-                          <Link href={`/admin/blog/${p.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/admin/blog/${p.id}/edit`} className="text-gray-400 hover:text-[#E31E24]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(p.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -775,7 +775,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="p-6 border-b flex items-center justify-between">
                   <h2 className="font-bold text-xl text-gray-800">Agents (About Page)</h2>
-                  <Link href="/admin/agents/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/agents/new" className="bg-[#E31E24] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#1A1A1A]">
                     <Plus size={16} /> New Agent
                   </Link>
                 </div>
@@ -795,7 +795,7 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
-                          <Link href={`/admin/agents/${a.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/admin/agents/${a.id}/edit`} className="text-gray-400 hover:text-[#E31E24]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(a.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -811,7 +811,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="p-6 border-b flex items-center justify-between">
                   <h2 className="font-bold text-xl text-gray-800">Services (Services Page)</h2>
-                  <Link href="/admin/services/new" className="bg-[#1C4C3B] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#0F2E24]">
+                  <Link href="/admin/services/new" className="bg-[#E31E24] text-white px-4 py-2 rounded text-sm font-bold flex items-center gap-2 hover:bg-[#1A1A1A]">
                     <Plus size={16} /> New Service
                   </Link>
                 </div>
@@ -831,7 +831,7 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
-                          <Link href={`/admin/services/${s.id}/edit`} className="text-gray-400 hover:text-[#1C4C3B]"><Pencil size={16} /></Link>
+                          <Link href={`/admin/services/${s.id}/edit`} className="text-gray-400 hover:text-[#E31E24]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(s.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                         </div>
                       </div>
@@ -856,7 +856,7 @@ export default function AdminDashboard() {
                           <div>
                             <div className="font-medium text-gray-800">{inq.name}</div>
                             <div className="text-sm text-gray-500">{inq.email}{inq.phone && ` · ${inq.phone}`}</div>
-                            {inq.listingId && <div className="text-xs text-[#1C4C3B] mt-1 font-medium">Property: {inq.listingId}</div>}
+                            {inq.listingId && <div className="text-xs text-[#E31E24] mt-1 font-medium">Property: {inq.listingId}</div>}
                             <p className="text-sm text-gray-700 mt-2 whitespace-pre-wrap line-clamp-3">{inq.message}</p>
                           </div>
                           <div className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">

@@ -25,7 +25,7 @@ const rawTemplate = readFileSync(templatePath, "utf-8");
 const fakePublicDir = path.dirname(templatePath);
 loadHtmlTemplate(fakePublicDir);
 
-const BASE = "https://giftrealestate.com";
+const BASE = "https://getasrealestate.com";
 
 async function checkTags(label: string, html: string | null) {
   if (!html) { console.error(`❌ ${label}: returned null`); return; }
@@ -37,7 +37,7 @@ async function checkTags(label: string, html: string | null) {
   const ogUrl   = html.match(/<meta property="og:url" content="([^"]+)"/)?.[1] ?? "(not found)";
   const hasJsonLd = html.includes('application/ld+json');
 
-  const generic = "GIFT Real Estate — built on Replit";
+  const generic = "GETAS Real Estate — built on Replit";
   const isGeneric = title.includes(generic) || desc.includes(generic);
 
   console.log(`\n${isGeneric ? "❌" : "✅"} ${label}`);

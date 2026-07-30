@@ -25,7 +25,7 @@ export function PropertyCard({ listing }: PropertyCardProps) {
 
   return (
     <div className="group bg-white rounded-md overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3] bg-[#0F2E24]">
+      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3] bg-[#1A1A1A]">
         <img
           src={resolveImage(listing.images?.[0])}
           alt={listing.title}
@@ -37,13 +37,13 @@ export function PropertyCard({ listing }: PropertyCardProps) {
           {listing.status && (
             <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm ${
               listing.status === "Featured" || listing.status === "New" 
-                ? "bg-[#D9B93C] text-[#0F2E24]" 
-                : "bg-[#0F2E24] text-white"
+                ? "bg-[#E31E24] text-[#1A1A1A]" 
+                : "bg-[#1A1A1A] text-white"
             }`}>
               {listing.status}
             </span>
           )}
-          <span className="bg-white/90 backdrop-blur-sm text-[#0F2E24] px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm">
+          <span className="bg-white/90 backdrop-blur-sm text-[#1A1A1A] px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm">
             {listing.type === "sale" ? "For Sale" : "For Rent"}
           </span>
         </div>
@@ -54,29 +54,29 @@ export function PropertyCard({ listing }: PropertyCardProps) {
       
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-2">
-          <MapPin size={16} className="text-[#1C4C3B]" />
+          <MapPin size={16} className="text-[#E31E24]" />
           <span>{listing.neighborhood}, {listing.location}</span>
         </div>
         
-        <h3 className="font-serif text-xl font-bold text-[#14261F] mb-4 line-clamp-1 group-hover:text-[#1C4C3B] transition-colors">
+        <h3 className="font-serif text-xl font-bold text-[#1A1A1A] mb-4 line-clamp-1 group-hover:text-[#E31E24] transition-colors">
           <Link href={`/properties/${listing.id}`}>{listing.title}</Link>
         </h3>
         
         <div className="grid grid-cols-3 gap-2 py-4 border-t border-gray-100 mt-auto">
           {listing.bedrooms > 0 && (
             <div className="flex items-center gap-2 text-gray-600">
-              <Bed size={18} className="text-[#D9B93C]" />
+              <Bed size={18} className="text-[#E31E24]" />
               <span className="text-sm font-medium">{listing.bedrooms} Beds</span>
             </div>
           )}
           {listing.bathrooms > 0 && (
             <div className="flex items-center gap-2 text-gray-600">
-              <Bath size={18} className="text-[#D9B93C]" />
+              <Bath size={18} className="text-[#E31E24]" />
               <span className="text-sm font-medium">{listing.bathrooms} Baths</span>
             </div>
           )}
           <div className="flex items-center gap-2 text-gray-600">
-            <Square size={18} className="text-[#D9B93C]" />
+            <Square size={18} className="text-[#E31E24]" />
             <span className="text-sm font-medium">{listing.sizeSqm} sqm</span>
           </div>
         </div>

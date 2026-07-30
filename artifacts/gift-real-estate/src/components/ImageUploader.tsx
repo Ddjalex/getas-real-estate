@@ -75,7 +75,7 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
                 )}
               </div>
               {idx === 0 && (
-                <span className="absolute bottom-0 left-0 right-0 bg-[#1C4C3B]/80 text-white text-[10px] text-center py-0.5">Cover</span>
+                <span className="absolute bottom-0 left-0 right-0 bg-[#E31E24]/80 text-white text-[10px] text-center py-0.5">Cover</span>
               )}
             </div>
           ))}
@@ -92,14 +92,14 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
 
       {/* Drop zone */}
       <div
-        className={`border-2 border-dashed rounded px-4 py-6 text-center cursor-pointer transition-colors ${dragOver ? "border-[#1C4C3B] bg-[#1C4C3B]/5" : "border-gray-300 hover:border-[#1C4C3B]/50"}`}
+        className={`border-2 border-dashed rounded px-4 py-6 text-center cursor-pointer transition-colors ${dragOver ? "border-[#E31E24] bg-[#E31E24]/5" : "border-gray-300 hover:border-[#E31E24]/50"}`}
         onClick={() => inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
       >
         {isUploading ? (
-          <div className="flex flex-col items-center gap-2 text-[#1C4C3B]">
+          <div className="flex flex-col items-center gap-2 text-[#E31E24]">
             <Loader2 size={24} className="animate-spin" />
             <span className="text-sm font-medium">Converting & uploading…</span>
           </div>

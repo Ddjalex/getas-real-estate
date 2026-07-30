@@ -136,22 +136,22 @@ export async function buildHomeHtml(baseUrl: string): Promise<string | null> {
 
   const description =
     settings["site_description"] ??
-    "Discover premium homes, luxury apartments, and prime commercial spaces in Addis Ababa with GIFT Real Estate — 34 years of excellence.";
+    "Discover premium homes, luxury apartments, and prime commercial spaces in Addis Ababa with GETAS Real Estate — 34 years of excellence.";
 
   const tags: MetaTags = {
-    title: settings["site_title"] ?? "GIFT Real Estate — Addis Ababa's Most Trusted Property Partner",
+    title: settings["site_title"] ?? "GETAS Real Estate — Addis Ababa's Most Trusted Property Partner",
     description,
-    ogTitle: settings["site_title"] ?? "GIFT Real Estate — Addis Ababa's Most Trusted Property Partner",
+    ogTitle: settings["site_title"] ?? "GETAS Real Estate — Addis Ababa's Most Trusted Property Partner",
     ogDescription: description,
     ogImage: `${baseUrl}/logo.png`,
     ogUrl: baseUrl,
-    twitterTitle: settings["site_title"] ?? "GIFT Real Estate — Addis Ababa's Most Trusted Property Partner",
+    twitterTitle: settings["site_title"] ?? "GETAS Real Estate — Addis Ababa's Most Trusted Property Partner",
     twitterDescription: description,
     twitterImage: `${baseUrl}/logo.png`,
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "RealEstateAgent",
-      name: "GIFT Real Estate",
+      name: "GETAS Real Estate",
       description,
       url: baseUrl,
       logo: `${baseUrl}/logo.png`,
@@ -173,7 +173,7 @@ export async function buildListingHtml(slug: string, baseUrl: string): Promise<s
   if (!listing) return null;
 
   const priceFormatted = Number(listing.price).toLocaleString("en-US");
-  const title = `${listing.title} — ${listing.status} | GIFT Real Estate`;
+  const title = `${listing.title} — ${listing.status} | GETAS Real Estate`;
   const description = truncate(
     `${listing.status} in ${listing.neighborhood}. ${listing.bedrooms} bed, ${listing.bathrooms} bath, ${listing.sizeSqm} m². ${listing.priceUnit === "ETB/month" ? `ETB ${priceFormatted}/month` : `USD ${priceFormatted}`}. ${listing.description}`,
     160,
@@ -231,7 +231,7 @@ export async function buildBlogPostHtml(slug: string, baseUrl: string): Promise<
 
   if (!post) return null;
 
-  const title = `${post.title} | GIFT Real Estate Blog`;
+  const title = `${post.title} | GETAS Real Estate Blog`;
   const description = truncate(post.excerpt, 160);
   const image = toAbsoluteUrl(post.image, baseUrl);
   const url = `${baseUrl}/blog/${post.slug}`;
@@ -260,7 +260,7 @@ export async function buildBlogPostHtml(slug: string, baseUrl: string): Promise<
       },
       publisher: {
         "@type": "Organization",
-        name: "GIFT Real Estate",
+        name: "GETAS Real Estate",
         logo: {
           "@type": "ImageObject",
           url: `${baseUrl}/logo.png`,

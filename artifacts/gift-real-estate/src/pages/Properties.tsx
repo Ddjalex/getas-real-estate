@@ -30,14 +30,14 @@ export default function Properties() {
   }, [listings, filterType, filterLocation, filterBeds]);
 
   return (
-    <div className="min-h-screen bg-[#FDFDF8] pt-24 pb-16">
+    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-16">
       <SEO
         title="Properties in Addis Ababa — For Sale & Rent"
-        description="Browse premium residential and commercial properties for sale and rent across Addis Ababa. Villas, apartments, office spaces and more from GIFT Real Estate."
+        description="Browse premium residential and commercial properties for sale and rent across Addis Ababa. Villas, apartments, office spaces and more from GETAS Real Estate."
         path="/properties"
       />
 
-      <div className="bg-[#0F2E24] text-white py-12 mb-12">
+      <div className="bg-[#1A1A1A] text-white py-12 mb-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Properties in Addis Ababa</h1>
           <p className="text-white/80 max-w-2xl mx-auto">
@@ -51,7 +51,7 @@ export default function Properties() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Purpose</label>
-              <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#14261F] focus:outline-none focus:border-[#1C4C3B]">
+              <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
                 <option value="all">Any (Sale & Rent)</option>
                 <option value="sale">For Sale</option>
                 <option value="rent">For Rent</option>
@@ -59,7 +59,7 @@ export default function Properties() {
             </div>
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Location</label>
-              <select value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#14261F] focus:outline-none focus:border-[#1C4C3B]">
+              <select value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
                 <option value="all">All Areas</option>
                 {uniqueLocations.map((loc) => (
                   <option key={loc} value={loc.toLowerCase()}>{loc}</option>
@@ -68,7 +68,7 @@ export default function Properties() {
             </div>
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bedrooms</label>
-              <select value={filterBeds} onChange={(e) => setFilterBeds(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#14261F] focus:outline-none focus:border-[#1C4C3B]">
+              <select value={filterBeds} onChange={(e) => setFilterBeds(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
                 <option value="all">Any Beds</option>
                 <option value="1">1 Bed</option>
                 <option value="2">2 Beds</option>

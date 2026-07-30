@@ -50,79 +50,79 @@
 }
 
 :root {
-  --background: 60 50% 98%;      /* #FDFDF8 Cream */
-  --foreground: 157 31% 11%;     /* #14261F Body text */
-  --border: 159 20% 85%;
-  --input: 159 20% 85%;
-  --ring: 48 68% 54%;            /* Gold */
+  --background: 0 0% 100%;          /* #FFFFFF White */
+  --foreground: 0 0% 10%;           /* #1A1A1A Body text */
+  --border: 0 0% 85%;
+  --input: 0 0% 85%;
+  --ring: 358 78% 50%;              /* #E31E24 Red */
 
   --card: 0 0% 100%;
-  --card-foreground: 157 31% 11%;
-  --card-border: 159 20% 85%;
+  --card-foreground: 0 0% 10%;
+  --card-border: 0 0% 85%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 157 31% 11%;
-  --popover-border: 159 20% 85%;
+  --popover-foreground: 0 0% 10%;
+  --popover-border: 0 0% 85%;
 
-  --primary: 48 68% 54%;         /* #D9B93C Gold */
-  --primary-foreground: 161 51% 12%; /* #0F2E24 Deep Green */
+  --primary: 358 78% 50%;           /* #E31E24 Brand Red */
+  --primary-foreground: 0 0% 100%;  /* White */
 
-  --secondary: 159 46% 20%;      /* #1C4C3B Primary Dark Green */
-  --secondary-foreground: 60 50% 98%;
+  --secondary: 0 0% 10%;            /* #1A1A1A Near-black */
+  --secondary-foreground: 0 0% 100%;
 
-  --muted: 159 15% 90%;
-  --muted-foreground: 159 10% 40%;
+  --muted: 0 0% 92%;
+  --muted-foreground: 0 0% 40%;
 
-  --accent: 48 68% 54%;
-  --accent-foreground: 161 51% 12%;
+  --accent: 358 78% 50%;            /* #E31E24 Red */
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
-  --destructive-foreground: 60 50% 98%;
+  --destructive-foreground: 0 0% 100%;
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: 'Playfair Display', serif;
   
   --radius: 0.5rem;
   
-  --shadow-2xs: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
-  --shadow-xs: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
-  --shadow-sm: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 1px 2px -1px rgba(15, 46, 36, 0.05);
-  --shadow: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 1px 2px -1px rgba(15, 46, 36, 0.05);
-  --shadow-md: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 2px 4px -1px rgba(15, 46, 36, 0.05);
-  --shadow-lg: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 4px 6px -1px rgba(15, 46, 36, 0.05);
-  --shadow-xl: 0px 2px 0px 0px rgba(15, 46, 36, 0.05), 0px 8px 10px -1px rgba(15, 46, 36, 0.05);
-  --shadow-2xl: 0px 2px 0px 0px rgba(15, 46, 36, 0.05);
+  --shadow-2xs: 0px 2px 0px 0px rgba(26, 26, 26, 0.05);
+  --shadow-xs: 0px 2px 0px 0px rgba(26, 26, 26, 0.05);
+  --shadow-sm: 0px 2px 0px 0px rgba(26, 26, 26, 0.05), 0px 1px 2px -1px rgba(26, 26, 26, 0.05);
+  --shadow: 0px 2px 0px 0px rgba(26, 26, 26, 0.05), 0px 1px 2px -1px rgba(26, 26, 26, 0.05);
+  --shadow-md: 0px 2px 0px 0px rgba(26, 26, 26, 0.05), 0px 2px 4px -1px rgba(26, 26, 26, 0.05);
+  --shadow-lg: 0px 2px 0px 0px rgba(26, 26, 26, 0.05), 0px 4px 6px -1px rgba(26, 26, 26, 0.05);
+  --shadow-xl: 0px 2px 0px 0px rgba(26, 26, 26, 0.05), 0px 8px 10px -1px rgba(26, 26, 26, 0.05);
+  --shadow-2xl: 0px 2px 0px 0px rgba(26, 26, 26, 0.05);
 }
 
 .dark {
-  --background: 161 51% 12%;      /* #0F2E24 */
-  --foreground: 60 50% 98%;
-  --border: 159 46% 20%;
-  --input: 159 46% 20%;
-  --ring: 48 68% 54%;
+  --background: 0 0% 10%;           /* #1A1A1A */
+  --foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 358 78% 50%;
 
-  --card: 159 46% 16%;
-  --card-foreground: 60 50% 98%;
-  --card-border: 159 46% 20%;
+  --card: 0 0% 15%;
+  --card-foreground: 0 0% 100%;
+  --card-border: 0 0% 20%;
 
-  --popover: 159 46% 16%;
-  --popover-foreground: 60 50% 98%;
-  --popover-border: 159 46% 20%;
+  --popover: 0 0% 15%;
+  --popover-foreground: 0 0% 100%;
+  --popover-border: 0 0% 20%;
 
-  --primary: 48 68% 54%;
-  --primary-foreground: 161 51% 12%;
+  --primary: 358 78% 50%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 159 46% 20%;
-  --secondary-foreground: 60 50% 98%;
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 100%;
 
-  --muted: 159 46% 20%;
-  --muted-foreground: 159 20% 70%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 70%;
 
-  --accent: 48 68% 54%;
-  --accent-foreground: 161 51% 12%;
+  --accent: 358 78% 50%;
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
-  --destructive-foreground: 60 50% 98%;
+  --destructive-foreground: 0 0% 100%;
 }
 
 @layer base {

@@ -3,7 +3,7 @@ import { db, listingsTable, blogPostsTable } from "@workspace/db";
 
 const router = Router();
 
-const SITE_URL = "https://giftrealestate.et";
+const SITE_URL = "https://getasrealestate.et";
 
 router.get("/sitemap.xml", async (_req, res) => {
   try {
