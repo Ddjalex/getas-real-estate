@@ -107,6 +107,21 @@ export function Footer() {
             <span className="text-white/50 text-sm hover:text-white cursor-pointer transition-colors">Terms of Service</span>
           </div>
         </div>
+
+        {/* Neo Digital Solutions credit — always visible */}
+        <div className="border-t border-white/5 mt-6 pt-5 flex justify-center">
+          <a
+            href="https://neodigitalsolutions.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-medium tracking-wide select-none"
+            style={{ textDecoration: "none" }}
+          >
+            <span className="neo-credit-text">Made with</span>
+            <span className="neo-credit-heart text-xs">❤️</span>
+            <span className="neo-credit-text">by Neodigitalsolutions</span>
+          </a>
+        </div>
       </div>
     </footer>
   );

@@ -169,3 +169,47 @@
   transform: translateY(-4px) scale(1.015);
   box-shadow: 0 20px 40px -8px rgba(15, 46, 36, 0.18);
 }
+
+/* ── Neo Digital Solutions credit — reflector shimmer ────────────────── */
+@keyframes neo-reflector {
+  0%   { background-position: -250% center; }
+  60%  { background-position: 250% center; }
+  100% { background-position: 250% center; }
+}
+
+@keyframes neo-heartbeat {
+  0%, 100% { transform: scale(1);   }
+  14%       { transform: scale(1.25); }
+  28%       { transform: scale(1);   }
+  42%       { transform: scale(1.15); }
+  56%       { transform: scale(1);   }
+}
+
+.neo-credit-text {
+  background: linear-gradient(
+    100deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.45) 30%,
+    rgba(255,255,255,1)    48%,
+    rgba(255,255,255,1)    52%,
+    rgba(255,255,255,0.45) 70%,
+    rgba(255,255,255,0.45) 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: neo-reflector 3s ease-in-out infinite;
+}
+
+.neo-credit-heart {
+  display: inline-block;
+  animation: neo-heartbeat 1.8s ease-in-out infinite;
+  -webkit-text-fill-color: #E31E24;
+  color: #E31E24;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-credit-text  { animation: none; }
+  .neo-credit-heart { animation: none; }
+}
