@@ -50,8 +50,11 @@ app.use("/api", router);
 
 // ── Serve uploaded images (dev + production) ──────────────────────────────
 // uploads/ lives at the app root (sibling of dist/), so it persists across
-// rebuilds and redeploys. Accessible at /uploads/<filename>.
+// rebuilds and redeploys.
+// /uploads/<filename>      — cPanel production (frontend + API on same origin)
+// /api/uploads/<filename>  — Replit dev proxy (API server mounted at /api prefix)
 app.use("/uploads", express.static(uploadsDir));
+app.use("/api/uploads", express.static(uploadsDir));
 
 // ── Production: serve the built React app ────────────────────────────────────
 // In dev (Replit) the public dir doesn't exist, so this block is a no-op.

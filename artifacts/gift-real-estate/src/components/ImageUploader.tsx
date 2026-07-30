@@ -24,7 +24,7 @@ export function ImageUploader({ values, onChange, multiple = true, label = "Imag
     if (p.startsWith("data:") || p.startsWith("http")) return p;
     // Local uploads: prepend the app base path so the URL is correct in both
     // dev (proxied via Replit) and production (served from root)
-    if (p.startsWith("/uploads/")) return `${BASE}${p}`;
+    if (p.startsWith("/uploads/")) return `${BASE}/api${p}`;
     // Legacy /objects/ paths — object storage no longer available; show placeholder
     if (p.startsWith("/objects/")) return FALLBACK_IMG;
     return p;
