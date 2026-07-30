@@ -227,9 +227,7 @@ export default function Home() {
         <HeroSlider slides={heroSlides} />
 
         <div className="container relative z-20 mx-auto px-4 text-center mt-14 sm:mt-16">
-          <span className="hero-badge inline-block px-4 py-1 border border-[#E31E24] text-[#E31E24] text-sm font-bold tracking-widest uppercase mb-6 rounded-sm backdrop-blur-sm bg-black/20">
-            Est. 1990
-          </span>
+
           <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg max-w-4xl mx-auto leading-tight">
             {HEADLINE_WORDS.map((word, i) => (
               <span key={i} className="inline-block overflow-hidden align-bottom" style={{ marginRight: "0.28em" }}>
