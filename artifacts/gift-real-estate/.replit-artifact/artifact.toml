@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "GIFT Real Estate"
+title = "GETAS"
 version = "1.0.0"
 id = "artifacts/gift-real-estate"
 router = "path"
