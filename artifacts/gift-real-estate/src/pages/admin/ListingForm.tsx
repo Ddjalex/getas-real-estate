@@ -114,12 +114,6 @@ export default function ListingForm() {
               placeholder: "e.g. Luxury Apartment in Bole",
             })}
 
-            {/* Slug shown read-only so admin can see what will be used for SEO URLs */}
-            {form.slug && (
-              <div className="text-xs text-gray-400">
-                SEO slug (auto-generated): <span className="font-mono text-gray-600">{form.slug}</span>
-              </div>
-            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
