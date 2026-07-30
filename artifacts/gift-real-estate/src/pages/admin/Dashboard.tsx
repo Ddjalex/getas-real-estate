@@ -6,7 +6,7 @@ import { ImageUploader } from "@/components/ImageUploader";
 import {
   Building2, FileText, MessageSquare, LogOut, Plus, Trash2, Pencil, Eye,
   Users, Layers, Phone, Settings, MapPin, Globe, Info, MessageCircle,
-  Image, ChevronUp, ChevronDown, ToggleLeft, ToggleRight,
+  Image, ChevronUp, ChevronDown, ToggleLeft, ToggleRight, Star,
 } from "lucide-react";
 
 type Tab = "listings" | "blog" | "agents" | "services" | "inquiries" | "contact" | "hero" | "about" | "settings";
@@ -653,6 +653,25 @@ export default function AdminDashboard() {
     else if (tab === "services") { await admin.services.delete(id); setServices((p) => p.filter((s) => s.id !== id)); }
   };
 
+  const toggleFeatured = async (id: string, current: boolean) => {
+    // Optimistic update
+    setListings((prev) =>
+      (prev as { id: string; featured: boolean }[]).map((l) =>
+        l.id === id ? { ...l, featured: !current } : l
+      )
+    );
+    try {
+      await admin.listings.update(id, { featured: !current } as never);
+    } catch {
+      // Revert on failure
+      setListings((prev) =>
+        (prev as { id: string; featured: boolean }[]).map((l) =>
+          l.id === id ? { ...l, featured: current } : l
+        )
+      );
+    }
+  };
+
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: "listings", label: "Listings", icon: <Building2 size={14} /> },
     { id: "blog", label: "Blog Posts", icon: <FileText size={14} /> },
@@ -713,18 +732,30 @@ export default function AdminDashboard() {
                 </div>
                 {loading ? <div className="p-8 text-center text-gray-400">Loading…</div> : (
                   <div className="divide-y">
-                    {(listings as { id: string; title: string; type: string; price: string; location: string; status: string; images: string[] }[]).map((l) => (
+                    {(listings as { id: string; title: string; type: string; price: string; location: string; status: string; images: string[]; featured: boolean }[]).map((l) => (
                       <div key={l.id} className="px-6 py-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                           {l.images?.[0] && (
                             <img src={resolveImageUrl(l.images[0])} alt="" className="w-14 h-10 rounded object-cover bg-gray-100 flex-shrink-0" />
                           )}
                           <div>
-                            <div className="font-medium text-gray-800">{l.title}</div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-gray-800">{l.title}</span>
+                              {l.featured && (
+                                <span className="text-xs bg-[#E31E24]/10 text-[#E31E24] font-bold px-2 py-0.5 rounded-full">Featured</span>
+                              )}
+                            </div>
                             <div className="text-sm text-gray-500">{l.status} · {l.location} · ETB {Number(l.price).toLocaleString("en-ET")}{l.type === "rent" ? "/mo" : ""}</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
+                          <button
+                            onClick={() => toggleFeatured(l.id, l.featured)}
+                            title={l.featured ? "Remove from featured" : "Mark as featured"}
+                            className={l.featured ? "text-[#E31E24]" : "text-gray-300 hover:text-[#E31E24]"}
+                          >
+                            <Star size={16} fill={l.featured ? "currentColor" : "none"} />
+                          </button>
                           <Link href={`/properties/${l.id}`} target="_blank" className="text-gray-400 hover:text-[#E31E24]"><Eye size={16} /></Link>
                           <Link href={`/admin/listings/${l.id}/edit`} className="text-gray-400 hover:text-[#E31E24]"><Pencil size={16} /></Link>
                           <button onClick={() => deleteItem(l.id)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>

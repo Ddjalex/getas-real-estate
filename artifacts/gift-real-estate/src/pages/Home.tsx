@@ -275,31 +275,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Listings */}
-      <section className="section-enter py-20 bg-[#FFFFFF]">
-        <div className="container mx-auto px-4">
-          <div className="featured-header flex items-end justify-between mb-12">
-            <div>
-              <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-2">Handpicked for You</p>
-              <h2 className="font-serif text-4xl font-bold text-[#1A1A1A]">Featured Properties</h2>
+      {/* Featured Listings — hidden entirely when no featured properties exist */}
+      {(isLoading || featuredListings.length > 0) && (
+        <section className="section-enter py-20 bg-[#FFFFFF]">
+          <div className="container mx-auto px-4">
+            <div className="featured-header flex items-end justify-between mb-12">
+              <div>
+                <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-2">Handpicked for You</p>
+                <h2 className="font-serif text-4xl font-bold text-[#1A1A1A]">Featured Properties</h2>
+              </div>
+              <Link href="/properties" className="text-[#E31E24] font-bold text-sm tracking-wider uppercase border-b-2 border-[#E31E24] pb-1 hover:text-[#E31E24] transition-colors hidden md:block">
+                View All →
+              </Link>
             </div>
-            <Link href="/properties" className="text-[#E31E24] font-bold text-sm tracking-wider uppercase border-b-2 border-[#E31E24] pb-1 hover:text-[#E31E24] transition-colors hidden md:block">
-              View All →
-            </Link>
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[1,2,3].map((i) => <div key={i} className="h-80 bg-gray-100 rounded-sm animate-pulse" />)}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {featuredListings.map((listing) => (
+                  <PropertyCard key={listing.id} listing={listing} />
+                ))}
+              </div>
+            )}
           </div>
-          {featuredListings.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredListings.map((listing) => (
-                <PropertyCard key={listing.id} listing={listing} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1,2,3].map((i) => <div key={i} className="h-80 bg-gray-100 rounded-sm animate-pulse" />)}
-            </div>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Why GETAS */}
       <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24">
