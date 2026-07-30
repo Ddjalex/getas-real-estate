@@ -7,11 +7,11 @@ const router = Router();
 
 // Default contact info keys
 const DEFAULTS: Record<string, string> = {
-  phone: "+251 11 465 1234",
-  whatsapp: "+251911234567",
-  location: "GIFT Tower, 8th Floor, Bole Road, Near Olympia, Addis Ababa, Ethiopia",
+  phone: "",
+  whatsapp: "",
+  location: "",
   portfolio: "",
-  email: "info@giftrealestate.com",
+  email: "",
   otherInfo: "",
 };
 

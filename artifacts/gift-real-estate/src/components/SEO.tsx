@@ -95,7 +95,7 @@ export function localBusinessJsonLd() {
       addressLocality: "Addis Ababa",
       addressCountry: "ET",
     },
-    telephone: "+251114651234",
+    telephone: "",
     priceRange: "$$$$",
   };
 }

@@ -14,7 +14,7 @@ export function Header() {
     queryFn: fetchSiteSettings,
     staleTime: 5 * 60 * 1000,
   });
-  const phone = settings?.phone || "+251 11 465 1234";
+  const phone = settings?.phone || "";
 
   useEffect(() => {
     const handleScroll = () => {

@@ -155,12 +155,8 @@ export async function buildHomeHtml(baseUrl: string): Promise<string | null> {
       description,
       url: baseUrl,
       logo: `${baseUrl}/logo.png`,
-      telephone: "+251114651234",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Addis Ababa",
-        addressCountry: "ET",
-      },
+      ...(settings["phone"] ? { telephone: settings["phone"] } : {}),
+      ...(settings["location"] ? { address: { "@type": "PostalAddress", streetAddress: settings["location"], addressCountry: "ET" } } : {}),
       foundingDate: "1990",
     },
   };

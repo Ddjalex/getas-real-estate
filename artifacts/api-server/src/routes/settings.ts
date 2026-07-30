@@ -4,11 +4,11 @@ import { db, siteSettingsTable } from "@workspace/db";
 const router = Router();
 
 const DEFAULTS: Record<string, string> = {
-  phone: "+251 11 465 1234",
-  whatsapp: "+251911234567",
-  location: "GIFT Tower, 8th Floor, Bole Road, Near Olympia, Addis Ababa, Ethiopia",
+  phone: "",
+  whatsapp: "",
+  location: "",
   portfolio: "",
-  email: "info@giftrealestate.com",
+  email: "",
   otherInfo: "",
   about_hero_heading: "",
   about_hero_subtext: "",

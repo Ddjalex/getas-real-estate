@@ -11,10 +11,10 @@ export function Footer() {
     staleTime: 5 * 60 * 1000,
   });
 
-  const phone = settings?.phone || "+251 11 465 1234";
-  const whatsapp = settings?.whatsapp || "+251911234567";
-  const location = settings?.location || "GIFT Tower, 8th Floor, Bole Road, Near Olympia, Addis Ababa, Ethiopia";
-  const email = settings?.email || "info@giftrealestate.com";
+  const phone = settings?.phone || "";
+  const whatsapp = settings?.whatsapp || "";
+  const location = settings?.location || "";
+  const email = settings?.email || "";
   const whatsappNum = whatsapp.replace(/[\s+]/g, "");
 
   return (
@@ -23,7 +23,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Info */}
           <div className="col-span-1 lg:col-span-1 flex flex-col items-start">
-            <img src="/logo.png" alt="GIFT Real Estate" className="h-16 w-auto mb-6 object-contain" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="GIFT Real Estate" className="h-16 w-auto mb-6 object-contain" />
             <h3 className="font-serif text-2xl font-bold text-[#D9B93C] mb-2">GIFT Real Estate</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Ethiopia’s most trusted real estate partner since 1990. We build communities, not just houses.
