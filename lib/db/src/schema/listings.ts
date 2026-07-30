@@ -22,6 +22,7 @@ export const listingsTable = pgTable("listings", {
   latitude: doublePrecision("latitude"),
   longitude: doublePrecision("longitude"),
   mapsUrl: text("maps_url"),
+  features: text("features").array().notNull().default([]),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
 });

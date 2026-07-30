@@ -10,6 +10,7 @@ function resolveImageUrl(path: string | undefined): string {
   if (!path) return FALLBACK_IMAGE;
   if (path.startsWith("http")) return path;
   if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  if (path.startsWith("/uploads/")) return `${BASE}/api${path}`;
   return path;
 }
 import { PropertyCard } from "@/components/PropertyCard";
@@ -226,16 +227,18 @@ export default function PropertyDetail() {
               <p className="whitespace-pre-line leading-relaxed text-gray-700 text-lg">{listing.description}</p>
             </div>
 
-            <div className="mb-12">
-              <h2 className="font-serif text-2xl font-bold text-[#1A1A1A] mb-4">Features & Amenities</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {["Secure Compound", "Backup Generator", "Ample Parking", "Modern Kitchen", "Water Reserve Tank", "Paved Access Road"].map((feature, i) => (
-                  <div key={i} className="flex items-center gap-2 text-gray-700">
-                    <Check size={18} className="text-[#E31E24]" /> <span>{feature}</span>
-                  </div>
-                ))}
+            {listing.features && listing.features.length > 0 && (
+              <div className="mb-12">
+                <h2 className="font-serif text-2xl font-bold text-[#1A1A1A] mb-4">Features & Amenities</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {listing.features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-gray-700">
+                      <Check size={18} className="text-[#E31E24]" /> <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="mb-12">
               <h2 className="font-serif text-2xl font-bold text-[#1A1A1A] mb-4">Location</h2>

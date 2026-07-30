@@ -18,6 +18,7 @@ function resolveImageUrl(path: string) {
   if (!path) return "";
   if (path.startsWith("http")) return path;
   if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
+  if (path.startsWith("/uploads/")) return `${BASE}/api${path}`;
   return path;
 }
 

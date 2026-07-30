@@ -22,8 +22,26 @@ const EMPTY: Partial<Listing> = {
   location: "", neighborhood: "", bedrooms: 0, bathrooms: 0, sizeSqm: 0,
   description: "", images: [], status: "For Sale", featured: false,
   dateAdded: new Date().toISOString().split("T")[0] + "T00:00:00Z",
-  latitude: null, longitude: null, mapsUrl: null,
+  latitude: null, longitude: null, mapsUrl: null, features: [],
 };
+
+const ALL_FEATURES = [
+  "Secure Compound",
+  "Backup Generator",
+  "Ample Parking",
+  "Modern Kitchen",
+  "Water Reserve Tank",
+  "Paved Access Road",
+  "Swimming Pool",
+  "Gym / Fitness Center",
+  "24/7 Security",
+  "CCTV",
+  "Elevator",
+  "Garden / Landscaping",
+  "Balcony / Terrace",
+  "Solar Power",
+  "Furnished",
+];
 
 export default function ListingForm() {
   const { id } = useParams<{ id: string }>();
@@ -190,6 +208,31 @@ export default function ListingForm() {
                 lng={form.longitude ?? null}
                 onChange={(lat, lng) => setForm((f) => ({ ...f, latitude: lat, longitude: lng }))}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Features &amp; Amenities</label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {ALL_FEATURES.map((feature) => {
+                  const checked = (form.features ?? []).includes(feature);
+                  return (
+                    <label key={feature} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) => {
+                          const current = form.features ?? [];
+                          set("features", e.target.checked
+                            ? [...current, feature]
+                            : current.filter((f) => f !== feature));
+                        }}
+                        className="w-4 h-4 accent-[#E31E24]"
+                      />
+                      {feature}
+                    </label>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="flex items-center gap-3">

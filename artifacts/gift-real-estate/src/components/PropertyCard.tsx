@@ -14,6 +14,7 @@ function resolveImage(path: string | undefined): string {
   if (path.startsWith("http")) return path;
   const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
   if (path.startsWith("/objects/")) return `${BASE}/api/storage${path}`;
+  if (path.startsWith("/uploads/")) return `${BASE}/api${path}`;
   return path;
 }
 
@@ -29,7 +30,7 @@ export function PropertyCard({ listing }: PropertyCardProps) {
         <img
           src={resolveImage(listing.images?.[0])}
           alt={listing.title}
-          className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
         />
