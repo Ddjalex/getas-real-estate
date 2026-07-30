@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 
 const SITE_NAME = "GETAS Real Estate";
 const DEFAULT_DESCRIPTION =
-  "Addis Ababa's most trusted real estate agency since 1990. Browse premium properties for sale and rent in Ethiopia.";
+  "Premium real estate developments in Addis Ababa by GETAS — a division of Get-As International Plc. Browse luxury apartments, commercial spaces, and residential properties.";
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200";
 const SITE_URL = "https://getasrealestate.et";
 
@@ -89,7 +89,7 @@ export function localBusinessJsonLd() {
     logo: `${SITE_URL}/logo.png`,
     image: DEFAULT_IMAGE,
     description: DEFAULT_DESCRIPTION,
-    foundingDate: "1990",
+    foundingDate: "1994",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Addis Ababa",

@@ -35,10 +35,10 @@ export default function Contact() {
     inquiry.mutate();
   };
 
-  const phone = settings?.phone || "+251 11 465 1234";
-  const whatsapp = settings?.whatsapp || "+251911234567";
-  const location = settings?.location || "Bole Sub-City, Woreda 03\nAddis Ababa, Ethiopia";
-  const email = settings?.email || "info@getasrealestate.com";
+  const phone = settings?.phone || "";
+  const whatsapp = settings?.whatsapp || "";
+  const location = settings?.location || "";
+  const email = settings?.email || "";
   const portfolio = settings?.portfolio || "";
   const otherInfo = settings?.otherInfo || "";
 

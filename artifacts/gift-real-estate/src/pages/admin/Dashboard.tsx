@@ -431,7 +431,7 @@ function SettingsTab({ currentUsername }: { currentUsername: string }) {
 type Milestone = { year: string; title: string; desc: string };
 
 const DEFAULT_MILESTONES: Milestone[] = [
-  { year: "1990", title: "Foundation", desc: "GETAS Real Estate established in Addis Ababa with a small office in Piazza." },
+  { year: "1994", title: "Foundation", desc: "Get-As International Plc. established in Addis Ababa." },
   { year: "2002", title: "First Mega Project", desc: "Successfully completed and delivered a 50-villa complex in CMC, setting a new standard for gated communities." },
   { year: "2015", title: "Commercial Expansion", desc: "Launched the commercial real estate division, managing premium office spaces in Bole and Kazanchis." },
   { year: "2024", title: "Modern Era", desc: "Celebrating over three decades of trust with a portfolio of over 1,200 managed and sold properties." },
@@ -513,7 +513,7 @@ function AboutTab() {
                 onChange={(e) => setFields({ ...fields, about_hero_subtext: e.target.value })}
                 rows={2}
                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24] resize-none"
-                placeholder="Building Ethiopia's future since 1990…"
+                placeholder="A division of Get-As International Plc. since 2005…"
               />
             </div>
           </div>
@@ -564,7 +564,7 @@ function AboutTab() {
                       value={ms.year}
                       onChange={(e) => updateMilestone(i, "year", e.target.value)}
                       className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E31E24]"
-                      placeholder="1990"
+                      placeholder="1994"
                     />
                   </div>
                   <div className="flex-1">

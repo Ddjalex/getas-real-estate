@@ -85,8 +85,8 @@ gsap.registerPlugin(ScrollTrigger);
 const HEADLINE_WORDS = ["Addis", "Ababa's", "Most", "Trusted", "Real", "Estate", "Partner"];
 
 const STATS = [
-  { target: 34,   suffix: "+", label: "Years in Business" },
-  { target: 500,  suffix: "+", label: "Properties Sold" },
+  { target: 21,   suffix: "+", label: "Years in Real Estate" },
+  { target: 500,  suffix: "+", label: "Properties Delivered" },
   { target: 1200, suffix: "+", label: "Happy Clients" },
   { target: 98,   suffix: "%", label: "Satisfaction Rate" },
 ];
@@ -236,7 +236,7 @@ export default function Home() {
             ))}
           </h1>
           <p className="hero-sub text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light drop-shadow-md">
-            Discover premium homes, luxury apartments, and prime commercial spaces with a legacy of 34 years of excellence.
+            Discover premium homes, luxury apartments, and prime commercial spaces — a division of Get-As International Plc. since 2005.
           </p>
           <div className="hero-search flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
             <Link
@@ -310,10 +310,10 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: <Award size={36} className="text-[#E31E24]" />, title: "34 Years of Trust", desc: "A proven track record since 1990 in Ethiopia's real estate market." },
-              { icon: <MapPin size={36} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of every Addis Ababa neighborhood and its investment potential." },
-              { icon: <ShieldCheck size={36} className="text-[#E31E24]" />, title: "Verified Listings", desc: "Every property is thoroughly vetted for legal compliance and quality." },
-              { icon: <TrendingUp size={36} className="text-[#E31E24]" />, title: "Investment ROI", desc: "We help you find properties that generate long-term value and returns." },
+              { icon: <Award size={36} className="text-[#E31E24]" />, title: "20+ Years in Real Estate", desc: "Part of Get-As International Plc., delivering quality developments across Ethiopia since 2005." },
+              { icon: <MapPin size={36} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of Addis Ababa — from Kazanchis to Bole — and each neighborhood's investment potential." },
+              { icon: <ShieldCheck size={36} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
+              { icon: <TrendingUp size={36} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
             ].map((item, i) => (
               <div key={i} className="why-item bg-white/5 border border-white/10 p-8 rounded-sm hover:bg-white/10 transition-colors">
                 <div className="mb-4">{item.icon}</div>

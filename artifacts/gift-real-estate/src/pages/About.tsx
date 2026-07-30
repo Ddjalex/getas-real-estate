@@ -18,16 +18,16 @@ type Milestone = { year: string; title: string; desc: string };
 
 const DEFAULT_HERO_HEADING = "About GETAS Real Estate";
 const DEFAULT_HERO_SUBTEXT =
-  "Building Ethiopia's future since 1990. We are more than a real estate agency; we are architects of communities and custodians of trust.";
+  "A division of Get-As International Plc., bringing over 20 years of real estate expertise to Addis Ababa. We deliver high-quality residential, commercial, and mixed-use developments that shape the city's modern skyline.";
 const DEFAULT_MISSION =
-  "To provide unparalleled real estate services in Ethiopia through transparency, ethical practices, and deep local expertise. We strive to connect families with their dream homes and investors with lucrative opportunities, contributing to the structural and economic growth of Addis Ababa.";
+  "To deliver high-quality residential, commercial, and mixed-use developments that meet international standards while reflecting local needs. We are committed to transparency, ethical practices, and long-term value creation for families, businesses, and investors across Ethiopia.";
 const DEFAULT_VISION =
-  "To remain the most trusted, respected, and innovative real estate institution in East Africa. We envision a modernized Addis Ababa where quality housing and commercial infrastructure are accessible, sustainable, and built to world-class standards.";
+  "To be East Africa's most trusted real estate developer — building communities where quality housing and modern commercial infrastructure are accessible, sustainable, and built to world-class standards. We envision a modernized Addis Ababa shaped by integrity and innovation.";
 const DEFAULT_MILESTONES: Milestone[] = [
-  { year: "1990", title: "Foundation", desc: "GETAS Real Estate established in Addis Ababa with a small office in Piazza." },
-  { year: "2002", title: "First Mega Project", desc: "Successfully completed and delivered a 50-villa complex in CMC, setting a new standard for gated communities." },
-  { year: "2015", title: "Commercial Expansion", desc: "Launched the commercial real estate division, managing premium office spaces in Bole and Kazanchis." },
-  { year: "2024", title: "Modern Era", desc: "Celebrating over three decades of trust with a portfolio of over 1,200 managed and sold properties." },
+  { year: "1994", title: "Foundation", desc: "Get-As International Plc. established in Addis Ababa by two brothers with a shared vision of entrepreneurship and growth." },
+  { year: "2005", title: "Real Estate Division", desc: "GET-As entered real estate development, backed by the technical and material support of Dugda Construction and sister companies." },
+  { year: "2015", title: "Commercial Expansion", desc: "Expanded into premium commercial and mixed-use developments, serving businesses, NGOs, and corporations across Addis Ababa." },
+  { year: "2024", title: "Luxury Living", desc: "Delivered landmark luxury apartment projects at Kazanchis and Summit 72, setting a new benchmark for urban living in Ethiopia." },
 ];
 
 export default function About() {
@@ -58,8 +58,8 @@ export default function About() {
   return (
     <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
-        title="About GETAS Real Estate — 34 Years of Excellence in Addis Ababa"
-        description="Since 1990, GETAS Real Estate has been Addis Ababa's most trusted real estate partner, delivering premium properties and expert investment guidance across Ethiopia."
+        title="About GETAS Real Estate — 20+ Years of Excellence in Addis Ababa"
+        description="A division of Get-As International Plc., GETAS Real Estate has been delivering premium residential and commercial properties across Addis Ababa since 2005."
         path="/about"
         jsonLd={localBusinessJsonLd()}
       />

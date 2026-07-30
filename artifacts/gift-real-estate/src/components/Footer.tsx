@@ -27,7 +27,7 @@ export function Footer() {
             <img src={logoSrc} alt="GETAS Real Estate" className="h-16 w-auto mb-6 object-contain" />
             <h3 className="font-serif text-2xl font-bold text-[#E31E24] mb-2">GETAS Real Estate</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
-              Ethiopia’s most trusted real estate partner since 1990. We build communities, not just houses.
+              A division of Get-As International Plc. Delivering premium residential and commercial developments across Addis Ababa since 2005.
             </p>
           </div>
 
@@ -100,7 +100,7 @@ export function Footer() {
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/50 text-sm">
-            © {new Date().getFullYear()} GETAS Real Estate. Est. 1990. All rights reserved.
+            © {new Date().getFullYear()} GETAS Real Estate. Est. 1994. All rights reserved.
           </p>
           <div className="flex gap-4">
             <span className="text-white/50 text-sm hover:text-white cursor-pointer transition-colors">Privacy Policy</span>

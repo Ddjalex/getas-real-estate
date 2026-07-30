@@ -29,7 +29,7 @@ export default function Services() {
     <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title="Real Estate Services — GETAS Real Estate Addis Ababa"
-        description="Comprehensive property sales, rentals, management and investment consultancy services from GETAS Real Estate, Addis Ababa's most trusted agency since 1990."
+        description="Comprehensive property sales, rentals, management and investment consultancy services from GETAS Real Estate, Addis Ababa's most trusted agency since 2005."
         path="/services"
       />
       <div className="container mx-auto px-4 max-w-6xl">

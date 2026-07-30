@@ -136,7 +136,7 @@ export async function buildHomeHtml(baseUrl: string): Promise<string | null> {
 
   const description =
     settings["site_description"] ??
-    "Discover premium homes, luxury apartments, and prime commercial spaces in Addis Ababa with GETAS Real Estate — 34 years of excellence.";
+    "Discover premium homes, luxury apartments, and prime commercial spaces in Addis Ababa with GETAS Real Estate — a division of Get-As International Plc. since 2005.";
 
   const tags: MetaTags = {
     title: settings["site_title"] ?? "GETAS Real Estate — Addis Ababa's Most Trusted Property Partner",
@@ -157,7 +157,7 @@ export async function buildHomeHtml(baseUrl: string): Promise<string | null> {
       logo: `${baseUrl}/logo.png`,
       ...(settings["phone"] ? { telephone: settings["phone"] } : {}),
       ...(settings["location"] ? { address: { "@type": "PostalAddress", streetAddress: settings["location"], addressCountry: "ET" } } : {}),
-      foundingDate: "1990",
+      foundingDate: "1994",
     },
   };
 
