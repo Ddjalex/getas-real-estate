@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, Phone } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSiteSettings } from "@/lib/api";
+import logoSrc from "@/assets/logo.png";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,7 +55,7 @@ export function Header() {
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-4 group">
           <img
-            src={`${import.meta.env.BASE_URL}logo.png`}
+            src={logoSrc}
             alt="GETAS Real Estate logo"
             className="transition-all duration-700 object-contain drop-shadow-md"
             style={{ width: isScrolled ? 50 : 58, height: isScrolled ? 50 : 58 }}

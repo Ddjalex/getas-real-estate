@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSiteSettings } from "@/lib/api";
+import logoSrc from "@/assets/logo.png";
 
 export function Footer() {
   const { data: settings } = useQuery({
@@ -23,7 +24,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Info */}
           <div className="col-span-1 lg:col-span-1 flex flex-col items-start">
-            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="GETAS Real Estate" className="h-16 w-auto mb-6 object-contain" />
+            <img src={logoSrc} alt="GETAS Real Estate" className="h-16 w-auto mb-6 object-contain" />
             <h3 className="font-serif text-2xl font-bold text-[#E31E24] mb-2">GETAS Real Estate</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Ethiopia’s most trusted real estate partner since 1990. We build communities, not just houses.
