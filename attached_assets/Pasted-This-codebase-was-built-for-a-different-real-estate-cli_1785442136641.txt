@@ -1,0 +1,92 @@
+This codebase was built for a different real estate client (GIFT Real Estate) and is
+being rebranded for a new client: GETAS Real Estate. Do a complete rebrand pass —
+find and replace EVERY reference, not just the obvious ones. Go through this
+checklist systematically:
+
+1. SEARCH THE ENTIRE CODEBASE FOR "GIFT" AND REPLACE WITH "GETAS"
+   - Search all source files (not just component names — also comments, seed data,
+     default/fallback strings, config files, README, .env.example comments) for any
+     occurrence of "GIFT", "Gift Real Estate", "GIFT Real Estate", or similar, and
+     replace with "GETAS Real Estate" / "GETAS" as contextually appropriate.
+   - Pay special attention to:
+     - Fallback/default values used when the database's site_settings table is empty
+       (e.g. `company_name || "GIFT Real Estate"` type fallbacks in code)
+     - SEO defaults in seo.ts / meta tag generation code (title suffixes like
+       "| GIFT Real Estate", default meta descriptions, JSON-LD "name" fields)
+     - Any hardcoded founding year text ("Est. 1990") — ASK ME for GETAS's actual
+       founding year before replacing; don't assume it's also 1990.
+     - Database seed/migration scripts that insert default site settings, agents, or
+       sample listings under the GIFT name.
+     - The admin panel's page title, login page branding, and any "Welcome to GIFT
+       Admin" style text.
+     - package.json "name"/"description" fields.
+     - robots.txt, sitemap.xml generation code, and any manifest.json /
+       site.webmanifest referencing the old brand name.
+
+2. REPLACE THE LOGO AND FAVICON
+   - I'll provide the new GETAS Real Estate logo separately (upload it to the
+     project). Replace:
+     - The logo file used in the header/footer components
+     - favicon.svg / favicon.ico
+     - Any social share default image (og:image fallback) currently using the GIFT
+       logo or a GIFT-branded hero image
+   - The new logo is: bold red "GETAS" wordmark inside a square, with "REAL ESTATE"
+     in black text below it, white background.
+
+3. UPDATE THE COLOR PALETTE (CSS variables / Tailwind config / design tokens)
+   Replace the GIFT green/gold palette with a GETAS red/white/black palette based on
+   their logo:
+   - Primary Red (main brand color, used where dark green was): #E31E24
+   - Deep Red / near-black for high-contrast areas (used where deep green was): #1A1A1A
+     or a very dark red like #7A0F12 — pick whichever reads better once applied; test
+     both if unsure.
+   - Accent: keep white (#FFFFFF) as the clean background, same role cream played
+     before.
+   - Text: near-black (#1A1A1A) for body copy, matching the logo's black
+     "REAL ESTATE" text.
+   - All primary CTA buttons: red background (#E31E24) + white text, hover state
+     inverts to black/dark background + red or white text (test which looks best).
+   - Secondary/outline buttons: red border + red text, transparent background.
+   - Update every place the old green/gold hex values (#1C4C3B, #0F2E24, #D9B93C,
+     #FDFDF8, #14261F) were used — search for these exact hex codes across the
+     codebase (CSS, Tailwind config, inline styles, chart/map marker colors, admin
+     dashboard theme) and replace with the new palette. Don't miss ScrollTrigger/GSAP
+     color-based animations if any exist, or map marker/pin colors on the property
+     detail page.
+
+4. UPDATE SEO/META DEFAULTS AND STRUCTURED DATA
+   - Change the JSON-LD RealEstateAgent "name" field, "logo", and any hardcoded
+     "foundingDate" to GETAS's info (ask me for founding year, address, phone if not
+     already provided — don't guess these).
+   - Update default meta title format from "... | GIFT Real Estate" to
+     "... | GETAS Real Estate".
+   - Update default/fallback meta description text.
+   - Update Open Graph og:site_name if present.
+
+5. UPDATE DATABASE SEED DATA
+   - If there's a seed script that pre-populates site_settings, agents, or sample
+     listings with GIFT-branded placeholder data, update the company name references
+     there too, OR clear it so the admin can input GETAS's real info fresh through
+     the Site Settings panel once deployed (ask me which I prefer if it's ambiguous).
+   - Do NOT carry over GIFT's actual contact info (phone/address/email) as GETAS's —
+     leave those blank/placeholder for the admin to fill in with real GETAS details
+     via the Site Settings panel, since this is a different business.
+
+6. DOUBLE-CHECK ADMIN CREDENTIALS
+   - If there's a seeded default admin login (email/password) left over from the GIFT
+     project, do NOT keep the same credentials — generate a fresh admin account (or
+     prompt me to set one) so the old GIFT admin login doesn't accidentally work on
+     the GETAS site.
+
+7. FINAL VERIFICATION
+   - Run a project-wide search for the literal string "GIFT" (case-insensitive) one
+     more time after all changes and report back if anything still matches — that's
+     the sign something was missed.
+   - Confirm the new color palette is applied consistently across: header, footer,
+     hero, buttons, property card tags/badges, admin dashboard UI, and any charts/maps.
+   - Take a screenshot or describe the homepage after changes so I can visually
+     confirm the rebrand before we move on.
+
+Before making founding-year, address, or phone-number-specific changes, ASK ME for
+GETAS's real details rather than assuming or reusing GIFT's — get everything else
+done first and flag exactly which pieces of info you're missing at the end.
