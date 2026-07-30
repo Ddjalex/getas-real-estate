@@ -214,6 +214,7 @@ async function adminFetch(path: string, init?: RequestInit) {
 export const admin = {
   listings: {
     list: (): Promise<Listing[]> => adminFetch("/admin/listings"),
+    get: (id: string): Promise<Listing> => adminFetch(`/admin/listings/${id}`),
     create: (data: Partial<Listing>): Promise<Listing> =>
       adminFetch("/admin/listings", { method: "POST", body: JSON.stringify(data) }),
     update: (id: string, data: Partial<Listing>): Promise<Listing> =>

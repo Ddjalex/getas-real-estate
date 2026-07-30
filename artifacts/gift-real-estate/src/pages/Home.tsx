@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useQuery } from "@tanstack/react-query";
-import { fetchListings, fetchHeroSlides, type HeroSlide } from "@/lib/api";
+import { fetchListings, fetchHeroSlides, fetchSiteSettings, type HeroSlide } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO, localBusinessJsonLd, trackEvent } from "@/components/SEO";
 import { Search, MapPin, Building2, ShieldCheck, Award, TrendingUp } from "lucide-react";
@@ -110,6 +110,12 @@ export default function Home() {
     queryKey: ["hero-slides"],
     queryFn: fetchHeroSlides,
   });
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: fetchSiteSettings,
+    staleTime: 5 * 60 * 1000,
+  });
+  const phone = settings?.phone || "";
   const featuredListings = allListings.filter((l) => l.featured).slice(0, 3);
 
   const homeRef       = useRef<HTMLDivElement>(null);
@@ -217,10 +223,10 @@ export default function Home() {
       />
 
       {/* Hero */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] sm:h-[85vh] min-h-[480px] flex items-center justify-center overflow-hidden">
         <HeroSlider slides={heroSlides} />
 
-        <div className="container relative z-20 mx-auto px-4 text-center mt-16">
+        <div className="container relative z-20 mx-auto px-4 text-center mt-14 sm:mt-16">
           <span className="hero-badge inline-block px-4 py-1 border border-[#D9B93C] text-[#D9B93C] text-sm font-bold tracking-widest uppercase mb-6 rounded-sm backdrop-blur-sm bg-black/20">
             Est. 1990
           </span>
@@ -242,13 +248,15 @@ export default function Home() {
             >
               <Search size={18} /> View All Properties
             </Link>
-            <a
-              href="tel:+251114651234"
-              onClick={() => trackEvent("cta_click", { button: "Call Now" })}
-              className="flex-1 border-2 border-white text-white px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-white hover:text-[#0F2E24] transition-colors shadow-lg flex items-center justify-center gap-2"
-            >
-              Call Now
-            </a>
+            {phone && (
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                onClick={() => trackEvent("cta_click", { button: "Call Now" })}
+                className="flex-1 border-2 border-white text-white px-8 py-4 font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-white hover:text-[#0F2E24] transition-colors shadow-lg flex items-center justify-center gap-2"
+              >
+                Call Now
+              </a>
+            )}
           </div>
         </div>
       </section>

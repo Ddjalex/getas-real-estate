@@ -54,7 +54,7 @@ export function Header() {
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-4 group">
           <img
-            src="/logo.png"
+            src={`${import.meta.env.BASE_URL}logo.png`}
             alt="GIFT Real Estate logo"
             className="transition-all duration-700 object-contain drop-shadow-md"
             style={{ width: isScrolled ? 50 : 58, height: isScrolled ? 50 : 58 }}
