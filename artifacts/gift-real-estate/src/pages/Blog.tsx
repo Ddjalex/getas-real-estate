@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBlogPosts } from "@/lib/api";
 import { SEO } from "@/components/SEO";
 import { ArrowRight, Calendar, User } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -15,13 +16,16 @@ function resolveImg(path: string) {
 }
 
 export default function Blog() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const { data: blogPosts = [], isLoading } = useQuery({
     queryKey: ["blog"],
     queryFn: () => fetchBlogPosts(),
   });
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title="Market Insights — Real Estate News & Investment Tips"
         description="Expert analysis, investment tips, and the latest news on the Addis Ababa real estate market from GETAS Real Estate's team of professionals."
@@ -29,7 +33,7 @@ export default function Blog() {
       />
 
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="mb-16">
+        <div data-reveal className="mb-16">
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4">Market Insights</h1>
           <p className="text-gray-600 text-lg max-w-2xl">
             Expert analysis, investment tips, and the latest news on the Addis Ababa real estate market.
@@ -41,7 +45,7 @@ export default function Blog() {
             {[1,2,3,4].map((i) => <div key={i} className="h-96 bg-gray-100 rounded-sm animate-pulse" />)}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {blogPosts.map((post) => (
               <article key={post.id} className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden group hover:shadow-xl transition-shadow flex flex-col">
                 <Link href={`/blog/${post.id}`} className="block aspect-[16/9] overflow-hidden relative">

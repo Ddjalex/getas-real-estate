@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAgents, fetchSiteSettings } from "@/lib/api";
 import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Mail, Phone } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -30,6 +31,9 @@ const DEFAULT_MILESTONES: Milestone[] = [
 ];
 
 export default function About() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const { data: agents = [] } = useQuery({
     queryKey: ["agents"],
     queryFn: fetchAgents,
@@ -52,7 +56,7 @@ export default function About() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title="About GETAS Real Estate — 34 Years of Excellence in Addis Ababa"
         description="Since 1990, GETAS Real Estate has been Addis Ababa's most trusted real estate partner, delivering premium properties and expert investment guidance across Ethiopia."
@@ -61,7 +65,7 @@ export default function About() {
       />
 
       {/* Hero */}
-      <div className="bg-[#1A1A1A] text-white py-20 mb-16 relative overflow-hidden">
+      <div data-reveal className="bg-[#1A1A1A] text-white py-20 mb-16 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-20">
           <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1000" alt="Addis Ababa real estate" width={1000} height={600} loading="lazy" className="w-full h-full object-cover" />
         </div>
@@ -73,7 +77,7 @@ export default function About() {
 
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Mission & Vision */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
+        <div data-reveal className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
           <div className="bg-white p-10 border-t-4 border-[#E31E24] shadow-sm">
             <h2 className="font-serif text-3xl font-bold text-[#1A1A1A] mb-4">Our Mission</h2>
             <p className="text-gray-700 leading-relaxed text-lg">{mission}</p>
@@ -86,7 +90,7 @@ export default function About() {
 
         {/* History Timeline */}
         {milestones.length > 0 && (
-          <div className="mb-24">
+          <div data-reveal className="mb-24">
             <h2 className="font-serif text-4xl font-bold text-[#1A1A1A] mb-12 text-center">Our History</h2>
             <div className="relative border-l-2 border-[#E31E24] ml-6 md:mx-auto md:w-0">
               {milestones.map((milestone, idx) => (
@@ -103,7 +107,7 @@ export default function About() {
         )}
 
         {/* Leadership Team */}
-        <div className="mb-24">
+        <div data-reveal className="mb-24">
           <div className="text-center mb-12">
             <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-2">The People Behind GETAS</p>
             <h2 className="font-serif text-4xl font-bold text-[#1A1A1A]">Our Leadership Team</h2>

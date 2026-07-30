@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MapPin, Phone, Mail, MessageCircle, Clock, Send, Globe, Info } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { submitInquiry, fetchSiteSettings } from "@/lib/api";
 import { SEO, trackEvent } from "@/components/SEO";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Contact() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "Property Inquiry (Buy)", message: "" });
 
   const { data: settings } = useQuery({
@@ -54,7 +58,7 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title="Contact Us — Get in Touch with GETAS Real Estate"
         description="Contact GETAS Real Estate in Addis Ababa. Call, WhatsApp, or send a message to our expert team for property inquiries, viewings, and investment advice."
@@ -62,14 +66,14 @@ export default function Contact() {
       />
 
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
+        <div data-reveal className="text-center mb-16">
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4">Get in Touch</h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Whether you're looking to buy, sell, or rent, our team of experts is ready to assist you.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        <div data-reveal className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Form */}
           <div className="bg-white p-8 md:p-10 rounded-sm shadow-xl border-t-4 border-[#E31E24]">
             <h2 className="font-serif text-3xl font-bold text-[#1A1A1A] mb-6">Send us a Message</h2>

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBlogPost, fetchBlogPosts } from "@/lib/api";
 import { SEO, breadcrumbJsonLd } from "@/components/SEO";
 import { Calendar, User, ArrowLeft } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -15,6 +16,9 @@ function resolveImg(path: string) {
 }
 
 export default function BlogPost() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const { id } = useParams();
 
   const { data: post, isLoading, isError } = useQuery({
@@ -70,7 +74,7 @@ export default function BlogPost() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title={post.title}
         description={post.excerpt}
@@ -89,7 +93,7 @@ export default function BlogPost() {
           <ArrowLeft size={16} /> Back to Market Insights
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div data-reveal className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
             <div className="mb-8">
               <span className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-4 block">{post.category}</span>

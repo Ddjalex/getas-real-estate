@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { fetchListing, fetchListings, submitInquiry, fetchSiteSettings } from "@/lib/api";
@@ -16,8 +16,12 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { MapPicker } from "@/components/MapPicker";
 import { SEO, breadcrumbJsonLd, trackEvent } from "@/components/SEO";
 import { Bed, Bath, Square, MapPin, Calendar, Check, Send, Phone } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function PropertyDetail() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const { id } = useParams();
   const [activeImage, setActiveImage] = useState(0);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -119,7 +123,7 @@ export default function PropertyDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title={seoTitle}
         description={seoDesc}
@@ -164,7 +168,7 @@ export default function PropertyDetail() {
         </div>
 
         {/* Gallery */}
-        <div className="mb-12">
+        <div data-reveal className="mb-12">
           <div className="bg-[#1A1A1A] rounded-sm overflow-hidden mb-4 flex items-center justify-center" style={{ maxHeight: "70vh" }}>
             <img
               src={resolveImageUrl(listing.images[activeImage])}
@@ -183,7 +187,7 @@ export default function PropertyDetail() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div data-reveal className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
             <div className="flex flex-wrap gap-6 py-6 border-y border-gray-200 mb-8 bg-white px-8 rounded-sm shadow-sm">
               {listing.bedrooms > 0 && (

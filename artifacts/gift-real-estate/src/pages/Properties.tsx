@@ -1,11 +1,15 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchListings } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO } from "@/components/SEO";
 import { Search } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Properties() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const [filterType, setFilterType] = useState<string>("all");
   const [filterLocation, setFilterLocation] = useState<string>("all");
   const [filterBeds, setFilterBeds] = useState<string>("all");
@@ -30,14 +34,14 @@ export default function Properties() {
   }, [listings, filterType, filterLocation, filterBeds]);
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-16">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-16">
       <SEO
         title="Properties in Addis Ababa — For Sale & Rent"
         description="Browse premium residential and commercial properties for sale and rent across Addis Ababa. Villas, apartments, office spaces and more from GETAS Real Estate."
         path="/properties"
       />
 
-      <div className="bg-[#1A1A1A] text-white py-12 mb-12">
+      <div data-reveal className="bg-[#1A1A1A] text-white py-12 mb-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Properties in Addis Ababa</h1>
           <p className="text-white/80 max-w-2xl mx-auto">
@@ -47,7 +51,7 @@ export default function Properties() {
       </div>
 
       <div className="container mx-auto px-4">
-        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-10">
+        <div data-reveal className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Purpose</label>

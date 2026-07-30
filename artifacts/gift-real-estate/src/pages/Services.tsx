@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { fetchServices } from "@/lib/api";
 import { ArrowRight, Layers } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
 const STORAGE_BASE = `${BASE}/api/storage`;
@@ -16,20 +17,23 @@ function resolveImageUrl(path: string) {
 }
 
 export default function Services() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(pageRef);
+
   const { data: services = [], isLoading } = useQuery({
     queryKey: ["services"],
     queryFn: fetchServices,
   });
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
+    <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-20">
       <SEO
         title="Real Estate Services — GETAS Real Estate Addis Ababa"
         description="Comprehensive property sales, rentals, management and investment consultancy services from GETAS Real Estate, Addis Ababa's most trusted agency since 1990."
         path="/services"
       />
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
+        <div data-reveal className="text-center mb-16">
           <span className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-3 block">What We Do</span>
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-6">Comprehensive Real Estate Services</h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -57,7 +61,7 @@ export default function Services() {
             <p className="text-lg">No services listed yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
             {services.map((service) => (
               <div key={service.id} className="bg-white rounded-sm shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#E31E24]/30 transition-all group overflow-hidden flex flex-col">
                 {service.image ? (
@@ -87,7 +91,7 @@ export default function Services() {
         )}
 
         {/* Process Section */}
-        <div className="bg-[#1A1A1A] rounded-sm p-12 text-white relative overflow-hidden">
+        <div data-reveal className="bg-[#1A1A1A] rounded-sm p-12 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#E31E24] rounded-full blur-[100px] opacity-20 -mr-20 -mt-20"></div>
           <div className="relative z-10">
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-12 text-center">The GETAS Experience</h2>
