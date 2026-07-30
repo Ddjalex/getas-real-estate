@@ -6,7 +6,17 @@ import { requireAdmin } from "../../middleware/requireAdmin";
 const router = Router();
 router.use(requireAdmin);
 
-// Get single
+// List all
+router.get("/", async (_req, res) => {
+  try {
+    const rows = await db.select().from(listingsTable).orderBy(listingsTable.createdAt);
+    res.json(rows);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch listings" });
+  }
+});
+
+// Get single (must be after GET / to avoid path conflicts)
 router.get("/:id", async (req, res) => {
   try {
     const [row] = await db
@@ -21,16 +31,6 @@ router.get("/:id", async (req, res) => {
     res.json(row);
   } catch {
     res.status(500).json({ error: "Failed to fetch listing" });
-  }
-});
-
-// List all
-router.get("/", async (_req, res) => {
-  try {
-    const rows = await db.select().from(listingsTable).orderBy(listingsTable.createdAt);
-    res.json(rows);
-  } catch {
-    res.status(500).json({ error: "Failed to fetch listings" });
   }
 });
 
