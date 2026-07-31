@@ -212,8 +212,8 @@ export default function Home() {
         jsonLd={localBusinessJsonLd()}
       />
 
-      {/* Hero — Full-bleed centered layout */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      {/* Hero — Full-viewport */}
+      <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
         {/* Background image/slider */}
         <div className="absolute inset-0 z-0">
           <HeroSlider slides={heroSlides} />
@@ -223,7 +223,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/55 z-10" />
 
         {/* Centered content */}
-        <div className="relative z-20 container mx-auto px-4 text-center max-w-4xl pt-24 pb-12 md:pt-0 md:pb-0">
+        <div className="relative z-20 container mx-auto px-6 text-center max-w-4xl pt-20 pb-16">
           <p className="hero-overline text-[#E31E24] text-xs font-bold tracking-[0.35em] uppercase mb-6">
             ESTABLISHED · ADDIS ABABA · 2005
           </p>
