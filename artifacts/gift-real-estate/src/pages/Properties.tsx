@@ -15,13 +15,15 @@ export default function Properties() {
   const [filterBeds, setFilterBeds]         = useState<string>("all");
   const [searchQuery, setSearchQuery]       = useState<string>("");
 
-  // Read URL params set by the hero search / Buy-Rent toggle
+  // Read URL params set by the hero search / Buy-Rent toggle / subcity cards
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const type   = params.get("type");
-    const q      = params.get("q");
+    const params   = new URLSearchParams(window.location.search);
+    const type     = params.get("type");
+    const q        = params.get("q");
+    const location = params.get("location");
     if (type === "sale" || type === "rent") setFilterType(type);
     if (q) setSearchQuery(q);
+    if (location) setFilterLocation(location.toLowerCase());
   }, []);
 
   const { data: listings = [], isLoading } = useQuery({

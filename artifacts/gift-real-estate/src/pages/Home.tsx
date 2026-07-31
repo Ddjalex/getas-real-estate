@@ -464,6 +464,92 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Explore Addis Ababa Subcities — dynamic: only shows locations that have listings */}
+      {(() => {
+        // Static descriptions for known Addis Ababa subcities
+        const SUBCITY_META: Record<string, string> = {
+          "bole":             "Vibrant commercial district with many shopping, dining, and entertainment options.",
+          "yeka":             "Residential area with breathtaking views of the city.",
+          "arada":            "Historic center with vibrant markets and cultural attractions.",
+          "lideta":           "Family-friendly neighborhood with convenient amenities.",
+          "kolfe keraniyo":   "Diverse area with both residential and commercial properties.",
+          "nifas silk lafto": "Growing district with new developments and amenities.",
+          "kirkos":           "Central location with business districts and government offices.",
+          "addis ketema":     "Bustling area with markets and transportation hubs.",
+          "gulele":           "Scenic northern district blending greenery with urban living.",
+          "akaky kaliti":     "Rapidly expanding industrial and residential suburb.",
+        };
+
+        // Derive unique subcities from actual listings, sorted by count desc
+        const countByLocation = allListings.reduce<Record<string, number>>((acc, l) => {
+          const key = l.location?.trim();
+          if (key) acc[key] = (acc[key] ?? 0) + 1;
+          return acc;
+        }, {});
+
+        const subcities = Object.entries(countByLocation)
+          .map(([name, count]) => ({
+            name,
+            count,
+            description:
+              SUBCITY_META[name.toLowerCase()] ??
+              `Explore ${count} propert${count === 1 ? "y" : "ies"} available in ${name}.`,
+          }))
+          .sort((a, b) => b.count - a.count);
+
+        if (subcities.length === 0) return null;
+
+        return (
+          <section className="section-enter bg-white py-24 border-t border-gray-100">
+            <div className="container mx-auto px-4">
+              {/* Header */}
+              <div className="text-center mb-12">
+                <div className="h-0.5 w-12 bg-[#E31E24] mb-4 mx-auto" />
+                <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">DISCOVER YOUR AREA</p>
+                <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] tracking-tight mb-3">
+                  Explore Addis Ababa Subcities
+                </h2>
+                <p className="text-[#1A1A1A]/55 text-base max-w-2xl mx-auto">
+                  Discover properties in Addis Ababa's diverse subcities, each offering unique living experiences and investment opportunities.
+                </p>
+              </div>
+
+              {/* Subcity cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                {subcities.map(({ name, count, description }) => (
+                  <Link
+                    key={name}
+                    href={`/properties?location=${encodeURIComponent(name)}`}
+                    className="group border border-gray-200 rounded-lg p-6 hover:border-[#E31E24] hover:shadow-md transition-all duration-200 bg-white"
+                  >
+                    <div className="flex items-start gap-3 mb-3">
+                      <MapPin size={18} className="text-[#E31E24] shrink-0 mt-0.5" />
+                      <h3 className="font-bold text-[#1A1A1A] text-base group-hover:text-[#E31E24] transition-colors leading-snug">
+                        {name}
+                      </h3>
+                    </div>
+                    <p className="text-[#1A1A1A]/55 text-sm leading-relaxed mb-4">{description}</p>
+                    <p className="text-xs font-bold text-[#E31E24] tracking-wide">
+                      {count} propert{count === 1 ? "y" : "ies"} →
+                    </p>
+                  </Link>
+                ))}
+              </div>
+
+              {/* View all link */}
+              <div className="text-center">
+                <Link
+                  href="/properties"
+                  className="inline-flex items-center gap-2 text-[#1A1A1A] font-bold text-sm underline underline-offset-4 hover:text-[#E31E24] transition-colors tracking-wide"
+                >
+                  View All Locations <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
     </div>
   );
 }
