@@ -41,7 +41,6 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <>
-      {/* Previous slide (fades out) */}
       {prev !== null && (
         <img
           key={`prev-${prev}`}
@@ -52,8 +51,6 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
         />
       )}
-
-      {/* Current slide (fades in) */}
       <img
         key={`curr-${current}`}
         src={resolveSlideUrl(images[current].imageUrl)}
@@ -62,15 +59,13 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         style={{ opacity: 1, transition: "opacity 900ms ease-in-out" }}
         onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
       />
-
-      {/* Dot indicators (only if >1 slide) */}
       {images.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
           {images.map((_, i) => (
             <button
               key={i}
               onClick={() => { setPrev(current); setCurrent(i); setTransitioning(true); setTimeout(() => { setPrev(null); setTransitioning(false); }, 900); }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? "bg-[#E31E24] w-5" : "bg-white/50 hover:bg-white/80"}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? "bg-[#E31E24] w-8" : "bg-white/50 w-2 hover:bg-white/80"}`}
               aria-label={`Slide ${i + 1}`}
             />
           ))}
@@ -83,13 +78,13 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { target: 21,   suffix: "+", label: "Years in Real Estate", unit: "YEARS" },
-  { target: 500,  suffix: "+", label: "Properties Delivered", unit: "PROPERTIES" },
-  { target: 1200, suffix: "+", label: "Happy Clients", unit: "CLIENTS" },
-  { target: 98,   suffix: "%", label: "Satisfaction Rate", unit: "SATISFACTION" },
+  { target: 21,   suffix: "+", label: "Years in Real Estate" },
+  { target: 500,  suffix: "+", label: "Properties Delivered" },
+  { target: 1200, suffix: "+", label: "Happy Clients" },
+  { target: 98,   suffix: "%", label: "Satisfaction Rate" },
 ];
 
-function formatStat(val: number, suffix: string) {
+function formatStat(val: number) {
   const rounded = Math.round(val);
   if (rounded >= 1000) {
     const thousands = Math.floor(rounded / 1000);
@@ -127,14 +122,14 @@ export default function Home() {
 
     if (prefersReduced) {
       homeRef.current.querySelectorAll<HTMLElement>(
-        ".hero-left-panel, .hero-right-panel, .hero-overline, .hero-headline, .hero-subline, .hero-ctas, " +
+        ".hero-overline, .hero-headline, .hero-subline, .hero-ctas, " +
         ".section-enter, .property-card, .why-item, .cta-content, .featured-header"
       ).forEach((el) => {
         el.style.opacity   = "1";
         el.style.transform = "none";
       });
       statRefs.current.forEach((el, i) => {
-        if (el) el.textContent = formatStat(STATS[i].target, STATS[i].suffix);
+        if (el) el.textContent = formatStat(STATS[i].target);
       });
       return;
     }
@@ -143,13 +138,11 @@ export default function Home() {
       const root = homeRef.current!;
       const q = <T extends Element>(sel: string) => gsap.utils.toArray<T>(sel, root);
 
-      // Split-screen hero entrance
-      gsap.from(q(".hero-left-panel"), { x: -80, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.1 });
-      gsap.from(q(".hero-right-panel"), { x: 80, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.1 });
-      gsap.from(q(".hero-overline"), { opacity: 0, y: -20, duration: 0.8, ease: "power2.out", delay: 0.4 });
-      gsap.from(q(".hero-headline"), { opacity: 0, y: 30, duration: 1.0, ease: "power3.out", delay: 0.6 });
-      gsap.from(q(".hero-subline"), { opacity: 0, y: 24, duration: 0.9, ease: "power2.out", delay: 0.9 });
-      gsap.from(q(".hero-ctas"), { opacity: 0, y: 28, duration: 0.9, ease: "power2.out", delay: 1.1 });
+      // Centered hero entrance — stagger elements up from below
+      gsap.from(q(".hero-overline"),  { opacity: 0, y: -16, duration: 0.7, ease: "power2.out", delay: 0.3 });
+      gsap.from(q(".hero-headline"),  { opacity: 0, y: 40,  duration: 1.1, ease: "power3.out", delay: 0.5 });
+      gsap.from(q(".hero-subline"),   { opacity: 0, y: 28,  duration: 0.9, ease: "power2.out", delay: 0.85 });
+      gsap.from(q(".hero-ctas"),      { opacity: 0, y: 24,  duration: 0.9, ease: "power2.out", delay: 1.1 });
 
       q<HTMLElement>(".section-enter").forEach((section) => {
         gsap.fromTo(section, { opacity: 0, y: 40 }, {
@@ -197,7 +190,7 @@ export default function Home() {
           val: stat.target, duration: 1.8, ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
           onStart() { el.textContent = `0`; },
-          onUpdate() { el.textContent = formatStat(proxy.val, stat.suffix); },
+          onUpdate() { el.textContent = formatStat(proxy.val); },
         });
       });
 
@@ -219,94 +212,79 @@ export default function Home() {
         jsonLd={localBusinessJsonLd()}
       />
 
-      {/* Hero — Split Screen Layout */}
-      <section className="relative min-h-[85vh] flex flex-col md:flex-row overflow-hidden">
-        {/* LEFT PANEL — Dark brand panel */}
-        <div className="hero-left-panel relative bg-[#1A1A1A] w-full md:w-1/2 flex items-center justify-center p-8 md:p-12 diagonal-split-left border-t-4 border-[#E31E24]">
-          <div className="max-w-xl w-full">
-            {/* Red accent bar */}
-            <div className="h-1 w-16 bg-[#E31E24] mb-6"></div>
-            
-            {/* Overline */}
-            <p className="hero-overline text-white/60 text-xs font-bold tracking-[0.3em] uppercase mb-6 leading-relaxed">
-              ESTABLISHED · ADDIS ABABA · 2005
-            </p>
-
-            {/* Headline */}
-            <h1 className="hero-headline font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-6 tracking-tight">
-              Built to International Standards. For 21 Years.
-            </h1>
-            {/* Alternative headlines (commented for future use):
-            <h1 className="hero-headline font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-6 tracking-tight">
-              Addis Ababa's Premier Developer, Since 2005.
-            </h1>
-            <h1 className="hero-headline font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-6 tracking-tight">
-              Part of Get-As International. Built to Last.
-            </h1>
-            */}
-
-            {/* Subline */}
-            <p className="hero-subline text-white/70 text-base md:text-lg leading-relaxed mb-10 max-w-md">
-              A division of Get-As International Plc. — delivering luxury villas, apartments, and commercial developments across Addis Ababa since 2005.
-            </p>
-
-            {/* CTAs */}
-            <div className="hero-ctas flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/properties"
-                onClick={() => trackEvent("cta_click", { button: "View All Properties" })}
-                className="bg-[#E31E24] text-white px-8 py-4 font-bold text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-[#1A1A1A] transition-colors flex items-center justify-center gap-3"
-              >
-                VIEW PROPERTIES <ArrowRight size={18} />
-              </Link>
-              {phone && (
-                <a
-                  href={`tel:${phone.replace(/\s/g, "")}`}
-                  onClick={() => trackEvent("cta_click", { button: "Call Now" })}
-                  className="border-2 border-white/30 text-white px-8 py-4 font-bold text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-[#1A1A1A] hover:border-white transition-colors flex items-center justify-center"
-                >
-                  CALL NOW
-                </a>
-              )}
-            </div>
-          </div>
+      {/* Hero — Full-bleed centered layout */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Background image/slider */}
+        <div className="absolute inset-0 z-0">
+          <HeroSlider slides={heroSlides} />
         </div>
 
-        {/* RIGHT PANEL — Architectural image */}
-        <div className="hero-right-panel relative bg-black w-full md:w-1/2 min-h-[50vh] md:min-h-full diagonal-split-right overflow-hidden">
-          <HeroSlider slides={heroSlides} />
-          <div className="absolute inset-0 bg-black/30 z-10" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/55 z-10" />
+
+        {/* Centered content */}
+        <div className="relative z-20 container mx-auto px-4 text-center max-w-4xl">
+          <p className="hero-overline text-[#E31E24] text-xs font-bold tracking-[0.35em] uppercase mb-6">
+            ESTABLISHED · ADDIS ABABA · 2005
+          </p>
+
+          <h1 className="hero-headline font-bold text-white text-4xl md:text-6xl lg:text-7xl leading-[1.05] mb-6 tracking-tight">
+            Built to International Standards.<br className="hidden md:block" /> For 21 Years.
+          </h1>
+
+          <p className="hero-subline text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+            A division of Get-As International Plc. — delivering luxury villas, apartments, and commercial developments across Addis Ababa since 2005.
+          </p>
+
+          <div className="hero-ctas flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/properties"
+              onClick={() => trackEvent("cta_click", { button: "View All Properties" })}
+              className="bg-[#E31E24] text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white hover:text-[#1A1A1A] transition-colors flex items-center justify-center gap-2 shadow-lg"
+            >
+              VIEW PROPERTIES <ArrowRight size={16} />
+            </Link>
+            {phone && (
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                onClick={() => trackEvent("cta_click", { button: "Call Now" })}
+                className="border-2 border-white/50 text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white hover:text-[#1A1A1A] hover:border-white transition-colors flex items-center justify-center backdrop-blur-sm"
+              >
+                CALL NOW
+              </a>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Stats — Horizontal strip with dividers */}
-      <section className="section-enter bg-[#0D0D0D] py-16 border-t-2 border-[#E31E24]/20">
+      {/* Stats band — simple stacked number + label */}
+      <section className="section-enter bg-[#1A1A1A] py-14 border-t-4 border-[#E31E24]">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
             {STATS.map((stat, i) => (
-              <div key={i} className="text-center px-6 py-4 relative">
-                {i > 0 && (
-                  <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-20 w-[1px] bg-[#E31E24]/30" />
-                )}
-                <div className="flex items-baseline justify-center gap-2 mb-2">
-                  <div ref={(el) => { statRefs.current[i] = el; }} className="font-bold text-5xl md:text-6xl text-white tracking-tight">
+              <div key={i} className="text-center">
+                <div className="flex items-baseline justify-center gap-1 mb-1">
+                  <div
+                    ref={(el) => { statRefs.current[i] = el; }}
+                    className="font-bold text-4xl md:text-5xl text-[#E31E24]"
+                  >
                     0
                   </div>
-                  <span className="text-[#E31E24] font-bold text-2xl md:text-3xl">{stat.suffix}</span>
+                  <span className="font-bold text-2xl text-[#E31E24]">{stat.suffix}</span>
                 </div>
-                <div className="text-white/50 text-xs uppercase tracking-[0.25em] font-medium">{stat.label}</div>
+                <div className="text-white/60 text-xs uppercase tracking-widest font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Listings — hidden entirely when no featured properties exist */}
+      {/* Featured Listings */}
       {(isLoading || featuredListings.length > 0) && (
         <section className="section-enter py-24 bg-[#F5F5F5]">
           <div className="container mx-auto px-4">
             <div className="featured-header mb-12">
-              <div className="h-0.5 w-12 bg-[#E31E24] mb-4"></div>
+              <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
               <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">HANDPICKED FOR YOU</p>
               <div className="flex items-end justify-between">
                 <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] tracking-tight">Featured Properties</h2>
@@ -330,11 +308,11 @@ export default function Home() {
         </section>
       )}
 
-      {/* Why GETAS — Brick-offset grid layout */}
+      {/* Why GETAS */}
       <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24">
         <div className="container mx-auto px-4">
           <div className="mb-16">
-            <div className="h-0.5 w-12 bg-[#E31E24] mb-4"></div>
+            <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
             <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">OUR COMMITMENT</p>
             <h2 className="font-bold text-4xl md:text-5xl text-white tracking-tight">Why Choose GETAS</h2>
           </div>
@@ -345,8 +323,8 @@ export default function Home() {
               { num: "03", icon: <ShieldCheck size={40} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
               { num: "04", icon: <TrendingUp size={40} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
             ].map((item, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className="why-item bg-[#0D0D0D] border-l-4 border-[#E31E24] p-8 md:p-10 hover:bg-[#111] transition-colors"
                 style={{ marginTop: i % 2 === 1 && window.innerWidth >= 768 ? '4rem' : '0' }}
               >
@@ -360,13 +338,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Banner — Left-aligned structural layout */}
+      {/* CTA Banner */}
       <section className="section-enter bg-[#E31E24] py-20">
         <div className="container mx-auto px-4">
           <div className="cta-content max-w-4xl">
             <Building2 size={56} className="text-[#1A1A1A]/20 mb-8" />
             <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] mb-4 tracking-tight">Ready to Find Your Property?</h2>
-            <div className="h-0.5 w-32 bg-[#1A1A1A]/20 my-6"></div>
+            <div className="h-0.5 w-32 bg-[#1A1A1A]/20 my-6" />
             <p className="text-[#1A1A1A]/70 text-lg max-w-2xl mb-10 leading-relaxed">
               Whether you're buying, renting, or investing, our expert team is ready to guide you every step of the way.
             </p>
@@ -374,13 +352,13 @@ export default function Home() {
               <Link
                 href="/contact"
                 onClick={() => trackEvent("cta_click", { button: "Book a Visit" })}
-                className="bg-[#1A1A1A] text-white px-10 py-4 font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#0D0D0D] transition-colors inline-flex items-center justify-center"
+                className="bg-[#1A1A1A] text-white px-10 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-[#0D0D0D] transition-colors inline-flex items-center justify-center"
               >
                 BOOK A VISIT
               </Link>
-              <Link 
-                href="/properties" 
-                className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-10 py-4 font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
+              <Link
+                href="/properties"
+                className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-10 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
               >
                 BROWSE PROPERTIES
               </Link>

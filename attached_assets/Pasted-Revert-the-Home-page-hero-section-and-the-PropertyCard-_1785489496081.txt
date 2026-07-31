@@ -1,0 +1,50 @@
+Revert the Home page hero section and the PropertyCard component back to the
+ORIGINAL layout style used on GIFT Real Estate (live reference:
+https://ethiopianrealestates.com/) — NOT the split-screen/Space Grotesk redesign from
+the last pass. Keep GETAS's own branding (colors, logo, copy) — this is about layout
+structure only, reverting the recent structural changes.
+
+HERO SECTION — revert to GIFT's original structure:
+- Centered headline and subtext layered over a full-bleed background image/photo
+  (not the split-screen left-panel/right-image layout from the last redesign).
+- Restore the original serif heading font style (the elegant/editorial feel GIFT
+  uses) instead of Space Grotesk, OR keep Space Grotesk if you think it still reads
+  well in this centered layout — your call, but the LAYOUT must match GIFT's centered
+  composition, not the split-screen one.
+- Restore a rounded/pill-style primary CTA button (matching GIFT's button shape)
+  instead of the sharp-cornered block button from the last pass — but keep it in
+  GETAS's red color, not GIFT's gold.
+- Keep the stats band restored to GIFT's original simple "number + label" stacked
+  style instead of the vertical-divider treatment from the last pass — again in
+  GETAS's red/black colors, not GIFT's green/gold.
+- Headline copy: keep the already-approved GETAS text ("Built to International
+  Standards. For 21 Years." or one of the alternate versions already drafted) — don't
+  revert to GIFT's actual wording, just the layout/structure around it.
+
+PROPERTY CARD — revert to GIFT's original structure:
+- Vertical card layout: image on top (full width), details stacked below (price tag,
+  title, location, bed/bath/size specs) — NOT the horizontal image-left/details-right
+  layout from the last redesign.
+- Same hover behavior as GIFT's original cards (slight lift + image zoom on hover).
+- Status tag badges (For Sale/For Rent/New/Featured) in the same top-left corner
+  placement as GIFT's cards.
+- Use GETAS's red/black/white color scheme for all card elements (price text, tags,
+  borders) — do not reintroduce GIFT's green/gold anywhere.
+
+SCOPE — ONLY these two things change:
+- src/pages/Home.tsx (hero section specifically)
+- src/components/PropertyCard.tsx
+
+Do NOT touch:
+- Header.tsx and Footer.tsx — leave those as they currently are from the last pass
+  (unless reverting them causes a visual mismatch with the reverted hero — use your
+  judgment, but default to leaving them alone unless it looks broken together).
+- Any other page (About, Blog, Contact, Services, Properties listing, Property
+  Detail, admin).
+- Any backend code — Express routes, database schema, admin logic, SEO injection —
+  frontend/styling only, as always.
+
+CONFIRM WHEN DONE:
+1. Show me the updated homepage hero and a property card.
+2. List exactly which files were changed.
+3. Confirm the color scheme used is GETAS's red/black/white, not GIFT's green/gold.

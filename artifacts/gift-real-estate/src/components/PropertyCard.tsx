@@ -25,9 +25,9 @@ export function PropertyCard({ listing }: PropertyCardProps) {
     : `ETB ${new Intl.NumberFormat("en-ET").format(priceNum)}`;
 
   return (
-    <div className="property-card group bg-white overflow-hidden border border-gray-200 hover:border-[#E31E24] transition-all duration-300 flex flex-col md:flex-row">
-      {/* Image — Left side on desktop, top on mobile */}
-      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden md:w-2/5 aspect-[4/3] md:aspect-auto bg-[#1A1A1A]">
+    <div className="property-card group bg-white overflow-hidden border border-gray-200 hover:border-[#E31E24] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col">
+      {/* Image — full width on top */}
+      <Link href={`/properties/${listing.id}`} className="block relative overflow-hidden aspect-[4/3] bg-[#1A1A1A] flex-shrink-0">
         <img
           src={resolveImage(listing.images?.[0])}
           alt={listing.title}
@@ -35,70 +35,66 @@ export function PropertyCard({ listing }: PropertyCardProps) {
           loading="lazy"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
         />
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        {/* Badges — top-left corner */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {listing.status && (
-            <span className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest shadow-sm ${
-              listing.status === "Featured" || listing.status === "New" 
-                ? "bg-[#E31E24] text-white" 
+            <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm rounded-sm ${
+              listing.status === "Featured" || listing.status === "New"
+                ? "bg-[#E31E24] text-white"
                 : "bg-[#1A1A1A] text-white"
             }`}>
               {listing.status}
             </span>
           )}
-          <span className="bg-white text-[#1A1A1A] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest shadow-sm">
+          <span className="bg-white text-[#1A1A1A] px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm rounded-sm">
             {listing.type === "sale" ? "For Sale" : "For Rent"}
           </span>
         </div>
       </Link>
-      
-      {/* Details — Right side on desktop, bottom on mobile */}
-      <div className="p-6 md:w-3/5 flex flex-col justify-between">
-        {/* Top section */}
-        <div>
-          {/* Price */}
-          <div className="font-bold text-2xl md:text-3xl text-[#E31E24] mb-3 tracking-tight">{formattedPrice}</div>
-          
-          {/* Title */}
-          <h3 className="font-bold text-xl text-[#1A1A1A] mb-2 line-clamp-1 group-hover:text-[#E31E24] transition-colors tracking-tight">
-            <Link href={`/properties/${listing.id}`}>{listing.title}</Link>
-          </h3>
-          
-          {/* Location */}
-          <div className="flex items-center gap-2 text-gray-600 text-sm mb-4">
-            <MapPin size={16} className="text-[#E31E24]" />
-            <span>{listing.neighborhood}, {listing.location}</span>
+
+      {/* Details — stacked below image */}
+      <div className="p-5 flex flex-col flex-grow">
+        {/* Price */}
+        <div className="font-bold text-xl text-[#E31E24] mb-2 tracking-tight">{formattedPrice}</div>
+
+        {/* Title */}
+        <h3 className="font-bold text-lg text-[#1A1A1A] mb-2 line-clamp-1 group-hover:text-[#E31E24] transition-colors leading-snug">
+          <Link href={`/properties/${listing.id}`}>{listing.title}</Link>
+        </h3>
+
+        {/* Location */}
+        <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-4">
+          <MapPin size={14} className="text-[#E31E24] flex-shrink-0" />
+          <span className="line-clamp-1">{listing.neighborhood}, {listing.location}</span>
+        </div>
+
+        {/* Specs */}
+        <div className="flex items-center gap-4 py-3 border-t border-gray-100 mb-4 mt-auto">
+          {listing.bedrooms > 0 && (
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Bed size={16} className="text-[#1A1A1A]" />
+              <span className="text-sm font-semibold">{listing.bedrooms}</span>
+            </div>
+          )}
+          {listing.bathrooms > 0 && (
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Bath size={16} className="text-[#1A1A1A]" />
+              <span className="text-sm font-semibold">{listing.bathrooms}</span>
+            </div>
+          )}
+          <div className="flex items-center gap-1.5 text-gray-600">
+            <Square size={16} className="text-[#1A1A1A]" />
+            <span className="text-sm font-semibold">{listing.sizeSqm} sqm</span>
           </div>
         </div>
 
-        {/* Bottom section — Specs & CTA */}
-        <div>
-          <div className="flex items-center gap-4 py-4 border-t border-gray-200 mb-4">
-            {listing.bedrooms > 0 && (
-              <div className="flex items-center gap-2 text-gray-600">
-                <Bed size={18} className="text-[#1A1A1A]" />
-                <span className="text-sm font-semibold">{listing.bedrooms}</span>
-              </div>
-            )}
-            {listing.bathrooms > 0 && (
-              <div className="flex items-center gap-2 text-gray-600">
-                <Bath size={18} className="text-[#1A1A1A]" />
-                <span className="text-sm font-semibold">{listing.bathrooms}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-2 text-gray-600">
-              <Square size={18} className="text-[#1A1A1A]" />
-              <span className="text-sm font-semibold">{listing.sizeSqm} sqm</span>
-            </div>
-          </div>
-          
-          {/* View Property Link */}
-          <Link 
-            href={`/properties/${listing.id}`}
-            className="flex items-center gap-2 text-[#1A1A1A] font-bold text-xs tracking-[0.15em] uppercase hover:text-[#E31E24] transition-colors"
-          >
-            VIEW PROPERTY <ArrowRight size={16} />
-          </Link>
-        </div>
+        {/* CTA */}
+        <Link
+          href={`/properties/${listing.id}`}
+          className="flex items-center gap-2 text-[#1A1A1A] font-bold text-xs tracking-[0.15em] uppercase hover:text-[#E31E24] transition-colors"
+        >
+          VIEW PROPERTY <ArrowRight size={14} />
+        </Link>
       </div>
     </div>
   );
