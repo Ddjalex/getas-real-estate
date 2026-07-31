@@ -16,7 +16,7 @@ function resolveImageUrl(path: string | undefined): string {
 import { PropertyCard } from "@/components/PropertyCard";
 import { MapPicker } from "@/components/MapPicker";
 import { SEO, breadcrumbJsonLd, trackEvent } from "@/components/SEO";
-import { Bed, Bath, Square, MapPin, Calendar, Check, Send, Phone } from "lucide-react";
+import { Bed, Bath, Square, MapPin, Calendar, Check, Send, Phone, MessageCircle } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function PropertyDetail() {
@@ -283,45 +283,91 @@ export default function PropertyDetail() {
 
           {/* Inquiry Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-gray-200 rounded-sm p-6 shadow-xl sticky top-28">
-              <h3 className="font-serif text-xl font-bold text-[#1A1A1A] mb-2">Interested in this property?</h3>
-              <p className="text-gray-500 text-sm mb-6">Contact our sales team to schedule a viewing or request more information.</p>
+            <div className="bg-[#111111] sticky top-28 overflow-hidden border-t-4 border-[#E31E24]">
 
-              {submitted ? (
-                <div className="bg-green-50 text-green-800 p-5 rounded-sm text-center border border-green-200">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 text-green-600"><Send size={20} /></div>
-                  <h4 className="font-bold mb-1">Inquiry Sent!</h4>
-                  <p className="text-sm">An agent will contact you shortly.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                    <input required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:border-[#E31E24]" placeholder="Your name" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                    <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:border-[#E31E24]" placeholder="you@example.com" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                    <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:border-[#E31E24]" placeholder="+251..." />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
-                    <textarea required rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:border-[#E31E24]" />
-                  </div>
-                  {inquiry.isError && <p className="text-red-600 text-sm">Failed to send. Please try again.</p>}
-                  <button type="submit" disabled={inquiry.isPending} className="w-full bg-[#E31E24] text-white px-4 py-3 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-[#1A1A1A] transition-colors shadow-md disabled:opacity-60">
-                    <Send size={18} /> {inquiry.isPending ? "Sending…" : "Send Inquiry"}
-                  </button>
-                </form>
-              )}
+              {/* Header */}
+              <div className="px-6 pt-6 pb-5 border-b border-white/10">
+                <p className="text-[#E31E24] font-bold text-[0.65rem] tracking-[0.25em] uppercase mb-2">Get In Touch</p>
+                <h3 className="font-bold text-xl text-white tracking-tight leading-snug">Interested in this property?</h3>
+                <p className="text-white/45 text-sm mt-1.5">Our team will get back to you within 24 hours.</p>
+              </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-center gap-4">
-                <a href={`tel:${phone.replace(/\s/g, "")}`} onClick={() => trackEvent("cta_click", { button: "Call Now" })} className="text-[#E31E24] font-bold text-sm hover:underline flex items-center gap-1"><Phone size={14} /> Call Us</a>
-                <span className="text-gray-300">|</span>
-                <a href={`https://wa.me/${whatsappNum}`} onClick={() => trackEvent("cta_click", { button: "WhatsApp" })} target="_blank" rel="noreferrer" className="text-[#E31E24] font-bold text-sm hover:underline">WhatsApp</a>
+              <div className="px-6 py-6">
+                {submitted ? (
+                  <div className="bg-[#E31E24]/10 border border-[#E31E24]/30 p-6 text-center">
+                    <div className="w-12 h-12 bg-[#E31E24] flex items-center justify-center mx-auto mb-4">
+                      <Send size={18} className="text-white" />
+                    </div>
+                    <h4 className="font-bold text-white mb-1 tracking-tight">Inquiry Sent!</h4>
+                    <p className="text-white/55 text-sm">An agent will contact you shortly.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-[0.7rem] font-bold tracking-[0.15em] uppercase text-white/50 mb-1.5">Full Name *</label>
+                      <input
+                        required type="text" value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="w-full bg-white/8 border border-white/15 text-white placeholder:text-white/30 text-sm px-3.5 py-2.5 focus:outline-none focus:border-[#E31E24] transition-colors"
+                        placeholder="Your name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[0.7rem] font-bold tracking-[0.15em] uppercase text-white/50 mb-1.5">Email Address *</label>
+                      <input
+                        required type="email" value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="w-full bg-white/8 border border-white/15 text-white placeholder:text-white/30 text-sm px-3.5 py-2.5 focus:outline-none focus:border-[#E31E24] transition-colors"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[0.7rem] font-bold tracking-[0.15em] uppercase text-white/50 mb-1.5">Phone Number</label>
+                      <input
+                        type="tel" value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        className="w-full bg-white/8 border border-white/15 text-white placeholder:text-white/30 text-sm px-3.5 py-2.5 focus:outline-none focus:border-[#E31E24] transition-colors"
+                        placeholder="+251..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[0.7rem] font-bold tracking-[0.15em] uppercase text-white/50 mb-1.5">Message *</label>
+                      <textarea
+                        required rows={4} value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className="w-full bg-white/8 border border-white/15 text-white placeholder:text-white/30 text-sm px-3.5 py-2.5 focus:outline-none focus:border-[#E31E24] transition-colors resize-none"
+                      />
+                    </div>
+                    {inquiry.isError && (
+                      <p className="text-[#E31E24] text-xs font-medium">Failed to send. Please try again.</p>
+                    )}
+                    <button
+                      type="submit" disabled={inquiry.isPending}
+                      className="w-full bg-[#E31E24] text-white px-4 py-3.5 font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
+                    >
+                      <Send size={15} /> {inquiry.isPending ? "Sending…" : "Send Inquiry"}
+                    </button>
+                  </form>
+                )}
+              </div>
+
+              {/* Call / WhatsApp strip */}
+              <div className="border-t border-white/10 grid grid-cols-2">
+                <a
+                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  onClick={() => trackEvent("cta_click", { button: "Call Now" })}
+                  className="flex items-center justify-center gap-2 py-3.5 text-white/60 hover:text-white hover:bg-white/5 transition-colors text-xs font-bold tracking-widest uppercase border-r border-white/10"
+                >
+                  <Phone size={13} /> Call Us
+                </a>
+                <a
+                  href={`https://wa.me/${whatsappNum}`}
+                  onClick={() => trackEvent("cta_click", { button: "WhatsApp" })}
+                  target="_blank" rel="noreferrer"
+                  className="flex items-center justify-center gap-2 py-3.5 text-white/60 hover:text-white hover:bg-white/5 transition-colors text-xs font-bold tracking-widest uppercase"
+                >
+                  <MessageCircle size={13} /> WhatsApp
+                </a>
               </div>
             </div>
           </div>
