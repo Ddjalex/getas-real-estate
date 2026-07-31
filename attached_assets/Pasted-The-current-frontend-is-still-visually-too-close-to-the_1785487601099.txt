@@ -1,0 +1,76 @@
+The current frontend is still visually too close to the GIFT Real Estate site it was
+duplicated from (live reference: https://ethiopianrealestates.com/ — that is GIFT's
+actual live site, for direct comparison). Same hero layout (centered serif headline
+over a full-bleed photo), same button placement, same stat band structure. Colors
+were changed but the LAYOUT and FEEL are still the same template.
+
+IMPORTANT SCOPE: This is a FRONTEND-ONLY redesign. Do NOT touch the backend — the
+Express server, database schema, API routes, admin panel logic, SEO meta injection
+code, or authentication must remain exactly as they are. Only the React
+components/pages, styling, and layout should change. The redesign should be a drop-in
+visual replacement that still talks to the same existing backend/API without any
+changes there.
+
+GOAL: make GETAS's frontend genuinely MORE ATTRACTIVE and polished than the current
+GIFT template — not just different, but a visible step up in design quality — while
+being structurally distinct enough that nobody would look at both sites and think
+"same template, different colors."
+
+BRAND CONTEXT (for tone/direction — verified facts, don't invent beyond this)
+GETAS Real Estate is the real estate division of Get-As International Plc, a large,
+established Ethiopian business conglomerate also active in construction, trading, and
+transport. It has been operating in real estate since 2005 (21+ years). It focuses on
+luxury villas and apartments built to international standards, working with partners
+like Dugda Construction Plc for build quality. This gives GETAS a more "established
+corporate group / serious developer" identity, distinct from a boutique family agency
+feel — lean into that: bolder, more structured, more corporate-confident, less soft
+and editorial than the GIFT design.
+
+REDESIGN THE HOME PAGE HERO — pick a genuinely different composition, not a recolor:
+- Instead of centered text over a full-bleed background photo, use a SPLIT-SCREEN
+  layout: bold headline + CTA on one side (left or right), a strong architectural
+  image or image grid on the other side. This alone reads as a completely different
+  page structure from GIFT's centered-over-photo hero.
+- Use a different heading typeface pairing than GIFT's elegant serif — choose a
+  strong, confident, modern sans-serif or slab-serif for headings that feels
+  corporate/developer-grade rather than boutique/editorial. Keep body text in a clean
+  sans-serif.
+- Headline copy should NOT reuse GIFT's phrasing pattern ("Addis Ababa's Most Trusted
+  Real Estate Partner"). Write something distinct that reflects GETAS's actual
+  identity as part of an established conglomerate, e.g. built around themes like
+  "part of Get-As International," "21+ years delivering [luxury villas/apartments] in
+  Addis Ababa," "international standards." Draft 2-3 headline options and I'll pick.
+- CTA button: keep it red, but consider a different shape/treatment than GIFT's pill-
+  style button (e.g. sharp-cornered block, icon-forward, bold uppercase) to feel more
+  corporate/construction-grade.
+
+REDESIGN OTHER MAJOR SECTIONS FOR STRUCTURAL DIFFERENCE TOO:
+- Stats band: instead of GIFT's plain "number + label" row, use a different visual
+  treatment — e.g. numbered icon badges, a horizontal divider-separated strip with
+  bolder typography, or cards instead of plain text.
+- Property cards: consider a different card layout than GIFT's (e.g. horizontal
+  card with image-left/details-right, or a more grid/masonry feel) rather than the
+  same vertical image-on-top card style.
+- Navigation/header: consider a bolder header treatment (e.g. solid dark or red bar
+  with white text) instead of GIFT's light, minimal transparent-over-hero header —
+  this changes the whole first impression of the site.
+- Keep the same page STRUCTURE/content requirements from the original build (same
+  pages: Home, Properties, Property Detail, About, Services, Blog, Contact, admin
+  panel) — this is about visual/layout redesign, not removing functionality.
+
+UPDATE HERO/ABOUT COPY WITH VERIFIED FACTS ONLY
+- "21+ Years in Real Estate" / "since 2005" — already correct, keep as-is.
+- Real estate division of Get-As International Plc — can reference this.
+- Do NOT state a specific founding year for the parent Get-As International company
+  itself (sources conflict between 1974 and 1994) — if you want to reference the
+  parent group's longer history, use vague-but-true language like "part of an
+  established Ethiopian business group" rather than a specific year, unless I confirm
+  the exact year separately.
+- Do NOT invent property counts, client numbers, or team size — only use "21+ Years"
+  and "500+" (already on the live site) unless I provide new numbers.
+
+AFTER THE REDESIGN
+Show me the updated homepage (screenshot or preview link) before applying the same
+new design language to other pages, so I can confirm the direction is right first.
+Also confirm explicitly: which backend files (if any) did you touch? The expected
+answer is none — if anything backend-related changed, tell me exactly what and why.

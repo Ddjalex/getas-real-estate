@@ -21,7 +21,6 @@ export function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
     };
-    // Check immediately in case the page is already scrolled on mount
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -36,35 +35,23 @@ export function Header() {
     { name: "Contact", path: "/contact" },
   ];
 
-  const isHomePage = location === "/";
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-in-out ${
-        isScrolled || !isHomePage
-          ? "bg-[#1A1A1A] shadow-lg py-2"
-          : "bg-[#1A1A1A]/0 backdrop-blur-none py-5"
-      }`}
-      style={{
-        // Cinematic 700ms ease for the background fade-in
-        transitionProperty: "background-color, box-shadow, padding",
-        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-      }}
+      className="fixed top-0 left-0 right-0 z-50 bg-[#1A1A1A] shadow-lg border-t-2 border-[#E31E24] transition-all duration-300"
     >
-      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between py-3">
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-4 group">
           <img
             src={logoSrc}
             alt="GETAS Real Estate logo"
-            className="transition-all duration-700 object-contain drop-shadow-md"
-            style={{ width: isScrolled ? 50 : 58, height: isScrolled ? 50 : 58 }}
+            className="transition-all duration-300 object-contain drop-shadow-md w-12 h-12"
           />
           <div className="hidden sm:block">
-            <h1 className="text-[#E31E24] font-serif text-xl md:text-2xl font-bold tracking-wide">
+            <h1 className="text-[#E31E24] font-bold text-xl tracking-wide">
               GETAS
             </h1>
-            <p className="text-white/80 text-xs tracking-widest uppercase mt-0.5">
+            <p className="text-white/70 text-[10px] tracking-[0.25em] uppercase mt-0.5">
               Real Estate
             </p>
           </div>
@@ -76,7 +63,7 @@ export function Header() {
             <Link
               key={link.path}
               href={link.path}
-              className={`text-sm font-medium transition-colors duration-300 hover:text-[#E31E24] ${
+              className={`text-xs font-semibold tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#E31E24] ${
                 location === link.path ? "text-[#E31E24]" : "text-white"
               }`}
             >
@@ -88,15 +75,15 @@ export function Header() {
         {/* Action Section */}
         <div className="hidden lg:flex items-center gap-6">
           <div className="flex items-center gap-2 text-[#E31E24]">
-            <Phone size={18} />
-            <span className="text-sm font-medium">{phone}</span>
+            <Phone size={16} />
+            <span className="text-xs font-semibold tracking-wide">{phone}</span>
           </div>
           <Link
             href="/contact"
-            className="bg-[#E31E24] text-[#1A1A1A] px-6 py-2.5 rounded-sm font-bold text-sm transition-all hover:bg-white hover:text-[#1A1A1A] shadow-md"
+            className="bg-[#E31E24] text-white px-6 py-3 font-bold text-xs tracking-[0.2em] uppercase transition-all hover:bg-white hover:text-[#1A1A1A]"
             data-testid="link-book-visit"
           >
-            Book a Visit
+            BOOK A VISIT
           </Link>
         </div>
 
@@ -112,17 +99,13 @@ export function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div
-          className={`lg:hidden absolute top-full left-0 right-0 border-t border-white/10 shadow-xl flex flex-col pb-6 px-4 transition-all duration-700 ${
-            isScrolled ? "bg-[#1A1A1A]" : "bg-[#1A1A1A]/90 backdrop-blur-sm"
-          }`}
-        >
+        <div className="lg:hidden bg-[#1A1A1A] border-t border-white/10 shadow-xl flex flex-col pb-6 px-4">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               href={link.path}
               onClick={() => setMobileMenuOpen(false)}
-              className={`py-4 border-b border-white/5 text-lg font-medium transition-colors ${
+              className={`py-4 border-b border-white/5 text-sm font-semibold tracking-widest uppercase transition-colors ${
                 location === link.path ? "text-[#E31E24]" : "text-white"
               }`}
             >
@@ -131,15 +114,15 @@ export function Header() {
           ))}
           <div className="mt-6 flex flex-col gap-4">
             <div className="flex items-center justify-center gap-2 text-[#E31E24] py-2">
-              <Phone size={20} />
-              <span className="font-medium">{phone}</span>
+              <Phone size={18} />
+              <span className="font-medium text-sm">{phone}</span>
             </div>
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="bg-[#E31E24] text-[#1A1A1A] text-center px-6 py-3 rounded-sm font-bold w-full"
+              className="bg-[#E31E24] text-white text-center px-6 py-3 font-bold text-xs tracking-[0.2em] uppercase w-full"
             >
-              Book a Visit
+              BOOK A VISIT
             </Link>
           </div>
         </div>

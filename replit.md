@@ -1,14 +1,14 @@
 # GETAS Real Estate
 
-A full-stack real estate website for **GETAS Real Estate** (Addis Ababa), built as a pnpm monorepo.
+A full-stack real estate website for GETAS (Get-As International Plc.) — Addis Ababa's premier real estate agency.
 
 ## Stack
 
-- **Frontend** (`artifacts/gift-real-estate`): React 19 + Vite + Tailwind CSS v4 + GSAP animations + Framer Motion + Leaflet maps
-- **Backend** (`artifacts/api-server`): Express 5 + Drizzle ORM + PostgreSQL (Neon)
-- **Libraries** (`lib/`): `db` (Drizzle schema + client), `api-zod` (shared Zod schemas), `api-client-react` (TanStack Query hooks), `api-spec` (OpenAPI/Orval codegen)
+- **Frontend** (`artifacts/gift-real-estate`): React 19 + Vite + Tailwind CSS v4 + GSAP animations + Leaflet maps
+- **Backend** (`artifacts/api-server`): Express 5 + TypeScript + Drizzle ORM + PostgreSQL (Neon)
+- **Shared libs** (`lib/`): `@workspace/db`, `@workspace/api-zod`, `@workspace/api-spec`, `@workspace/api-client-react`
 
-## Running the project
+## How to run
 
 Both services start automatically via Replit workflows:
 
@@ -17,23 +17,20 @@ Both services start automatically via Replit workflows:
 | `artifacts/gift-real-estate: web` | `pnpm --filter @workspace/gift-real-estate run dev` |
 | `artifacts/api-server: API Server` | `pnpm --filter @workspace/api-server run dev` |
 
-The frontend is available at `/` and the API at `/api`.
-
-## Environment / Secrets
+## Environment variables
 
 | Key | Purpose |
 |---|---|
 | `NEON_DATABASE_URL` | Neon PostgreSQL connection string |
-| `SESSION_SECRET` | Express session signing key |
+| `SESSION_SECRET` | Express session secret |
 
 ## Database
 
-Schema is managed with Drizzle Kit. To push schema changes:
+Uses Neon (serverless PostgreSQL). Schema is managed by Drizzle ORM.
 
+To push schema changes:
 ```bash
 pnpm --filter @workspace/db run push
 ```
 
 ## User preferences
-
-- Use the existing project structure — do not migrate or restructure without asking.

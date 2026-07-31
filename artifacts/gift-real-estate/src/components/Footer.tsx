@@ -25,7 +25,7 @@ export function Footer() {
           {/* Brand Info */}
           <div className="col-span-1 lg:col-span-1 flex flex-col items-start">
             <img src={logoSrc} alt="GETAS Real Estate" className="h-16 w-auto mb-6 object-contain" />
-            <h3 className="font-serif text-2xl font-bold text-[#E31E24] mb-2">GETAS Real Estate</h3>
+            <h3 className="font-bold text-2xl text-[#E31E24] mb-2 tracking-tight">GETAS Real Estate</h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               A division of Get-As International Plc. Delivering premium residential and commercial developments across Addis Ababa since 2005.
             </p>
@@ -33,7 +33,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-white border-b border-white/20 pb-2 inline-block">
+            <h4 className="font-bold text-sm tracking-[0.2em] uppercase mb-6 text-white border-b border-white/20 pb-3 inline-block">
               Quick Links
             </h4>
             <ul className="flex flex-col gap-3">
@@ -59,7 +59,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-white border-b border-white/20 pb-2 inline-block">
+            <h4 className="font-bold text-sm tracking-[0.2em] uppercase mb-6 text-white border-b border-white/20 pb-3 inline-block">
               Contact Us
             </h4>
             <ul className="flex flex-col gap-4">
@@ -80,7 +80,7 @@ export function Footer() {
 
           {/* WhatsApp / CTA */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-white border-b border-white/20 pb-2 inline-block">
+            <h4 className="font-bold text-sm tracking-[0.2em] uppercase mb-6 text-white border-b border-white/20 pb-3 inline-block">
               Need Assistance?
             </h4>
             <p className="text-white/70 text-sm mb-6">
