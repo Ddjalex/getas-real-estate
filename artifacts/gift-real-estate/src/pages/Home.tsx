@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchListings, fetchHeroSlides, fetchSiteSettings, type HeroSlide } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO, localBusinessJsonLd, trackEvent } from "@/components/SEO";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Award, MapPin, ShieldCheck, TrendingUp, Building2, ArrowRight, Search } from "lucide-react";
 
 const STORAGE_BASE = `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage`;
@@ -126,6 +127,9 @@ export default function Home() {
   const homeRef       = useRef<HTMLDivElement>(null);
   const whySectionRef = useRef<HTMLElement>(null);
   const statRefs      = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Bidirectional scroll-reveal for [data-reveal] elements (animates on scroll down AND reverses on scroll up)
+  useScrollReveal(homeRef);
 
   useEffect(() => {
     if (!homeRef.current) return;
@@ -425,43 +429,61 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              { label: "Houses",      keyword: "house",      img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=70" },
-              { label: "Apartments",  keyword: "apartment",  img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=70" },
-              { label: "Villas",      keyword: "villa",      img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=70" },
-              { label: "Condos",      keyword: "condo",      img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=70" },
-              { label: "Townhouses",  keyword: "townhouse",  img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=70" },
-              { label: "Land",        keyword: "land",       img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=70" },
-            ].map(({ label, keyword, img }) => {
-              const count = allListings.filter((l) =>
-                l.title.toLowerCase().includes(keyword) ||
-                l.description?.toLowerCase().includes(keyword)
-              ).length;
-              return (
-                <Link
-                  key={keyword}
-                  href={`/properties?q=${keyword}`}
-                  className="group relative overflow-hidden rounded-lg aspect-[3/4] block shadow-md hover:shadow-xl transition-shadow duration-300"
-                >
-                  <img
-                    src={img}
-                    alt={`${label} in Ethiopia`}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Dark gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  {/* Text */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white font-bold text-sm leading-snug mb-1">
-                      {label} for Sale in Ethiopia
-                    </p>
-                    <p className="text-white/65 text-xs">{count} propert{count === 1 ? "y" : "ies"}</p>
+          {(() => {
+            const ALL_PROP_TYPES = [
+              { label: "Houses",     value: "house",     img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=70" },
+              { label: "Apartments", value: "apartment", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=70" },
+              { label: "Villas",     value: "villa",     img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=70" },
+              { label: "Condos",     value: "condo",     img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=70" },
+              { label: "Townhouses", value: "townhouse", img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=70" },
+              { label: "Land",       value: "land",      img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=70" },
+            ];
+            const visible = ALL_PROP_TYPES
+              .map((pt) => ({
+                ...pt,
+                count: allListings.filter((l) =>
+                  (l.propertyType ?? "").toLowerCase() === pt.value ||
+                  // fallback: keyword match title/description for legacy listings without propertyType
+                  (!(l.propertyType) && (
+                    l.title.toLowerCase().includes(pt.value) ||
+                    (l.description ?? "").toLowerCase().includes(pt.value)
+                  ))
+                ).length,
+              }))
+              .filter((pt) => isLoading || pt.count > 0);
+
+            if (!isLoading && visible.length === 0) return null;
+
+            const cols = visible.length <= 3
+              ? `grid-cols-${visible.length} md:grid-cols-${visible.length}`
+              : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6";
+
+            return (
+              <div className={`grid ${cols} gap-4`}>
+                {(isLoading ? ALL_PROP_TYPES.map(pt => ({ ...pt, count: 0 })) : visible).map(({ label, value, img, count }, idx) => (
+                  <div key={value} data-reveal style={{ transitionDelay: `${idx * 60}ms` }}>
+                    <Link
+                      href={`/properties?q=${value}`}
+                      className="group relative overflow-hidden rounded-lg aspect-[3/4] block shadow-md hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <img
+                        src={img}
+                        alt={`${label} in Ethiopia`}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <p className="text-white font-bold text-sm leading-snug mb-1">
+                          {label} for Sale in Ethiopia
+                        </p>
+                        <p className="text-white/65 text-xs">{count} propert{count === 1 ? "y" : "ies"}</p>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       </section>
 

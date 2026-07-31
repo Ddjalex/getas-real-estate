@@ -2,7 +2,7 @@
   "name": "gift-real-estate",
   "version": "1.0.0",
   "type": "module",
-  "description": "GIFT Real Estate — Express API + React frontend",
+  "description": "GETAS Real Estate — Express API + React frontend",
   "main": "dist/index.mjs",
   "scripts": {
     "start": "node dist/index.mjs"
@@ -10,5 +10,17 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-pg-simple": "^10.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "drizzle-orm": "^0.42.0",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.13.3",
+    "pino": "^9.14.0",
+    "pino-http": "^10.5.0"
+  }
 }

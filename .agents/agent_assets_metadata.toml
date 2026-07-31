@@ -6,3 +6,9 @@ id = "UK1ItlPdHP8fUq3vrdpDi"
 uri = "file://gift-real-estate-deploy.zip"
 type = "unspecified"
 title = "GIFT Real Estate — cPanel Deploy Package"
+
+[[outputs]]
+id = "yqMaFk_RCTyljF3-ETOWk"
+uri = "file://getas-cpanel-deploy.zip"
+type = "unspecified"
+title = "GETAS cPanel Deploy Package"

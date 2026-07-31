@@ -17,8 +17,17 @@ function toSlug(str: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+const PROPERTY_TYPES = [
+  { value: "house",      label: "House" },
+  { value: "apartment",  label: "Apartment" },
+  { value: "villa",      label: "Villa" },
+  { value: "condo",      label: "Condo" },
+  { value: "townhouse",  label: "Townhouse" },
+  { value: "land",       label: "Land" },
+];
+
 const EMPTY: Partial<Listing> = {
-  id: "", slug: "", title: "", type: "sale", price: "",
+  id: "", slug: "", title: "", type: "sale", propertyType: "house", price: "",
   location: "", neighborhood: "", bedrooms: 0, bathrooms: 0, sizeSqm: 0,
   description: "", images: [], status: "For Sale", featured: false,
   dateAdded: new Date().toISOString().split("T")[0] + "T00:00:00Z",
@@ -133,9 +142,17 @@ export default function ListingForm() {
             })}
 
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Type</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Property Type</label>
+                <select value={form.propertyType ?? "house"} onChange={(e) => set("propertyType", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]">
+                  {PROPERTY_TYPES.map((pt) => (
+                    <option key={pt.value} value={pt.value}>{pt.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider">Listing Type</label>
                 <select value={form.type} onChange={(e) => set("type", e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#E31E24]">
                   <option value="sale">For Sale</option>
                   <option value="rent">For Rent</option>
