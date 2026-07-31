@@ -1,0 +1,62 @@
+The homepage redesign (split-screen hero, Space Grotesk font, solid red-accented
+header, sharp rectangular CTAs, stats band with vertical red dividers, horizontal
+property cards) is confirmed and approved. Now apply this same design language
+consistently across ALL public-facing pages, so the entire site feels like one
+cohesive, distinct brand — not just a redesigned homepage bolted onto old-style pages.
+
+SCOPE — redesign the layout/styling of these public pages using the new design
+system (Space Grotesk typography, red/black/white palette, sharp-cornered blocks
+instead of pills, structural/corporate feel instead of GIFT's soft editorial feel):
+
+1. PROPERTIES / LISTINGS PAGE
+   - Redesign the grid/filter layout to match the new visual language.
+   - Property cards already updated (horizontal layout) — carry that through here.
+   - Filter controls (location/type/price/bedrooms) should use the new button/input
+     styling, not the old pill-shaped GIFT-style controls.
+
+2. PROPERTY DETAIL PAGE
+   - Redesign the image gallery, spec layout, and inquiry form to match — sharp
+     rectangular blocks, Space Grotesk headings, red accent details.
+   - Keep all functionality identical (gallery, map, inquiry form submission, related
+     listings) — this is visual only.
+
+3. ABOUT US PAGE
+   - Redesign layout: consider a bolder, more corporate-structured presentation of
+     company history/mission than GIFT's soft editorial approach — e.g. structured
+     sections with strong typographic hierarchy rather than flowing narrative blocks.
+   - Team/agents grid should use the new card styling.
+
+4. SERVICES PAGE
+   - Redesign each service listing using the new sharp-block visual language instead
+     of GIFT's soft card style.
+
+5. BLOG / MARKET INSIGHTS (listing page + individual post pages)
+   - Redesign the blog grid and individual post layout to match the new typography
+     and color system. Keep reading experience clean — don't over-stylize body text
+     of long-form posts, just update headings, cards, and surrounding chrome.
+
+6. CONTACT PAGE
+   - Redesign the form and contact-info layout using the new component style
+     (sharp-cornered inputs/buttons, Space Grotesk labels).
+
+DO NOT TOUCH (unchanged from this pass):
+- Any backend code: Express routes, database schema/queries, admin panel logic, SEO
+  meta injection code, authentication — frontend/styling changes only.
+- The admin/staff portal UI — leave that as its current functional design; this pass
+  is public-facing pages only.
+- Site functionality: forms must still submit correctly, filters must still work,
+  maps must still load, image galleries must still function — verify nothing breaks
+  functionally as a result of the visual changes.
+
+CONSISTENCY CHECK BEFORE YOU FINISH
+- Confirm every public page now uses Space Grotesk for headings (not the old serif).
+- Confirm CTA buttons are sharp-cornered/blocky across all pages, not a mix of old
+  pill-style and new sharp-style.
+- Confirm the red/black/white palette is applied consistently — no leftover GIFT
+  green/gold anywhere.
+- Confirm meta title/description tags on each page are still accurate for that page's
+  content (don't let visual changes accidentally break the per-page SEO tags already
+  in place).
+
+Show me each redesigned page (screenshots or preview links) once done, and confirm
+which files were changed for each page.

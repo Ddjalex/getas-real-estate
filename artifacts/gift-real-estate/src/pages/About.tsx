@@ -64,42 +64,58 @@ export default function About() {
         jsonLd={localBusinessJsonLd()}
       />
 
-      {/* Hero */}
-      <div data-reveal className="bg-[#1A1A1A] text-white py-20 mb-16 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-20">
-          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1000" alt="Addis Ababa real estate" width={1000} height={600} loading="lazy" className="w-full h-full object-cover" />
+      {/* Hero — Split structural layout */}
+      <div data-reveal className="bg-[#1A1A1A] border-t-4 border-[#E31E24] mb-0 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img
+            src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1400"
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="font-serif text-5xl font-bold mb-6">{heroHeading}</h1>
-          <p className="text-white/80 text-xl max-w-2xl font-light">{heroSubtext}</p>
+        <div className="container mx-auto px-4 relative z-10 py-20">
+          <div className="max-w-3xl">
+            <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
+            <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-4">GET-AS INTERNATIONAL PLC. · EST. 1994</p>
+            <h1 className="font-bold text-5xl md:text-6xl text-white tracking-tight leading-[1.05] mb-6">{heroHeading}</h1>
+            <p className="text-white/60 text-lg max-w-2xl leading-relaxed">{heroSubtext}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mission & Vision — dark structural blocks */}
+      <div data-reveal className="bg-[#0D0D0D] py-16 mb-0">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div className="p-10 md:p-12 border-r border-white/5">
+              <div className="h-1 w-10 bg-[#E31E24] mb-6" />
+              <h2 className="font-bold text-3xl text-white tracking-tight mb-5">Our Mission</h2>
+              <p className="text-white/60 leading-relaxed text-base">{mission}</p>
+            </div>
+            <div className="p-10 md:p-12">
+              <div className="h-1 w-10 bg-[#E31E24] mb-6" />
+              <h2 className="font-bold text-3xl text-white tracking-tight mb-5">Our Vision</h2>
+              <p className="text-white/60 leading-relaxed text-base">{vision}</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Mission & Vision */}
-        <div data-reveal className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
-          <div className="bg-white p-10 border-t-4 border-[#E31E24] shadow-sm">
-            <h2 className="font-serif text-3xl font-bold text-[#1A1A1A] mb-4">Our Mission</h2>
-            <p className="text-gray-700 leading-relaxed text-lg">{mission}</p>
-          </div>
-          <div className="bg-white p-10 border-t-4 border-[#E31E24] shadow-sm">
-            <h2 className="font-serif text-3xl font-bold text-[#1A1A1A] mb-4">Our Vision</h2>
-            <p className="text-gray-700 leading-relaxed text-lg">{vision}</p>
-          </div>
-        </div>
-
         {/* History Timeline */}
         {milestones.length > 0 && (
-          <div data-reveal className="mb-24">
-            <h2 className="font-serif text-4xl font-bold text-[#1A1A1A] mb-12 text-center">Our History</h2>
-            <div className="relative border-l-2 border-[#E31E24] ml-6 md:mx-auto md:w-0">
+          <div data-reveal className="py-20 border-b border-gray-100">
+            <div className="mb-12">
+              <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
+              <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">SINCE 1994</p>
+              <h2 className="font-bold text-4xl text-[#1A1A1A] tracking-tight">Our History</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
               {milestones.map((milestone, idx) => (
-                <div key={idx} className={`relative mb-12 md:w-1/2 ${idx % 2 === 0 ? "md:ml-auto md:pl-10" : "md:mr-auto md:pr-10 md:text-right"} pl-8 md:pl-0`}>
-                  <div className="absolute w-4 h-4 bg-[#E31E24] rounded-full top-2 -left-[9px] md:left-auto border-2 border-[#E31E24] z-10"
-                       style={idx % 2 === 0 ? { left: "-9px" } : { right: "-9px" }} />
-                  <span className="text-[#E31E24] font-bold text-xl block mb-1">{milestone.year}</span>
-                  <h3 className="font-serif text-2xl font-bold text-[#1A1A1A] mb-2">{milestone.title}</h3>
-                  <p className="text-gray-600">{milestone.desc}</p>
+                <div key={idx} className="border-l-2 border-[#E31E24]/20 pl-8 pr-6 py-6 hover:border-[#E31E24] transition-colors group">
+                  <span className="text-[#E31E24] font-bold text-3xl block mb-2 tracking-tight">{milestone.year}</span>
+                  <h3 className="font-bold text-lg text-[#1A1A1A] mb-3 tracking-tight group-hover:text-[#E31E24] transition-colors">{milestone.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{milestone.desc}</p>
                 </div>
               ))}
             </div>
@@ -107,20 +123,21 @@ export default function About() {
         )}
 
         {/* Leadership Team */}
-        <div data-reveal className="mb-24">
-          <div className="text-center mb-12">
-            <p className="text-[#E31E24] font-bold tracking-widest uppercase text-sm mb-2">The People Behind GETAS</p>
-            <h2 className="font-serif text-4xl font-bold text-[#1A1A1A]">Our Leadership Team</h2>
+        <div data-reveal className="py-20">
+          <div className="mb-12">
+            <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
+            <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">THE PEOPLE BEHIND GETAS</p>
+            <h2 className="font-bold text-4xl text-[#1A1A1A] tracking-tight">Our Leadership Team</h2>
           </div>
           {agents.length === 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1,2,3].map((i) => <div key={i} className="h-72 bg-gray-100 rounded-sm animate-pulse" />)}
+              {[1,2,3].map((i) => <div key={i} className="h-72 bg-gray-100 animate-pulse" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {agents.map((agent) => (
-                <div key={agent.id} className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden group">
-                  <div className="aspect-square overflow-hidden">
+                <div key={agent.id} className="bg-white border border-gray-100 overflow-hidden group hover:border-[#E31E24]/30 transition-colors">
+                  <div className="aspect-square overflow-hidden bg-gray-100">
                     <img
                       src={resolveImg(agent.image)}
                       alt={`${agent.name} — ${agent.role} at GETAS Real Estate`}
@@ -129,16 +146,16 @@ export default function About() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-6">
-                    <h3 className="font-serif text-xl font-bold text-[#1A1A1A] mb-1">{agent.name}</h3>
-                    <p className="text-[#E31E24] font-bold text-sm uppercase tracking-wider mb-4">{agent.role}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-6">{agent.bio}</p>
-                    <div className="flex flex-col gap-2 text-sm">
-                      <a href={`tel:${agent.phone}`} className="flex items-center gap-2 text-[#E31E24] hover:underline">
-                        <Phone size={14} /> {agent.phone}
+                  <div className="p-6 border-t-4 border-transparent group-hover:border-[#E31E24] transition-colors">
+                    <h3 className="font-bold text-xl text-[#1A1A1A] mb-1 tracking-tight">{agent.name}</h3>
+                    <p className="text-[#E31E24] font-bold text-xs uppercase tracking-widest mb-4">{agent.role}</p>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-5">{agent.bio}</p>
+                    <div className="flex flex-col gap-2 text-sm pt-4 border-t border-gray-100">
+                      <a href={`tel:${agent.phone}`} className="flex items-center gap-2 text-[#1A1A1A] hover:text-[#E31E24] transition-colors font-medium text-xs">
+                        <Phone size={12} className="text-[#E31E24]" /> {agent.phone}
                       </a>
-                      <a href={`mailto:${agent.email}`} className="flex items-center gap-2 text-[#E31E24] hover:underline">
-                        <Mail size={14} /> {agent.email}
+                      <a href={`mailto:${agent.email}`} className="flex items-center gap-2 text-[#1A1A1A] hover:text-[#E31E24] transition-colors font-medium text-xs">
+                        <Mail size={12} className="text-[#E31E24]" /> {agent.email}
                       </a>
                     </div>
                   </div>

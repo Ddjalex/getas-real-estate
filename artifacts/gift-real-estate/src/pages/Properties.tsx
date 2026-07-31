@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchListings } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO } from "@/components/SEO";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Properties() {
@@ -41,29 +41,47 @@ export default function Properties() {
         path="/properties"
       />
 
-      <div data-reveal className="bg-[#1A1A1A] text-white py-12 mb-12">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Properties in Addis Ababa</h1>
-          <p className="text-white/80 max-w-2xl mx-auto">
+      {/* Page Hero */}
+      <div data-reveal className="bg-[#1A1A1A] text-white py-14 mb-12 border-t-4 border-[#E31E24]">
+        <div className="container mx-auto px-4">
+          <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
+          <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">BROWSE OUR PORTFOLIO</p>
+          <h1 className="font-bold text-4xl md:text-5xl text-white tracking-tight mb-3">
+            Properties in Addis Ababa
+          </h1>
+          <p className="text-white/60 max-w-2xl text-base">
             Browse our exclusive portfolio of residential and commercial properties available for sale and rent.
           </p>
         </div>
       </div>
 
       <div className="container mx-auto px-4">
-        <div data-reveal className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-10">
+        {/* Filter Bar */}
+        <div data-reveal className="bg-[#0D0D0D] p-6 mb-10 border-l-4 border-[#E31E24]">
+          <div className="flex items-center gap-3 mb-5">
+            <SlidersHorizontal size={16} className="text-[#E31E24]" />
+            <span className="text-white text-xs font-bold tracking-[0.2em] uppercase">Filter Properties</span>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Purpose</label>
-              <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
+              <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Purpose</label>
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-2.5 text-white focus:outline-none focus:border-[#E31E24] transition-colors appearance-none"
+              >
                 <option value="all">Any (Sale & Rent)</option>
                 <option value="sale">For Sale</option>
                 <option value="rent">For Rent</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Location</label>
-              <select value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
+              <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Location</label>
+              <select
+                value={filterLocation}
+                onChange={(e) => setFilterLocation(e.target.value)}
+                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-2.5 text-white focus:outline-none focus:border-[#E31E24] transition-colors appearance-none"
+              >
                 <option value="all">All Areas</option>
                 {uniqueLocations.map((loc) => (
                   <option key={loc} value={loc.toLowerCase()}>{loc}</option>
@@ -71,8 +89,12 @@ export default function Properties() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bedrooms</label>
-              <select value={filterBeds} onChange={(e) => setFilterBeds(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-2.5 text-[#1A1A1A] focus:outline-none focus:border-[#E31E24]">
+              <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Bedrooms</label>
+              <select
+                value={filterBeds}
+                onChange={(e) => setFilterBeds(e.target.value)}
+                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-2.5 text-white focus:outline-none focus:border-[#E31E24] transition-colors appearance-none"
+              >
                 <option value="all">Any Beds</option>
                 <option value="1">1 Bed</option>
                 <option value="2">2 Beds</option>
@@ -81,8 +103,11 @@ export default function Properties() {
               </select>
             </div>
             <div className="flex items-end">
-              <button onClick={() => { setFilterType("all"); setFilterLocation("all"); setFilterBeds("all"); }} className="w-full border border-gray-300 text-gray-600 px-4 py-2.5 rounded-sm hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center gap-2">
-                <Search size={16} /> Clear Filters
+              <button
+                onClick={() => { setFilterType("all"); setFilterLocation("all"); setFilterBeds("all"); }}
+                className="w-full border border-white/20 text-white/70 px-4 py-2.5 hover:bg-white/5 hover:text-white transition-colors text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2"
+              >
+                <Search size={14} /> Clear Filters
               </button>
             </div>
           </div>
@@ -90,15 +115,21 @@ export default function Properties() {
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1,2,3,4,5,6].map((i) => <div key={i} className="h-80 bg-gray-100 rounded-sm animate-pulse" />)}
+            {[1,2,3,4,5,6].map((i) => <div key={i} className="h-80 bg-gray-100 animate-pulse" />)}
           </div>
         ) : filteredListings.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">
-            <p className="text-lg font-medium">No properties found matching your filters.</p>
+          <div className="text-center py-20 text-gray-500 border border-gray-100 bg-gray-50">
+            <p className="text-lg font-bold text-[#1A1A1A] mb-2">No properties found</p>
+            <p className="text-sm">Try adjusting your filters above.</p>
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-6">{filteredListings.length} propert{filteredListings.length === 1 ? "y" : "ies"} found</p>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-4 w-1 bg-[#E31E24]" />
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                {filteredListings.length} Propert{filteredListings.length === 1 ? "y" : "ies"} Found
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredListings.map((listing) => (
                 <PropertyCard key={listing.id} listing={listing} />
