@@ -36,6 +36,10 @@ function AppRoutes() {
   const [location, navigate] = useLocation();
   const isAdmin = location.startsWith("/admin");
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location]);
+
   if (isAdmin) {
     return (
       <Switch>
