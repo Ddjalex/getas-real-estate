@@ -1,18 +1,28 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchListings } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO } from "@/components/SEO";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Properties() {
   const pageRef = useRef<HTMLDivElement>(null);
   useScrollReveal(pageRef);
 
-  const [filterType, setFilterType] = useState<string>("all");
+  const [filterType, setFilterType]         = useState<string>("all");
   const [filterLocation, setFilterLocation] = useState<string>("all");
-  const [filterBeds, setFilterBeds] = useState<string>("all");
+  const [filterBeds, setFilterBeds]         = useState<string>("all");
+  const [searchQuery, setSearchQuery]       = useState<string>("");
+
+  // Read URL params set by the hero search / Buy-Rent toggle
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const type   = params.get("type");
+    const q      = params.get("q");
+    if (type === "sale" || type === "rent") setFilterType(type);
+    if (q) setSearchQuery(q);
+  }, []);
 
   const { data: listings = [], isLoading } = useQuery({
     queryKey: ["listings"],
@@ -25,13 +35,23 @@ export default function Properties() {
   );
 
   const filteredListings = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
     return listings.filter((listing) => {
-      const matchType = filterType === "all" || listing.type === filterType;
+      const matchType     = filterType === "all" || listing.type === filterType;
       const matchLocation = filterLocation === "all" || listing.location.toLowerCase() === filterLocation;
-      const matchBeds = filterBeds === "all" || (filterBeds === "4+" ? listing.bedrooms >= 4 : listing.bedrooms.toString() === filterBeds);
-      return matchType && matchLocation && matchBeds;
+      const matchBeds     = filterBeds === "all" || (filterBeds === "4+" ? listing.bedrooms >= 4 : listing.bedrooms.toString() === filterBeds);
+      const matchQuery    = !q || [listing.title, listing.location, listing.neighborhood, listing.description]
+        .some((f) => f?.toLowerCase().includes(q));
+      return matchType && matchLocation && matchBeds && matchQuery;
     });
-  }, [listings, filterType, filterLocation, filterBeds]);
+  }, [listings, filterType, filterLocation, filterBeds, searchQuery]);
+
+  const clearAll = () => {
+    setFilterType("all");
+    setFilterLocation("all");
+    setFilterBeds("all");
+    setSearchQuery("");
+  };
 
   return (
     <div ref={pageRef} className="min-h-screen bg-[#FFFFFF] pt-24 pb-16">
@@ -62,7 +82,28 @@ export default function Properties() {
             <SlidersHorizontal size={16} className="text-[#E31E24]" />
             <span className="text-white text-xs font-bold tracking-[0.2em] uppercase">Filter Properties</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {/* Text search */}
+            <div className="md:col-span-2">
+              <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Search</label>
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="City, neighborhood, type…"
+                  className="w-full bg-[#1A1A1A] border border-white/10 pl-9 pr-8 py-2.5 text-white text-sm focus:outline-none focus:border-[#E31E24] transition-colors placeholder:text-white/30"
+                />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white">
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Purpose */}
             <div>
               <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Purpose</label>
               <select
@@ -75,6 +116,8 @@ export default function Properties() {
                 <option value="rent">For Rent</option>
               </select>
             </div>
+
+            {/* Location */}
             <div>
               <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Location</label>
               <select
@@ -88,6 +131,8 @@ export default function Properties() {
                 ))}
               </select>
             </div>
+
+            {/* Bedrooms */}
             <div>
               <label className="block text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Bedrooms</label>
               <select
@@ -102,15 +147,34 @@ export default function Properties() {
                 <option value="4+">4+ Beds</option>
               </select>
             </div>
-            <div className="flex items-end">
+          </div>
+
+          {/* Active filters / clear */}
+          {(filterType !== "all" || filterLocation !== "all" || filterBeds !== "all" || searchQuery) && (
+            <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/10">
+              <span className="text-white/40 text-xs uppercase tracking-wider">Active filters:</span>
+              {filterType !== "all" && (
+                <span className="bg-[#E31E24]/20 text-[#E31E24] text-xs px-3 py-1 font-bold">
+                  {filterType === "sale" ? "For Sale" : "For Rent"}
+                </span>
+              )}
+              {filterLocation !== "all" && (
+                <span className="bg-white/10 text-white text-xs px-3 py-1">{filterLocation}</span>
+              )}
+              {filterBeds !== "all" && (
+                <span className="bg-white/10 text-white text-xs px-3 py-1">{filterBeds} beds</span>
+              )}
+              {searchQuery && (
+                <span className="bg-white/10 text-white text-xs px-3 py-1">"{searchQuery}"</span>
+              )}
               <button
-                onClick={() => { setFilterType("all"); setFilterLocation("all"); setFilterBeds("all"); }}
-                className="w-full border border-white/20 text-white/70 px-4 py-2.5 hover:bg-white/5 hover:text-white transition-colors text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2"
+                onClick={clearAll}
+                className="ml-auto text-white/40 hover:text-white text-xs uppercase tracking-wider flex items-center gap-1 transition-colors"
               >
-                <Search size={14} /> Clear Filters
+                <X size={12} /> Clear all
               </button>
             </div>
-          </div>
+          )}
         </div>
 
         {isLoading ? (

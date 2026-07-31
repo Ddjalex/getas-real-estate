@@ -410,6 +410,60 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Properties by Type */}
+      <section className="section-enter bg-[#F5F5F5] py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="h-0.5 w-12 bg-[#E31E24] mb-4 mx-auto" />
+            <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">EXPLORE BY CATEGORY</p>
+            <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] tracking-tight mb-3">
+              All Ethiopian Properties by Type
+            </h2>
+            <p className="text-[#1A1A1A]/55 text-base max-w-lg mx-auto">
+              Browse our diverse selection of real estate properties in Ethiopia
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { label: "Houses",      keyword: "house",      img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=70" },
+              { label: "Apartments",  keyword: "apartment",  img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=70" },
+              { label: "Villas",      keyword: "villa",      img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=70" },
+              { label: "Condos",      keyword: "condo",      img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=70" },
+              { label: "Townhouses",  keyword: "townhouse",  img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=70" },
+              { label: "Land",        keyword: "land",       img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=70" },
+            ].map(({ label, keyword, img }) => {
+              const count = allListings.filter((l) =>
+                l.title.toLowerCase().includes(keyword) ||
+                l.description?.toLowerCase().includes(keyword)
+              ).length;
+              return (
+                <Link
+                  key={keyword}
+                  href={`/properties?q=${keyword}`}
+                  className="group relative overflow-hidden rounded-lg aspect-[3/4] block shadow-md hover:shadow-xl transition-shadow duration-300"
+                >
+                  <img
+                    src={img}
+                    alt={`${label} in Ethiopia`}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  {/* Text */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-white font-bold text-sm leading-snug mb-1">
+                      {label} for Sale in Ethiopia
+                    </p>
+                    <p className="text-white/65 text-xs">{count} propert{count === 1 ? "y" : "ies"}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
