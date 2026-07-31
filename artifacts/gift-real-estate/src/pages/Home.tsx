@@ -10,10 +10,9 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Award, MapPin, ShieldCheck, TrendingUp, Building2, ArrowRight, Search } from "lucide-react";
 
 const STORAGE_BASE = `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage`;
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920";
 
 function resolveSlideUrl(path: string) {
-  if (!path) return FALLBACK_IMAGE;
+  if (!path) return "";
   if (path.startsWith("http")) return path;
   if (path.startsWith("/objects/")) return `${STORAGE_BASE}${path}`;
   return path;
@@ -38,31 +37,30 @@ function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const images = slides.length > 0 ? slides : [{ id: 0, imageUrl: FALLBACK_IMAGE, caption: "", displayOrder: 0, active: true, createdAt: "" }];
+  // No slides: render nothing — the hero section shows its dark background
+  if (slides.length === 0) return null;
 
   return (
     <>
       {prev !== null && (
         <img
           key={`prev-${prev}`}
-          src={resolveSlideUrl(images[prev].imageUrl)}
+          src={resolveSlideUrl(slides[prev].imageUrl)}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           style={{ opacity: transitioning ? 0 : 1, transition: "opacity 900ms ease-in-out" }}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
         />
       )}
       <img
         key={`curr-${current}`}
-        src={resolveSlideUrl(images[current].imageUrl)}
-        alt={images[current].caption || "GETAS Real Estate"}
+        src={resolveSlideUrl(slides[current].imageUrl)}
+        alt={slides[current].caption || "GETAS Real Estate"}
         className="absolute inset-0 w-full h-full object-cover ken-burns"
         style={{ opacity: 1, transition: "opacity 900ms ease-in-out" }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE; }}
       />
-      {images.length > 1 && (
+      {slides.length > 1 && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {images.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => { setPrev(current); setCurrent(i); setTransitioning(true); setTimeout(() => { setPrev(null); setTransitioning(false); }, 900); }}
