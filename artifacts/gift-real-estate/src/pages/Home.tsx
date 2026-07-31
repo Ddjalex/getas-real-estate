@@ -287,44 +287,45 @@ export default function Home() {
         </section>
       )}
 
-      {/* CTA Banner — split layout */}
-      <section className="section-enter overflow-hidden">
-        <div className="flex flex-col lg:flex-row min-h-[460px]">
-          {/* Text side */}
-          <div className="cta-content bg-[#E31E24] flex-1 lg:w-[58%] px-10 py-16 md:px-16 flex flex-col justify-center">
-            <div className="h-px w-12 bg-[#1A1A1A]/25 mb-8" />
-            <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] mb-5 tracking-tight leading-[1.05]">
-              Ready to Find<br />Your Property?
-            </h2>
-            <p className="text-[#1A1A1A]/65 text-base max-w-md mb-10 leading-relaxed">
-              Whether you're buying, renting, or investing, our expert team is ready to guide you every step of the way.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                onClick={() => trackEvent("cta_click", { button: "Book a Visit" })}
-                className="bg-[#1A1A1A] text-white px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-white hover:text-[#1A1A1A] transition-colors inline-flex items-center justify-center gap-2"
-              >
-                BOOK A VISIT <ArrowRight size={15} />
-              </Link>
-              <Link
-                href="/properties"
-                className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
-              >
-                BROWSE PROPERTIES
-              </Link>
-            </div>
-          </div>
-          {/* Image side */}
-          <div className="relative lg:w-[42%] min-h-[280px] lg:min-h-0 overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80"
-              alt="GETAS Real Estate — Addis Ababa Properties"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-[#1A1A1A]/30" />
-            {/* Corner accent */}
-            <div className="absolute bottom-0 left-0 w-1 h-16 bg-[#E31E24]" />
+      {/* CTA Banner — image background with red fade */}
+      <section className="section-enter relative overflow-hidden min-h-[460px] flex items-center">
+        {/* Background image */}
+        <img
+          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1400&q=80"
+          alt="GETAS Real Estate — Addis Ababa Properties"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Red gradient: solid on left, fades to transparent ~60% across */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(to right, #E31E24 0%, #E31E24 42%, rgba(227,30,36,0.85) 52%, rgba(227,30,36,0.3) 65%, transparent 80%)" }}
+        />
+        {/* On mobile: full red overlay so text stays readable */}
+        <div className="absolute inset-0 bg-[#E31E24]/80 lg:hidden" />
+
+        {/* Content */}
+        <div className="cta-content relative z-10 container mx-auto px-10 md:px-16 py-20 max-w-2xl mr-auto">
+          <div className="h-px w-12 bg-[#1A1A1A]/30 mb-8" />
+          <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] mb-5 tracking-tight leading-[1.05]">
+            Ready to Find<br />Your Property?
+          </h2>
+          <p className="text-[#1A1A1A]/70 text-base max-w-md mb-10 leading-relaxed">
+            Whether you're buying, renting, or investing, our expert team is ready to guide you every step of the way.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/contact"
+              onClick={() => trackEvent("cta_click", { button: "Book a Visit" })}
+              className="bg-[#1A1A1A] text-white px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-white hover:text-[#1A1A1A] transition-colors inline-flex items-center justify-center gap-2"
+            >
+              BOOK A VISIT <ArrowRight size={15} />
+            </Link>
+            <Link
+              href="/properties"
+              className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
+            >
+              BROWSE PROPERTIES
+            </Link>
           </div>
         </div>
       </section>
