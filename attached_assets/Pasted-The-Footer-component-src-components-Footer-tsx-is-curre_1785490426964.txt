@@ -1,0 +1,48 @@
+The Footer component (src/components/Footer.tsx) is currently visually identical in
+structure to GIFT Real Estate's footer (live reference:
+https://ethiopianrealestates.com/) — just recolored. Redesign its LAYOUT, not just
+its colors, so it's structurally distinct while still using GETAS's red/black/white
+branding.
+
+CURRENT GIFT-STYLE STRUCTURE (what to move away from):
+- Dark green background, 4-column grid: logo/tagline column, Explore links, Company
+  links, Contact info — all left-aligned, plain text links, simple copyright bar at
+  the bottom.
+
+REDESIGN DIRECTION — make it structurally different, e.g.:
+- Consider a different column arrangement or proportions (not an even 4-column grid)
+  — for example a wider brand/newsletter column paired with narrower link columns, or
+  a different visual hierarchy that emphasizes GETAS's identity as part of Get-As
+  International.
+- Consider adding a distinct visual element GIFT's footer doesn't have — e.g. a bold
+  top border/divider in red, a subtle background treatment (solid black instead of
+  GIFT's dark green), or icon-paired contact details instead of plain text lines.
+- Use Space Grotesk (or whatever heading font the current design system uses) for
+  footer headings ("Explore," "Company," "Contact") instead of GIFT's font choice, to
+  stay consistent with the rest of the redesigned site.
+- Sharp-cornered treatment for any buttons/inputs in the footer (e.g. if there's a
+  newsletter signup), matching the rest of the new design language — not GIFT's
+  rounded style.
+- Bottom copyright bar: keep it simple, but consider a subtle visual distinction from
+  GIFT's (e.g. different alignment, a red accent line above it) rather than an
+  identical plain bar.
+
+CONTENT TO KEEP (don't change what's said, just how it's laid out):
+- GETAS logo + short tagline
+- Navigation links (Properties, Why GETAS/About, Services, Insights, Contact — match
+  whatever the current nav structure is)
+- Company links (About Us, Our Agents, Careers, Contact)
+- Contact info block (address, phone, email) — pulled from Site Settings as it
+  already is, don't hardcode these
+- Copyright line
+
+SCOPE — ONLY this file changes:
+- src/components/Footer.tsx (and its associated CSS if separate)
+
+Do NOT touch:
+- Header.tsx, Home.tsx hero, PropertyCard.tsx, or any other page/component.
+- Any backend code — this is styling/layout only, the Site Settings data it pulls
+  from (contact info, etc.) must keep working exactly as before.
+
+CONFIRM WHEN DONE:
+Show me the updated footer and confirm no other files were touched.

@@ -309,60 +309,82 @@ export default function Home() {
       )}
 
       {/* Why GETAS */}
-      <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24">
-        <div className="container mx-auto px-4">
-          <div className="mb-16">
+      <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24 relative overflow-hidden">
+        {/* Decorative watermark */}
+        <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 text-white/[0.025] font-bold text-[18rem] leading-none select-none pointer-events-none">
+          21+
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="mb-14">
             <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
             <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">OUR COMMITMENT</p>
             <h2 className="font-bold text-4xl md:text-5xl text-white tracking-tight">Why Choose GETAS</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2">
             {[
-              { num: "01", icon: <Award size={40} className="text-[#E31E24]" />, title: "21+ Years in Real Estate", desc: "Part of Get-As International Plc., delivering quality developments across Ethiopia since 2005." },
-              { num: "02", icon: <MapPin size={40} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of Addis Ababa — from Kazanchis to Bole — and each neighborhood's investment potential." },
-              { num: "03", icon: <ShieldCheck size={40} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
-              { num: "04", icon: <TrendingUp size={40} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
+              { num: "01", icon: <Award size={32} className="text-[#E31E24]" />, title: "21+ Years in Real Estate", desc: "Part of Get-As International Plc., delivering quality developments across Ethiopia since 2005." },
+              { num: "02", icon: <MapPin size={32} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of Addis Ababa — from Kazanchis to Bole — and each neighborhood's investment potential." },
+              { num: "03", icon: <ShieldCheck size={32} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
+              { num: "04", icon: <TrendingUp size={32} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
             ].map((item, i) => (
               <div
                 key={i}
-                className="why-item bg-[#0D0D0D] border-l-4 border-[#E31E24] p-8 md:p-10 hover:bg-[#111] transition-colors"
-                style={{ marginTop: i % 2 === 1 && window.innerWidth >= 768 ? '4rem' : '0' }}
+                className={`why-item flex gap-6 items-start py-10 px-6 border-b border-white/10 hover:bg-white/[0.025] transition-colors
+                  ${i % 2 === 0 ? 'md:border-r md:border-r-white/10 md:pr-12' : 'md:pl-12'}
+                  ${i >= 2 ? 'md:border-b-0' : ''}`}
               >
-                <div className="text-[#E31E24]/30 font-bold text-7xl mb-4 leading-none">{item.num}</div>
-                <div className="mb-5">{item.icon}</div>
-                <h3 className="font-bold text-2xl text-white mb-4 tracking-tight">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed text-sm">{item.desc}</p>
+                <div className="shrink-0 text-[#E31E24]/20 font-bold text-6xl leading-none w-16 text-right mt-1">
+                  {item.num}
+                </div>
+                <div className="flex-1">
+                  <div className="mb-4 p-2.5 bg-[#E31E24]/10 inline-block">{item.icon}</div>
+                  <h3 className="font-bold text-xl text-white mb-3 tracking-tight">{item.title}</h3>
+                  <p className="text-white/55 leading-relaxed text-sm">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="section-enter bg-[#E31E24] py-20">
-        <div className="container mx-auto px-4">
-          <div className="cta-content max-w-4xl">
-            <Building2 size={56} className="text-[#1A1A1A]/20 mb-8" />
-            <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] mb-4 tracking-tight">Ready to Find Your Property?</h2>
-            <div className="h-0.5 w-32 bg-[#1A1A1A]/20 my-6" />
-            <p className="text-[#1A1A1A]/70 text-lg max-w-2xl mb-10 leading-relaxed">
+      {/* CTA Banner — split layout */}
+      <section className="section-enter overflow-hidden">
+        <div className="flex flex-col lg:flex-row min-h-[460px]">
+          {/* Text side */}
+          <div className="cta-content bg-[#E31E24] flex-1 lg:w-[58%] px-10 py-16 md:px-16 flex flex-col justify-center">
+            <div className="h-px w-12 bg-[#1A1A1A]/25 mb-8" />
+            <h2 className="font-bold text-4xl md:text-5xl text-[#1A1A1A] mb-5 tracking-tight leading-[1.05]">
+              Ready to Find<br />Your Property?
+            </h2>
+            <p className="text-[#1A1A1A]/65 text-base max-w-md mb-10 leading-relaxed">
               Whether you're buying, renting, or investing, our expert team is ready to guide you every step of the way.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/contact"
                 onClick={() => trackEvent("cta_click", { button: "Book a Visit" })}
-                className="bg-[#1A1A1A] text-white px-10 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-[#0D0D0D] transition-colors inline-flex items-center justify-center"
+                className="bg-[#1A1A1A] text-white px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-white hover:text-[#1A1A1A] transition-colors inline-flex items-center justify-center gap-2"
               >
-                BOOK A VISIT
+                BOOK A VISIT <ArrowRight size={15} />
               </Link>
               <Link
                 href="/properties"
-                className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-10 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
+                className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-9 py-4 font-bold text-sm tracking-widest uppercase hover:bg-[#1A1A1A] hover:text-white transition-colors inline-flex items-center justify-center"
               >
                 BROWSE PROPERTIES
               </Link>
             </div>
+          </div>
+          {/* Image side */}
+          <div className="relative lg:w-[42%] min-h-[280px] lg:min-h-0 overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80"
+              alt="GETAS Real Estate — Addis Ababa Properties"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[#1A1A1A]/30" />
+            {/* Corner accent */}
+            <div className="absolute bottom-0 left-0 w-1 h-16 bg-[#E31E24]" />
           </div>
         </div>
       </section>
