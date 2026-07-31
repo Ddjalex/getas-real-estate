@@ -257,27 +257,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats band — simple stacked number + label */}
-      <section className="section-enter bg-[#1A1A1A] py-14 border-t-4 border-[#E31E24]">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
-            {STATS.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="flex items-baseline justify-center gap-1 mb-1">
-                  <div
-                    ref={(el) => { statRefs.current[i] = el; }}
-                    className="font-bold text-4xl md:text-5xl text-[#E31E24]"
-                  >
-                    0
-                  </div>
-                  <span className="font-bold text-2xl text-[#E31E24]">{stat.suffix}</span>
-                </div>
-                <div className="text-white/60 text-xs uppercase tracking-widest font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Featured Listings */}
       {(isLoading || featuredListings.length > 0) && (
@@ -307,45 +286,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* Why GETAS */}
-      <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24 relative overflow-hidden">
-        {/* Decorative watermark */}
-        <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 text-white/[0.025] font-bold text-[18rem] leading-none select-none pointer-events-none">
-          21+
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="mb-14">
-            <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
-            <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">OUR COMMITMENT</p>
-            <h2 className="font-bold text-4xl md:text-5xl text-white tracking-tight">Why Choose GETAS</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {[
-              { num: "01", icon: <Award size={32} className="text-[#E31E24]" />, title: "21+ Years in Real Estate", desc: "Part of Get-As International Plc., delivering quality developments across Ethiopia since 2005." },
-              { num: "02", icon: <MapPin size={32} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of Addis Ababa — from Kazanchis to Bole — and each neighborhood's investment potential." },
-              { num: "03", icon: <ShieldCheck size={32} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
-              { num: "04", icon: <TrendingUp size={32} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className={`why-item flex gap-6 items-start py-10 px-6 border-b border-white/10 hover:bg-white/[0.025] transition-colors
-                  ${i % 2 === 0 ? 'md:border-r md:border-r-white/10 md:pr-12' : 'md:pl-12'}
-                  ${i >= 2 ? 'md:border-b-0' : ''}`}
-              >
-                <div className="shrink-0 text-[#E31E24]/20 font-bold text-6xl leading-none w-16 text-right mt-1">
-                  {item.num}
-                </div>
-                <div className="flex-1">
-                  <div className="mb-4 p-2.5 bg-[#E31E24]/10 inline-block">{item.icon}</div>
-                  <h3 className="font-bold text-xl text-white mb-3 tracking-tight">{item.title}</h3>
-                  <p className="text-white/55 leading-relaxed text-sm">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Banner — split layout */}
       <section className="section-enter overflow-hidden">
@@ -385,6 +325,45 @@ export default function Home() {
             <div className="absolute inset-0 bg-[#1A1A1A]/30" />
             {/* Corner accent */}
             <div className="absolute bottom-0 left-0 w-1 h-16 bg-[#E31E24]" />
+          </div>
+        </div>
+      </section>
+
+      {/* Why GETAS */}
+      <section ref={whySectionRef} className="section-enter bg-[#1A1A1A] py-24 relative overflow-hidden">
+        {/* Decorative watermark */}
+        <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 text-white/[0.025] font-bold text-[18rem] leading-none select-none pointer-events-none">
+          21+
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="mb-14">
+            <div className="h-0.5 w-12 bg-[#E31E24] mb-4" />
+            <p className="text-[#E31E24] font-bold tracking-[0.2em] uppercase text-xs mb-3">OUR COMMITMENT</p>
+            <h2 className="font-bold text-4xl md:text-5xl text-white tracking-tight">Why Choose GETAS</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {[
+              { num: "01", icon: <Award size={32} className="text-[#E31E24]" />, title: "21+ Years in Real Estate", desc: "Part of Get-As International Plc., delivering quality developments across Ethiopia since 2005." },
+              { num: "02", icon: <MapPin size={32} className="text-[#E31E24]" />, title: "Local Expertise", desc: "Deep knowledge of Addis Ababa — from Kazanchis to Bole — and each neighborhood's investment potential." },
+              { num: "03", icon: <ShieldCheck size={32} className="text-[#E31E24]" />, title: "Verified Developments", desc: "Every property is built and vetted to meet international standards with full legal compliance." },
+              { num: "04", icon: <TrendingUp size={32} className="text-[#E31E24]" />, title: "Long-Term Value", desc: "We develop properties — luxury apartments, commercial spaces, mixed-use — that generate lasting returns." },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className={`why-item flex gap-6 items-start py-10 px-6 border-b border-white/10 hover:bg-white/[0.025] transition-colors
+                  ${i % 2 === 0 ? 'md:border-r md:border-r-white/10 md:pr-12' : 'md:pl-12'}
+                  ${i >= 2 ? 'md:border-b-0' : ''}`}
+              >
+                <div className="shrink-0 text-[#E31E24]/20 font-bold text-6xl leading-none w-16 text-right mt-1">
+                  {item.num}
+                </div>
+                <div className="flex-1">
+                  <div className="mb-4 p-2.5 bg-[#E31E24]/10 inline-block">{item.icon}</div>
+                  <h3 className="font-bold text-xl text-white mb-3 tracking-tight">{item.title}</h3>
+                  <p className="text-white/55 leading-relaxed text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
