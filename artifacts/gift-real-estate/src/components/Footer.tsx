@@ -116,7 +116,7 @@ export function Footer() {
                   <div className="w-8 h-8 bg-[#E31E24]/12 border border-[#E31E24]/20 flex items-center justify-center shrink-0">
                     <Phone size={13} className="text-[#E31E24]" />
                   </div>
-                  <span className="text-white/55 text-sm">{phone}</span>
+                  <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-white/55 text-sm hover:text-[#E31E24] transition-colors">{phone}</a>
                 </li>
               )}
               {email && (
@@ -124,7 +124,7 @@ export function Footer() {
                   <div className="w-8 h-8 bg-[#E31E24]/12 border border-[#E31E24]/20 flex items-center justify-center shrink-0">
                     <Mail size={13} className="text-[#E31E24]" />
                   </div>
-                  <span className="text-white/55 text-sm">{email}</span>
+                  <a href={`mailto:${email}`} className="text-white/55 text-sm hover:text-[#E31E24] transition-colors">{email}</a>
                 </li>
               )}
               {whatsapp && (
