@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useQuery } from "@tanstack/react-query";
 import { fetchListings, fetchHeroSlides, fetchSiteSettings, type HeroSlide } from "@/lib/api";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SEO, localBusinessJsonLd, trackEvent } from "@/components/SEO";
-import { Award, MapPin, ShieldCheck, TrendingUp, Building2, ArrowRight } from "lucide-react";
+import { Award, MapPin, ShieldCheck, TrendingUp, Building2, ArrowRight, Search } from "lucide-react";
 
 const STORAGE_BASE = `${import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}/api/storage`;
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920";
@@ -95,6 +95,19 @@ function formatStat(val: number) {
 }
 
 export default function Home() {
+  const [, setLocation] = useLocation();
+  const [searchMode, setSearchMode] = useState<"buy" | "rent">("buy");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    trackEvent("hero_search", { mode: searchMode, query: searchQuery });
+    const params = new URLSearchParams();
+    params.set("type", searchMode === "buy" ? "sale" : "rent");
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
+    setLocation(`/properties?${params.toString()}`);
+  };
+
   const { data: allListings = [], isLoading } = useQuery({
     queryKey: ["listings"],
     queryFn: () => fetchListings(),
@@ -108,7 +121,6 @@ export default function Home() {
     queryFn: fetchSiteSettings,
     staleTime: 5 * 60 * 1000,
   });
-  const phone = settings?.phone || "";
   const featuredListings = allListings.filter((l) => l.featured).slice(0, 3);
 
   const homeRef       = useRef<HTMLDivElement>(null);
@@ -223,36 +235,66 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/55 z-10" />
 
         {/* Centered content */}
-        <div className="relative z-20 container mx-auto px-6 text-center max-w-4xl pt-20 pb-16">
-          <p className="hero-overline text-[#E31E24] text-xs font-bold tracking-[0.35em] uppercase mb-6">
+        <div className="relative z-20 container mx-auto px-6 text-center max-w-4xl pt-16 pb-20">
+          <p className="hero-overline text-[#E31E24] text-xs font-bold tracking-[0.35em] uppercase mb-4">
             ESTABLISHED · ADDIS ABABA · 2005
           </p>
 
-          <h1 className="hero-headline font-bold text-white text-4xl md:text-6xl lg:text-7xl leading-[1.05] mb-6 tracking-tight">
+          <h1 className="hero-headline font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-4 tracking-tight">
             Built to International Standards.<br className="hidden md:block" /> For 21 Years.
           </h1>
 
-          <p className="hero-subline text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+          <p className="hero-subline text-white/75 text-base md:text-lg leading-relaxed mb-7 max-w-2xl mx-auto hidden sm:block">
             A division of Get-As International Plc. — delivering luxury villas, apartments, and commercial developments across Addis Ababa since 2005.
           </p>
 
-          <div className="hero-ctas flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/properties"
-              onClick={() => trackEvent("cta_click", { button: "View All Properties" })}
-              className="bg-[#E31E24] text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white hover:text-[#1A1A1A] transition-colors flex items-center justify-center gap-2 shadow-lg"
-            >
-              VIEW PROPERTIES <ArrowRight size={16} />
-            </Link>
-            {phone && (
-              <a
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                onClick={() => trackEvent("cta_click", { button: "Call Now" })}
-                className="border-2 border-white/50 text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white hover:text-[#1A1A1A] hover:border-white transition-colors flex items-center justify-center backdrop-blur-sm"
+          {/* Buy / Rent toggle + search */}
+          <div className="hero-ctas flex flex-col items-center gap-3 w-full max-w-2xl mx-auto">
+            {/* Toggle */}
+            <div className="flex bg-white/15 backdrop-blur-sm rounded-full p-1 gap-1">
+              <button
+                type="button"
+                onClick={() => setSearchMode("buy")}
+                className={`px-8 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all duration-200 ${
+                  searchMode === "buy"
+                    ? "bg-[#1A1A1A] text-white shadow-md"
+                    : "text-white hover:text-white/80"
+                }`}
               >
-                CALL NOW
-              </a>
-            )}
+                Buy
+              </button>
+              <button
+                type="button"
+                onClick={() => setSearchMode("rent")}
+                className={`px-8 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all duration-200 ${
+                  searchMode === "rent"
+                    ? "bg-[#1A1A1A] text-white shadow-md"
+                    : "text-white hover:text-white/80"
+                }`}
+              >
+                Rent
+              </button>
+            </div>
+
+            {/* Search bar */}
+            <form onSubmit={handleSearch} className="flex w-full rounded-lg overflow-hidden shadow-xl bg-white/95 backdrop-blur-sm">
+              <div className="flex items-center pl-4 text-[#1A1A1A]/40 shrink-0">
+                <Search size={18} />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by city, neighborhood, or property type..."
+                className="flex-1 py-4 px-3 text-[#1A1A1A] text-sm bg-transparent outline-none placeholder:text-[#1A1A1A]/40"
+              />
+              <button
+                type="submit"
+                className="bg-[#1A1A1A] text-white px-7 py-4 font-bold text-sm tracking-wide hover:bg-[#E31E24] transition-colors shrink-0"
+              >
+                Search
+              </button>
+            </form>
           </div>
         </div>
       </section>
